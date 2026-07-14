@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>__TITLE__</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E__FAVICON__%3C/text%3E%3C/svg%3E">
+<meta name="description" content="__DESC__">
+<meta property="og:title" content="__TITLE__">
+<meta property="og:description" content="__DESC__">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+<style>
+:root{
+  --cream:#fbf3e4; --ink:#3a2a1c; --paper:#fffaf0; --line:#e7d8bd;
+  --accent:#e8543f; --accent2:#b07d2a; --shadow:rgba(80,50,20,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  color:var(--ink); background:var(--cream);
+  background-image:radial-gradient(var(--line) 1px,transparent 1px);
+  background-size:22px 22px;
+}
+a{color:var(--accent)}
+header.hero{ text-align:center; padding:26px 16px 10px; position:relative; }
+.hero h1{ margin:0; font-size:clamp(22px,4.4vw,38px); letter-spacing:.02em;
+  text-shadow:2px 2px 0 #fff, 4px 4px 0 var(--line); }
+.hero .leaf{color:#3a9; }
+.hero p.lead{margin:8px auto 4px; max-width:760px; font-size:14.5px; line-height:1.7; color:#5b4631}
+.hero .meta{font-size:12.5px; color:#8a7350; margin-top:6px}
+.hero .meta a{font-weight:700; text-decoration:none}
+.hero .meta a:hover{text-decoration:underline}
+.counts{display:inline-flex; gap:14px; margin-top:10px; flex-wrap:wrap; justify-content:center}
+.counts b{font-size:20px; color:var(--accent)}
+.counts span{font-size:11.5px; display:block; color:#8a7350}
+.counts .pill{background:var(--paper); border:2px solid var(--line); border-radius:14px; padding:6px 14px; box-shadow:2px 2px 0 var(--line)}
+.wrap{max-width:1180px; margin:0 auto; padding:8px 14px 60px}
+.controls{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0; justify-content:center}
+.controls input[type=search]{ border:2px solid var(--line); background:var(--paper); border-radius:20px; padding:8px 14px;
+  font-size:14px; min-width:200px; outline:none; color:var(--ink) }
+.chipfilter{display:flex; flex-wrap:wrap; gap:6px; justify-content:center}
+.cfilter{ border:2px solid var(--line); background:var(--paper); border-radius:16px; padding:4px 11px;
+  font-size:12.5px; cursor:pointer; user-select:none; transition:.12s; white-space:nowrap }
+.cfilter[data-on="1"]{background:var(--ink); color:#fff; border-color:var(--ink)}
+.cfilter .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+#map{height:60vh; min-height:380px; border:3px solid var(--ink); border-radius:16px;
+  box-shadow:5px 5px 0 var(--shadow); background:#cfe3d8}
+.leaflet-popup-content{margin:10px 12px; font-size:13px}
+.pop-name{font-weight:800; font-size:14px; margin-bottom:3px}
+.pop-area{font-size:11px; color:#8a7350}
+.pop-btn{display:inline-block;margin-top:8px;background:var(--accent);color:#fff;border:none;
+  border-radius:14px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:700}
+.legend-note{font-size:12px;color:#8a7350;text-align:center;margin:12px 0 4px}
+.area-block{margin-top:22px; border:2px solid var(--line); border-radius:14px; background:var(--paper);
+  box-shadow:3px 3px 0 var(--line); overflow:hidden}
+.area-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;
+  border-bottom:2px dashed var(--line)}
+.area-head .swatch{width:16px;height:16px;border-radius:50%;border:2px solid #00000022}
+.area-head h2{margin:0;font-size:16px;flex:1}
+.area-head .n{font-size:12px;color:#8a7350;background:var(--cream);border:1px solid var(--line);
+  border-radius:12px;padding:2px 9px}
+.spotgrid{display:flex;flex-wrap:wrap;gap:8px;padding:13px 14px}
+.spot{ border:2px solid var(--line); background:var(--cream); border-radius:13px; padding:7px 11px;
+  cursor:pointer; transition:.12s; max-width:100%; position:relative }
+.spot:hover{transform:translate(-1px,-1px); box-shadow:2px 2px 0 var(--shadow); border-color:var(--accent)}
+.spot .nm{font-weight:700;font-size:13.5px}
+.spot .ct{font-size:10.5px;color:#8a7350;margin-left:4px}
+.spot .approx{font-size:10px;color:#b07d2a}
+.spot .yt{font-size:10.5px;color:#e62117;font-weight:700;margin-left:6px}
+footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
+.backdrop{position:fixed;inset:0;background:rgba(40,25,10,.5);display:none;z-index:1000;
+  align-items:flex-start;justify-content:center;padding:24px 12px;overflow:auto}
+.backdrop.on{display:flex}
+.modal{background:var(--paper);border:3px solid var(--ink);border-radius:16px;max-width:560px;width:100%;
+  box-shadow:6px 6px 0 var(--shadow);animation:pop .16s ease}
+@keyframes pop{from{transform:scale(.96);opacity:.4}to{transform:scale(1);opacity:1}}
+.modal-head{display:flex;align-items:flex-start;gap:8px;padding:14px 16px 8px;border-bottom:2px dashed var(--line)}
+.modal-head .ttl{flex:1}
+.modal-head h3{margin:0;font-size:18px}
+.modal-head .sub{font-size:12px;color:#8a7350;margin-top:3px}
+.modal-head .x{background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink);line-height:1}
+.modal-body{padding:12px 16px 16px;max-height:70vh;overflow:auto}
+.modal-desc{font-size:13.5px;line-height:1.7;background:var(--cream);border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.modal-note{font-size:11.5px;color:#b07d2a;margin:-6px 0 12px}
+.reply-label{font-size:12px;color:#8a7350;font-weight:700;margin:10px 0 6px}
+.embed-wrap{margin:6px 0 14px}
+.yt-frame{width:100%;aspect-ratio:16/9;border:2px solid var(--line);border-radius:10px;background:#000;display:block}
+.yt-cap{border:2px dashed var(--line);border-top:none;border-radius:0 0 10px 10px;padding:7px 10px;margin:-4px 2px 0;background:#fff}
+.yt-cap .cap-title{font-weight:700;font-size:12.5px;line-height:1.5;color:#5b4631}
+.yt-cap .cap-ch{font-size:11px;color:#8a7350;margin-top:2px}
+.yt-cap .cap-link{font-size:11.5px}
+.loading{font-size:12px;color:#8a7350;padding:6px 2px}
+@media(max-width:600px){ #map{height:52vh} .hero h1{text-shadow:1px 1px 0 #fff,2px 2px 0 var(--line)} }
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>__H1__</h1>
+  <p class="lead">__LEAD__</p>
+  <div class="counts">
+    <div class="pill"><b id="cnt-spot">0</b><span>スポット</span></div>
+    <div class="pill"><b id="cnt-area">0</b><span>エリア</span></div>
+    <div class="pill"><b id="cnt-video">0</b><span>出典動画</span></div>
+  </div>
+  <p class="meta">__META__</p>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <input type="search" id="search" placeholder="🔍 スポット名・説明で検索">
+    <div class="chipfilter" id="catfilter"></div>
+  </div>
+  <div id="map"></div>
+  <p class="legend-note">📍 マーカーの色＝エリア。密集地はまとめて表示され、拡大すると分かれます。マーカーをクリックすると詳細が開きます。</p>
+  <div class="chipfilter" id="areafilter" style="margin-top:14px"></div>
+  <div id="list"></div>
+</div>
+
+<footer>__FOOTER__</footer>
+
+<div class="backdrop" id="backdrop">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div class="ttl"><h3 id="m-title"></h3><div class="sub" id="m-sub"></div></div>
+      <button class="x" id="m-close" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script>
+/*__DATA__*/
+const DATA = window.__SPOTMAP__;
+const CFG = DATA.config || {};
+const AREAS = DATA.areas, SPOTS = DATA.spots, VIDEOS = DATA.videos;
+const areaById = {}; AREAS.forEach(a=>areaById[a.id]=a);
+const CATS = [...new Set(SPOTS.filter(s=>s.cat!=='会場').map(s=>s.cat))];
+const CAT_COLOR = {"グルメ":"#e8543f","温泉":"#e0489a","カフェ・喫茶":"#b07d2a","観光":"#3f7fd6","レトロ":"#7b5cd6","雑貨・土産":"#2f9e7d","自然":"#2a8f6f","動物":"#d88c2a","体験":"#8a5cd6","宿":"#4a7fb5","会場":"#000"};
+
+document.getElementById('cnt-spot').textContent = SPOTS.length;
+document.getElementById('cnt-area').textContent = AREAS.filter(a=>SPOTS.some(s=>s.area===a.id)).length;
+document.getElementById('cnt-video').textContent = new Set(SPOTS.flatMap(s=>s.videos)).size;
+
+const center = CFG.map_center || [36.55,136.60];
+const map = L.map('map',{scrollWheelZoom:true}).setView(center, CFG.map_zoom || 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18, attribution:'© OpenStreetMap contributors'}).addTo(map);
+const cluster = L.markerClusterGroup({maxClusterRadius:38, spiderfyOnMaxZoom:true});
+const markerBySlug = {};
+SPOTS.forEach(s=>{
+  const col = areaById[s.area] ? areaById[s.area].color : '#888';
+  const isVenue = s.cat==='会場';
+  const m = L.circleMarker([s.lat,s.lng],{ radius:isVenue?9:6, color:'#00000055', weight:isVenue?3:1.5,
+    fillColor: isVenue?'#111':col, fillOpacity:.92 });
+  m.bindPopup(`<div class="pop-name">${isVenue?'🎤 ':''}${esc(s.name)}</div>`+
+    `<div class="pop-area">${esc(areaById[s.area].name)} ・ ${esc(s.cat)}${s.approx?' ・ およその位置':''}</div>`+
+    (s.videos.length?`<button class="pop-btn" onclick="openModal('${s.slug}')">紹介動画を見る (${s.videos.length})</button>`:''));
+  m.spotSlug=s.slug; markerBySlug[s.slug]=m; cluster.addLayer(m);
+});
+map.addLayer(cluster);
+
+let activeCats = new Set(CATS), activeAreas = new Set(AREAS.map(a=>a.id)), q='';
+const catWrap=document.getElementById('catfilter');
+CATS.forEach(c=>{
+  const el=document.createElement('div'); el.className='cfilter'; el.dataset.on='1'; el.dataset.cat=c;
+  el.innerHTML=`<span class="dot" style="background:${CAT_COLOR[c]||'#888'}"></span>${c}`;
+  el.onclick=()=>{ if(activeCats.has(c)){activeCats.delete(c);el.dataset.on='0';}else{activeCats.add(c);el.dataset.on='1';} render(); };
+  catWrap.appendChild(el);
+});
+const areaWrap=document.getElementById('areafilter');
+AREAS.filter(a=>SPOTS.some(s=>s.area===a.id)).forEach(a=>{
+  const el=document.createElement('div'); el.className='cfilter'; el.dataset.on='1';
+  el.innerHTML=`<span class="dot" style="background:${a.color}"></span>${a.name}`;
+  el.onclick=()=>{ if(activeAreas.has(a.id)){activeAreas.delete(a.id);el.dataset.on='0';}else{activeAreas.add(a.id);el.dataset.on='1';} render(); };
+  areaWrap.appendChild(el);
+});
+document.getElementById('search').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase(); render();});
+
+function visible(s){
+  if(s.cat!=='会場' && !activeCats.has(s.cat)) return false;
+  if(!activeAreas.has(s.area)) return false;
+  if(q && !(s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q))) return false;
+  return true;
+}
+const listEl=document.getElementById('list');
+function render(){
+  Object.entries(markerBySlug).forEach(([slug,m])=>{
+    const s=SPOTS.find(x=>x.slug===slug);
+    if(visible(s)){ if(!cluster.hasLayer(m)) cluster.addLayer(m);} else { if(cluster.hasLayer(m)) cluster.removeLayer(m);}
+  });
+  listEl.innerHTML='';
+  AREAS.forEach(a=>{
+    const items=SPOTS.filter(s=>s.area===a.id && visible(s));
+    if(!items.length) return;
+    const block=document.createElement('div'); block.className='area-block';
+    const head=document.createElement('div'); head.className='area-head';
+    head.innerHTML=`<span class="swatch" style="background:${a.color}"></span><h2>${esc(a.name)}</h2><span class="n">${items.length}</span>`;
+    const grid=document.createElement('div'); grid.className='spotgrid';
+    head.onclick=()=>{ grid.style.display = grid.style.display==='none'?'flex':'none'; };
+    items.forEach(s=>{
+      const sp=document.createElement('div'); sp.className='spot';
+      sp.innerHTML=`<span class="nm">${s.cat==='会場'?'🎤 ':''}${esc(s.name)}</span>`+
+        `<span class="ct">${esc(s.cat)}</span>`+
+        (s.videos.length?`<span class="yt">▶${s.videos.length}</span>`:'')+
+        (s.approx?'<span class="approx"> ・およその位置</span>':'');
+      sp.addEventListener('click',()=>openModal(s.slug));
+      grid.appendChild(sp);
+    });
+    block.appendChild(head); block.appendChild(grid); listEl.appendChild(block);
+  });
+}
+render();
+
+const backdrop=document.getElementById('backdrop');
+let lastSlug=null;
+function openModal(slug){
+  const s=SPOTS.find(x=>x.slug===slug); if(!s) return;
+  if(backdrop.classList.contains('on') && lastSlug===slug) return;
+  lastSlug=slug;
+  document.getElementById('m-title').textContent=(s.cat==='会場'?'🎤 ':'')+s.name;
+  document.getElementById('m-sub').textContent=`${areaById[s.area].name} ・ ${s.cat}`;
+  const body=document.getElementById('m-body');
+  let html=`<div class="modal-desc">${esc(s.desc)}</div>`;
+  if(s.approx) html+=`<div class="modal-note">※ 番地が確定できなかったため、エリア内のおよその位置に配置しています。</div>`;
+  if(s.videos.length){
+    html+=`<div class="reply-label">この場所が登場するYouTube動画（${s.videos.length}本）</div>`;
+    s.videos.forEach(id=>{
+      const v=VIDEOS[id]||{};
+      html+=`<div class="embed-wrap">`+
+        `<iframe class="yt-frame" loading="lazy" src="https://www.youtube-nocookie.com/embed/${esc(id)}" `+
+        `title="${esc(v.title||'YouTube video')}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`+
+        `<div class="yt-cap"><div class="cap-title">${esc(v.title||'')}</div>`+
+          `<div class="cap-ch">${esc(v.channel||'')}</div>`+
+          `<a class="cap-link" href="https://www.youtube.com/watch?v=${esc(id)}" target="_blank" rel="noopener">▶ YouTubeで開く ↗</a></div>`+
+        `</div>`;
+    });
+  } else { html+=`<div class="loading">このスポットに紐づく個別動画はありません。</div>`; }
+  body.innerHTML=html; body.scrollTop=0; backdrop.classList.add('on');
+}
+function closeModal(){ backdrop.classList.remove('on'); lastSlug=null; document.getElementById('m-body').innerHTML=''; }
+document.getElementById('m-close').onclick=closeModal;
+backdrop.addEventListener('click',e=>{ if(e.target===backdrop) closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+window.openModal=openModal;
+function esc(s){return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+</script>
+</body>
+</html>

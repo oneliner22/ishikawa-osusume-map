@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>石川・金沢おすすめMAP 〜YouTube旅Vlogから〜</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🦀%3C/text%3E%3C/svg%3E">
+<meta name="description" content="YouTubeの旅Vlog 8本から洗い出した石川県（金沢・加賀・羽咋）のおすすめスポットをエリア別に地図化。スポットをクリックすると紹介動画が見られます。">
+<meta property="og:title" content="石川・金沢おすすめMAP 〜YouTube旅Vlogから〜">
+<meta property="og:description" content="YouTubeの旅Vlog 8本から洗い出した石川県（金沢・加賀・羽咋）のおすすめスポットをエリア別に地図化。スポットをクリックすると紹介動画が見られます。">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+<style>
+:root{
+  --cream:#fbf3e4; --ink:#3a2a1c; --paper:#fffaf0; --line:#e7d8bd;
+  --accent:#e8543f; --accent2:#b07d2a; --shadow:rgba(80,50,20,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,sans-serif;
+  color:var(--ink); background:var(--cream);
+  background-image:radial-gradient(var(--line) 1px,transparent 1px);
+  background-size:22px 22px;
+}
+a{color:var(--accent)}
+header.hero{ text-align:center; padding:26px 16px 10px; position:relative; }
+.hero h1{ margin:0; font-size:clamp(22px,4.4vw,38px); letter-spacing:.02em;
+  text-shadow:2px 2px 0 #fff, 4px 4px 0 var(--line); }
+.hero .leaf{color:#3a9; }
+.hero p.lead{margin:8px auto 4px; max-width:760px; font-size:14.5px; line-height:1.7; color:#5b4631}
+.hero .meta{font-size:12.5px; color:#8a7350; margin-top:6px}
+.hero .meta a{font-weight:700; text-decoration:none}
+.hero .meta a:hover{text-decoration:underline}
+.counts{display:inline-flex; gap:14px; margin-top:10px; flex-wrap:wrap; justify-content:center}
+.counts b{font-size:20px; color:var(--accent)}
+.counts span{font-size:11.5px; display:block; color:#8a7350}
+.counts .pill{background:var(--paper); border:2px solid var(--line); border-radius:14px; padding:6px 14px; box-shadow:2px 2px 0 var(--line)}
+.wrap{max-width:1180px; margin:0 auto; padding:8px 14px 60px}
+.controls{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:14px 0; justify-content:center}
+.controls input[type=search]{ border:2px solid var(--line); background:var(--paper); border-radius:20px; padding:8px 14px;
+  font-size:14px; min-width:200px; outline:none; color:var(--ink) }
+.chipfilter{display:flex; flex-wrap:wrap; gap:6px; justify-content:center}
+.cfilter{ border:2px solid var(--line); background:var(--paper); border-radius:16px; padding:4px 11px;
+  font-size:12.5px; cursor:pointer; user-select:none; transition:.12s; white-space:nowrap }
+.cfilter[data-on="1"]{background:var(--ink); color:#fff; border-color:var(--ink)}
+.cfilter .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+#map{height:60vh; min-height:380px; border:3px solid var(--ink); border-radius:16px;
+  box-shadow:5px 5px 0 var(--shadow); background:#cfe3d8}
+.leaflet-popup-content{margin:10px 12px; font-size:13px}
+.pop-name{font-weight:800; font-size:14px; margin-bottom:3px}
+.pop-area{font-size:11px; color:#8a7350}
+.pop-btn{display:inline-block;margin-top:8px;background:var(--accent);color:#fff;border:none;
+  border-radius:14px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:700}
+.legend-note{font-size:12px;color:#8a7350;text-align:center;margin:12px 0 4px}
+.area-block{margin-top:22px; border:2px solid var(--line); border-radius:14px; background:var(--paper);
+  box-shadow:3px 3px 0 var(--line); overflow:hidden}
+.area-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;
+  border-bottom:2px dashed var(--line)}
+.area-head .swatch{width:16px;height:16px;border-radius:50%;border:2px solid #00000022}
+.area-head h2{margin:0;font-size:16px;flex:1}
+.area-head .n{font-size:12px;color:#8a7350;background:var(--cream);border:1px solid var(--line);
+  border-radius:12px;padding:2px 9px}
+.spotgrid{display:flex;flex-wrap:wrap;gap:8px;padding:13px 14px}
+.spot{ border:2px solid var(--line); background:var(--cream); border-radius:13px; padding:7px 11px;
+  cursor:pointer; transition:.12s; max-width:100%; position:relative }
+.spot:hover{transform:translate(-1px,-1px); box-shadow:2px 2px 0 var(--shadow); border-color:var(--accent)}
+.spot .nm{font-weight:700;font-size:13.5px}
+.spot .ct{font-size:10.5px;color:#8a7350;margin-left:4px}
+.spot .approx{font-size:10px;color:#b07d2a}
+.spot .yt{font-size:10.5px;color:#e62117;font-weight:700;margin-left:6px}
+footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
+.backdrop{position:fixed;inset:0;background:rgba(40,25,10,.5);display:none;z-index:1000;
+  align-items:flex-start;justify-content:center;padding:24px 12px;overflow:auto}
+.backdrop.on{display:flex}
+.modal{background:var(--paper);border:3px solid var(--ink);border-radius:16px;max-width:560px;width:100%;
+  box-shadow:6px 6px 0 var(--shadow);animation:pop .16s ease}
+@keyframes pop{from{transform:scale(.96);opacity:.4}to{transform:scale(1);opacity:1}}
+.modal-head{display:flex;align-items:flex-start;gap:8px;padding:14px 16px 8px;border-bottom:2px dashed var(--line)}
+.modal-head .ttl{flex:1}
+.modal-head h3{margin:0;font-size:18px}
+.modal-head .sub{font-size:12px;color:#8a7350;margin-top:3px}
+.modal-head .x{background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink);line-height:1}
+.modal-body{padding:12px 16px 16px;max-height:70vh;overflow:auto}
+.modal-desc{font-size:13.5px;line-height:1.7;background:var(--cream);border:1px solid var(--line);
+  border-radius:10px;padding:10px 12px;margin-bottom:12px}
+.modal-note{font-size:11.5px;color:#b07d2a;margin:-6px 0 12px}
+.reply-label{font-size:12px;color:#8a7350;font-weight:700;margin:10px 0 6px}
+.embed-wrap{margin:6px 0 14px}
+.yt-frame{width:100%;aspect-ratio:16/9;border:2px solid var(--line);border-radius:10px;background:#000;display:block}
+.yt-cap{border:2px dashed var(--line);border-top:none;border-radius:0 0 10px 10px;padding:7px 10px;margin:-4px 2px 0;background:#fff}
+.yt-cap .cap-title{font-weight:700;font-size:12.5px;line-height:1.5;color:#5b4631}
+.yt-cap .cap-ch{font-size:11px;color:#8a7350;margin-top:2px}
+.yt-cap .cap-link{font-size:11.5px}
+.loading{font-size:12px;color:#8a7350;padding:6px 2px}
+@media(max-width:600px){ #map{height:52vh} .hero h1{text-shadow:1px 1px 0 #fff,2px 2px 0 var(--line)} }
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>🦀 石川・金沢おすすめMAP 🍣</h1>
+  <p class="lead">YouTubeの旅Vlog <b>8本</b>から洗い出した、石川県（金沢・加賀・羽咋）のおすすめスポットをエリア別にマッピング。<br>スポット名やマーカーをクリックすると、実際に訪れている<b>紹介動画</b>がその場で見られます。</p>
+  <div class="counts">
+    <div class="pill"><b id="cnt-spot">0</b><span>スポット</span></div>
+    <div class="pill"><b id="cnt-area">0</b><span>エリア</span></div>
+    <div class="pill"><b id="cnt-video">0</b><span>出典動画</span></div>
+  </div>
+  <p class="meta">出典: YouTube旅行Vlog 8本（東海オンエア / ponz pon! / なぐもふうか / なかはらちゃんねる / まめとだいふく / 古田愛理 / HOWELL / かっぱちゃんねる）</p>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <input type="search" id="search" placeholder="🔍 スポット名・説明で検索">
+    <div class="chipfilter" id="catfilter"></div>
+  </div>
+  <div id="map"></div>
+  <p class="legend-note">📍 マーカーの色＝エリア。密集地はまとめて表示され、拡大すると分かれます。マーカーをクリックすると詳細が開きます。</p>
+  <div class="chipfilter" id="areafilter" style="margin-top:14px"></div>
+  <div id="list"></div>
+</div>
+
+<footer>動画の著作権は各チャンネルに帰属します ・ 地図: © OpenStreetMap contributors / Leaflet ・ 一部スポットは「およその位置」です</footer>
+
+<div class="backdrop" id="backdrop">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div class="ttl"><h3 id="m-title"></h3><div class="sub" id="m-sub"></div></div>
+      <button class="x" id="m-close" aria-label="閉じる">×</button>
+    </div>
+    <div class="modal-body" id="m-body"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script>
+window.__SPOTMAP__ = {"config": {"title": "石川・金沢おすすめMAP 〜YouTube旅Vlogから〜", "description": "YouTubeの旅Vlog 8本から洗い出した石川県（金沢・加賀・羽咋）のおすすめスポットをエリア別に地図化。スポットをクリックすると紹介動画が見られます。", "favicon": "🦀", "h1": "🦀 石川・金沢おすすめMAP 🍣", "lead": "YouTubeの旅Vlog <b>8本</b>から洗い出した、石川県（金沢・加賀・羽咋）のおすすめスポットをエリア別にマッピング。<br>スポット名やマーカーをクリックすると、実際に訪れている<b>紹介動画</b>がその場で見られます。", "meta": "出典: YouTube旅行Vlog 8本（東海オンエア / ponz pon! / なぐもふうか / なかはらちゃんねる / まめとだいふく / 古田愛理 / HOWELL / かっぱちゃんねる）", "footer": "動画の著作権は各チャンネルに帰属します ・ 地図: © OpenStreetMap contributors / Leaflet ・ 一部スポットは「およその位置」です", "map_center": [36.584, 136.557], "map_zoom": 9}, "areas": [{"id": "higashiyama", "name": "ひがし茶屋街・東山", "color": "#e8543f"}, {"id": "kenrokuen", "name": "兼六園・21美・小立野", "color": "#3f7fd6"}, {"id": "omicho", "name": "近江町・金沢駅周辺", "color": "#2f9e7d"}, {"id": "katamachi", "name": "片町・香林坊", "color": "#7b5cd6"}, {"id": "kaga", "name": "加賀温泉郷（山代・小松）", "color": "#e0489a"}, {"id": "hakui", "name": "羽咋・千里浜", "color": "#b07d2a"}], "spots": [{"slug": "higashichaya", "name": "ひがし茶屋街", "area": "higashiyama", "cat": "レトロ", "lat": 36.5726, "lng": 136.6667, "approx": false, "desc": "歴史あるレトロな街並みが魅力の金沢随一の観光名所。浴衣をレンタルして和傘を差しながら散策すると風情倍増。金箔ソフトや金箔かき氷、フルーツ大福など映えスイーツの宝庫。", "videos": ["IQEjL6koxoU", "fAJonNwHvNI", "Xe50E0cVjSY", "IS1YgB2f1C4", "AeQIsxmDoDQ"]}, {"slug": "gauche", "name": "茶房＆BAR ゴーシュ", "area": "higashiyama", "cat": "カフェ・喫茶", "lat": 36.5721, "lng": 136.6674, "approx": true, "desc": "ひがし茶屋街の町家にある静かで落ち着いたバー（東山1-16-5）。サイフォン珈琲とウイスキー300種。夜の茶屋街で過ごす大人の時間に。", "videos": ["78piZBG6C4c"]}, {"slug": "amiya", "name": "金澤東山 AMIYA", "area": "higashiyama", "cat": "グルメ", "lat": 36.5716, "lng": 136.666, "approx": true, "desc": "ひがし茶屋街近くの「おでん・輪島ふぐ・のどぐろ AMIYA」（東山1-12-12）。贅沢にのどぐろを敷き詰めた「のどぐろひつまぶし」（約3,080円）が看板。お茶漬けにして二度楽しめる。", "videos": ["IQEjL6koxoU"]}, {"slug": "kenrokuen", "name": "兼六園", "area": "kenrokuen", "cat": "観光", "lat": 36.5624, "lng": 136.6624, "approx": false, "desc": "日本三名園の一つ。美しい庭園を眺めながら名物「加賀あんころ餅」を抹茶とともにいただくのが定番。名酒の飲み比べができる時期も。", "videos": ["IQEjL6koxoU", "Xe50E0cVjSY", "fAJonNwHvNI", "AeQIsxmDoDQ"]}, {"slug": "kanazawajo", "name": "金沢城公園", "area": "kenrokuen", "cat": "観光", "lat": 36.5658, "lng": 136.6594, "approx": false, "desc": "兼六園とセットで巡りたい加賀百万石のシンボル。石川門とお堀の景観が見事。", "videos": ["IQEjL6koxoU", "Xe50E0cVjSY"]}, {"slug": "museum21", "name": "金沢21世紀美術館", "area": "kenrokuen", "cat": "観光", "lat": 36.5608, "lng": 136.6582, "approx": false, "desc": "有名な「スイミング・プール」（要予約）やうさぎの椅子など、写真映えするポップな現代アートが並ぶ人気美術館。", "videos": ["IQEjL6koxoU", "AeQIsxmDoDQ"]}, {"slug": "library", "name": "石川県立図書館", "area": "kenrokuen", "cat": "観光", "lat": 36.5487, "lng": 136.6804, "approx": false, "desc": "円形劇場のような美しく立体的な大空間。テーマ別のユニークな陳列、作業用デスクやおしゃれなカフェも併設。1日中居たくなる美しさ。", "videos": ["IS1YgB2f1C4"]}, {"slug": "dai7gyoza", "name": "第七ギョーザの店", "area": "kenrokuen", "cat": "グルメ", "lat": 36.5508, "lng": 136.689, "approx": false, "desc": "石川県民のソウルフード（もりの里1-259）。カリカリ・ジューシーな「ホワイト餃子」は一度食べたら病みつき。地元民でも並ぶ人気店。", "videos": ["78piZBG6C4c"]}, {"slug": "omicho", "name": "近江町市場", "area": "omicho", "cat": "グルメ", "lat": 36.5717, "lng": 136.656, "approx": false, "desc": "金沢の台所。朝からカニ（冬は香箱蟹・カニ面）、大ぶりの生牡蠣、ウニ、大トロ、ホタテなどをその場で食べ歩き。サクサクの「近江町コロッケ」も大人気。", "videos": ["78piZBG6C4c", "LoxqRUcfqRY", "IS1YgB2f1C4", "AeQIsxmDoDQ", "IQEjL6koxoU"]}, {"slug": "enishi", "name": "鮮彩 えにし", "area": "omicho", "cat": "グルメ", "lat": 36.5711, "lng": 136.6554, "approx": false, "desc": "近江町いちば館2Fにある大口水産直営の海鮮居酒屋（青草町88）。のど黒をまるごと使った「のど黒ひつまぶし」が看板で、3通りの食べ方で楽しめる。", "videos": ["Xe50E0cVjSY"]}, {"slug": "morimori", "name": "もりもり寿し 金沢駅前店", "area": "omicho", "cat": "グルメ", "lat": 36.5793, "lng": 136.6498, "approx": false, "desc": "地元でも大行列を作る回転寿司（金沢フォーラス6F）。ガスエビやカニなど新鮮で肉厚な北陸の幸を贅沢に。近江町店など市内に複数店舗あり。", "videos": ["IQEjL6koxoU", "9jCGPugyhBw"]}, {"slug": "uan", "name": "雨庵 金沢", "area": "omicho", "cat": "宿", "lat": 36.5674, "lng": 136.6557, "approx": true, "desc": "金沢城近くの和モダンなブティックホテル（尾山町6-30）。掘りごたつのラウンジ、無料のお蕎麦、こだわりのアメニティが魅力。", "videos": ["IQEjL6koxoU"]}, {"slug": "appare", "name": "元祖 金沢炉端 あっぱれ 片町本店", "area": "katamachi", "cat": "グルメ", "lat": 36.5594, "lng": 136.6483, "approx": true, "desc": "金沢おでんの人気店（片町2-2-15 北國ビルB1F）。出汁の染みた大根やバイ貝、冬限定の「カニ面」は絶品。カニの甲羅に熱燗を注ぐ締めの一杯も格別。", "videos": ["IQEjL6koxoU"]}, {"slug": "takasago", "name": "おでん 高砂", "area": "katamachi", "cat": "グルメ", "lat": 36.5608, "lng": 136.6503, "approx": true, "desc": "創業昭和11年の金沢おでんの老舗（片町1-3-29）。地元の人に愛され続ける味。カニ面を筆頭に冬の味覚が揃う。", "videos": ["78piZBG6C4c"]}, {"slug": "korinkyo", "name": "香林居", "area": "katamachi", "cat": "宿", "lat": 36.5619, "lng": 136.6545, "approx": false, "desc": "香林坊にある蒸留所併設のブティックホテル（片町1-1-31）。サウナ付きのおしゃれな滞在が人気。", "videos": ["LoxqRUcfqRY"]}, {"slug": "kosoyu", "name": "山代温泉 古総湯", "area": "kaga", "cat": "温泉", "lat": 36.289, "lng": 136.3615, "approx": false, "desc": "山代温泉のシンボル。明治時代の共同浴場を復元したレトロな温泉で、ステンドグラスと九谷焼タイルが美しい。心まで温まる。", "videos": ["IQEjL6koxoU"]}, {"slug": "kaikaga", "name": "星野リゾート 界 加賀", "area": "kaga", "cat": "宿", "lat": 36.2887, "lng": 136.362, "approx": true, "desc": "古総湯の目の前に建つ温泉旅館（山代温泉18-47）。九谷焼や山中漆器の器で味わう蟹・のどぐろのフルコース、毎晩の加賀獅子舞、館内工房での「金継ぎ」体験も。", "videos": ["IQEjL6koxoU"]}, {"slug": "mangetsu", "name": "九谷満月", "area": "kaga", "cat": "体験", "lat": 36.304, "lng": 136.3528, "approx": true, "desc": "北陸最大級の九谷焼専門店（加賀市中代町ル95-2）。ろくろ・絵付け体験で湯呑み作りに挑戦できる。九谷焼の豆皿やお猪口のお土産選びも。", "videos": ["IQEjL6koxoU"]}, {"slug": "yunokuni", "name": "加賀伝統工芸村 ゆのくにの森", "area": "kaga", "cat": "体験", "lat": 36.3236, "lng": 136.4375, "approx": false, "desc": "13万坪の敷地に伝統工芸の体験館が集まるテーマパーク（小松市粟津町ナ3-3）。グラスにイラストを刻むサンドブラスト体験などが楽しめる。", "videos": ["fAJonNwHvNI"]}, {"slug": "chirihama", "name": "千里浜なぎさドライブウェイ", "area": "hakui", "cat": "自然", "lat": 36.8791, "lng": 136.7621, "approx": false, "desc": "日本で唯一、車やバイクで波打ち際の砂浜を走れる爽快なドライブコース（全長約8km）。夕日の時間帯は特に絶景。", "videos": ["Xe50E0cVjSY"]}], "videos": {"AeQIsxmDoDQ": {"title": "金沢Vlog｜1泊2日で楽しむ金沢グルメ旅が楽しすぎた♡ おすすめの食べ歩きスポット、カフェ", "channel": "古田愛理 Airi Furuta"}, "LoxqRUcfqRY": {"title": "【vlog】美味しいもの食べまくり🦀🍚2泊3日の福井・石川旅行🚅", "channel": "かっぱちゃんねる"}, "9jCGPugyhBw": {"title": "【金沢】ずっと行きたかったお店を巡る旅in北陸｜石川・福井観光vlog｜スゴ得", "channel": "HOWELL / ハウエル"}, "78piZBG6C4c": {"title": "金沢で大好きなお店1週間記録🍣ひたすら食べまくります【石川旅行】", "channel": "なぐもふうか."}, "IQEjL6koxoU": {"title": "[石川県vlog]金沢と加賀・山代温泉を巡る冬の2泊3日❄️｜グルメ・温泉・伝統文化を楽しむ🍲｜ひがし茶屋街🍵｜加賀温泉郷♨️｜九谷焼🇯🇵", "channel": "ponz pon! | 旅行・暮らし"}, "Xe50E0cVjSY": {"title": "【46道府県旅行の旅！石川県編】景色良し。飯良し。土産良し。最高な県に出会ってしまった！！！", "channel": "東海オンエア"}, "IS1YgB2f1C4": {"title": "【旅行Vlog】金沢へ日帰り旅行に行った日｜石川県立図書館｜近江町市場｜ひがし茶屋街", "channel": "まめとだいふく"}, "fAJonNwHvNI": {"title": "【石川旅行Vlog】金沢・加賀を巡る2泊3日♨️⌇食と街歩きの記録⌇ひがし茶屋街・兼六園🏯", "channel": "なかはらちゃんねる🧸"}}};
+const DATA = window.__SPOTMAP__;
+const CFG = DATA.config || {};
+const AREAS = DATA.areas, SPOTS = DATA.spots, VIDEOS = DATA.videos;
+const areaById = {}; AREAS.forEach(a=>areaById[a.id]=a);
+const CATS = [...new Set(SPOTS.filter(s=>s.cat!=='会場').map(s=>s.cat))];
+const CAT_COLOR = {"グルメ":"#e8543f","温泉":"#e0489a","カフェ・喫茶":"#b07d2a","観光":"#3f7fd6","レトロ":"#7b5cd6","雑貨・土産":"#2f9e7d","自然":"#2a8f6f","動物":"#d88c2a","体験":"#8a5cd6","宿":"#4a7fb5","会場":"#000"};
+
+document.getElementById('cnt-spot').textContent = SPOTS.length;
+document.getElementById('cnt-area').textContent = AREAS.filter(a=>SPOTS.some(s=>s.area===a.id)).length;
+document.getElementById('cnt-video').textContent = new Set(SPOTS.flatMap(s=>s.videos)).size;
+
+const center = CFG.map_center || [36.55,136.60];
+const map = L.map('map',{scrollWheelZoom:true}).setView(center, CFG.map_zoom || 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18, attribution:'© OpenStreetMap contributors'}).addTo(map);
+const cluster = L.markerClusterGroup({maxClusterRadius:38, spiderfyOnMaxZoom:true});
+const markerBySlug = {};
+SPOTS.forEach(s=>{
+  const col = areaById[s.area] ? areaById[s.area].color : '#888';
+  const isVenue = s.cat==='会場';
+  const m = L.circleMarker([s.lat,s.lng],{ radius:isVenue?9:6, color:'#00000055', weight:isVenue?3:1.5,
+    fillColor: isVenue?'#111':col, fillOpacity:.92 });
+  m.bindPopup(`<div class="pop-name">${isVenue?'🎤 ':''}${esc(s.name)}</div>`+
+    `<div class="pop-area">${esc(areaById[s.area].name)} ・ ${esc(s.cat)}${s.approx?' ・ およその位置':''}</div>`+
+    (s.videos.length?`<button class="pop-btn" onclick="openModal('${s.slug}')">紹介動画を見る (${s.videos.length})</button>`:''));
+  m.spotSlug=s.slug; markerBySlug[s.slug]=m; cluster.addLayer(m);
+});
+map.addLayer(cluster);
+
+let activeCats = new Set(CATS), activeAreas = new Set(AREAS.map(a=>a.id)), q='';
+const catWrap=document.getElementById('catfilter');
+CATS.forEach(c=>{
+  const el=document.createElement('div'); el.className='cfilter'; el.dataset.on='1'; el.dataset.cat=c;
+  el.innerHTML=`<span class="dot" style="background:${CAT_COLOR[c]||'#888'}"></span>${c}`;
+  el.onclick=()=>{ if(activeCats.has(c)){activeCats.delete(c);el.dataset.on='0';}else{activeCats.add(c);el.dataset.on='1';} render(); };
+  catWrap.appendChild(el);
+});
+const areaWrap=document.getElementById('areafilter');
+AREAS.filter(a=>SPOTS.some(s=>s.area===a.id)).forEach(a=>{
+  const el=document.createElement('div'); el.className='cfilter'; el.dataset.on='1';
+  el.innerHTML=`<span class="dot" style="background:${a.color}"></span>${a.name}`;
+  el.onclick=()=>{ if(activeAreas.has(a.id)){activeAreas.delete(a.id);el.dataset.on='0';}else{activeAreas.add(a.id);el.dataset.on='1';} render(); };
+  areaWrap.appendChild(el);
+});
+document.getElementById('search').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase(); render();});
+
+function visible(s){
+  if(s.cat!=='会場' && !activeCats.has(s.cat)) return false;
+  if(!activeAreas.has(s.area)) return false;
+  if(q && !(s.name.toLowerCase().includes(q)||s.desc.toLowerCase().includes(q))) return false;
+  return true;
+}
+const listEl=document.getElementById('list');
+function render(){
+  Object.entries(markerBySlug).forEach(([slug,m])=>{
+    const s=SPOTS.find(x=>x.slug===slug);
+    if(visible(s)){ if(!cluster.hasLayer(m)) cluster.addLayer(m);} else { if(cluster.hasLayer(m)) cluster.removeLayer(m);}
+  });
+  listEl.innerHTML='';
+  AREAS.forEach(a=>{
+    const items=SPOTS.filter(s=>s.area===a.id && visible(s));
+    if(!items.length) return;
+    const block=document.createElement('div'); block.className='area-block';
+    const head=document.createElement('div'); head.className='area-head';
+    head.innerHTML=`<span class="swatch" style="background:${a.color}"></span><h2>${esc(a.name)}</h2><span class="n">${items.length}</span>`;
+    const grid=document.createElement('div'); grid.className='spotgrid';
+    head.onclick=()=>{ grid.style.display = grid.style.display==='none'?'flex':'none'; };
+    items.forEach(s=>{
+      const sp=document.createElement('div'); sp.className='spot';
+      sp.innerHTML=`<span class="nm">${s.cat==='会場'?'🎤 ':''}${esc(s.name)}</span>`+
+        `<span class="ct">${esc(s.cat)}</span>`+
+        (s.videos.length?`<span class="yt">▶${s.videos.length}</span>`:'')+
+        (s.approx?'<span class="approx"> ・およその位置</span>':'');
+      sp.addEventListener('click',()=>openModal(s.slug));
+      grid.appendChild(sp);
+    });
+    block.appendChild(head); block.appendChild(grid); listEl.appendChild(block);
+  });
+}
+render();
+
+const backdrop=document.getElementById('backdrop');
+let lastSlug=null;
+function openModal(slug){
+  const s=SPOTS.find(x=>x.slug===slug); if(!s) return;
+  if(backdrop.classList.contains('on') && lastSlug===slug) return;
+  lastSlug=slug;
+  document.getElementById('m-title').textContent=(s.cat==='会場'?'🎤 ':'')+s.name;
+  document.getElementById('m-sub').textContent=`${areaById[s.area].name} ・ ${s.cat}`;
+  const body=document.getElementById('m-body');
+  let html=`<div class="modal-desc">${esc(s.desc)}</div>`;
+  if(s.approx) html+=`<div class="modal-note">※ 番地が確定できなかったため、エリア内のおよその位置に配置しています。</div>`;
+  if(s.videos.length){
+    html+=`<div class="reply-label">この場所が登場するYouTube動画（${s.videos.length}本）</div>`;
+    s.videos.forEach(id=>{
+      const v=VIDEOS[id]||{};
+      html+=`<div class="embed-wrap">`+
+        `<iframe class="yt-frame" loading="lazy" src="https://www.youtube-nocookie.com/embed/${esc(id)}" `+
+        `title="${esc(v.title||'YouTube video')}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`+
+        `<div class="yt-cap"><div class="cap-title">${esc(v.title||'')}</div>`+
+          `<div class="cap-ch">${esc(v.channel||'')}</div>`+
+          `<a class="cap-link" href="https://www.youtube.com/watch?v=${esc(id)}" target="_blank" rel="noopener">▶ YouTubeで開く ↗</a></div>`+
+        `</div>`;
+    });
+  } else { html+=`<div class="loading">このスポットに紐づく個別動画はありません。</div>`; }
+  body.innerHTML=html; body.scrollTop=0; backdrop.classList.add('on');
+}
+function closeModal(){ backdrop.classList.remove('on'); lastSlug=null; document.getElementById('m-body').innerHTML=''; }
+document.getElementById('m-close').onclick=closeModal;
+backdrop.addEventListener('click',e=>{ if(e.target===backdrop) closeModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+window.openModal=openModal;
+function esc(s){return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+</script>
+</body>
+</html>
