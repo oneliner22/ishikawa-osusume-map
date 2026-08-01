@@ -64,6 +64,24 @@ Cloud Scheduler → Cloud Run Job (GCP: salmon-chan)
 
 誤入稿時は `sources` に由来が残っているため `git revert` で戻せる。
 
+実装は `pipeline/` 配下:
+
+- `daily_job.py` — ジョブ本体（上記フローを1プロセスで実行）
+- `mcp_client.py` — xdev MCP (streamable HTTP) の最小クライアント
+- `deploy.sh` — salmon-chan への初回デプロイ一式（API有効化/Secret/ビルド/ジョブ/スケジューラ）。
+  `GITHUB_TOKEN_VALUE` と `XDEV_MCP_URL_VALUE` を環境変数で渡して実行
+
+運用コマンド:
+
+```
+# 手動実行
+gcloud run jobs execute ishikawa-spots-daily --region asia-northeast1 --project central-bulwark-427114-j7 --wait
+# ログ確認
+gcloud logging read 'resource.type=cloud_run_job AND resource.labels.job_name=ishikawa-spots-daily' --project central-bulwark-427114-j7 --limit 50 --format 'value(textPayload)'
+```
+
+失敗・サーキットブレーカー・validate 不合格時は GitHub Issue が自動起票される。
+
 ## 出典・クレジット
 
 スポット情報は以下の旅Vlogおよび X のファン投稿に基づく（著作権は各投稿者に帰属）:

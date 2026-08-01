@@ -31,7 +31,7 @@ if spots_doc and videos and pipeline:
 
     bbox = pipeline["bbox"]
     slugs = set()
-    x_url_re = re.compile(r"^https://(x|twitter)\.com/[^/]+/status/\d+")
+    x_url_re = re.compile(r"^https://(x|twitter)\.com/.+/status(es)?/\d+")
 
     for s in spots:
         tag = f"spot '{s.get('slug', '?')}'"

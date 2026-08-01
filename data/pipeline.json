@@ -1,5 +1,6 @@
 {
-  "gcp_project": {"display_name": "salmon-chan", "project_id": null},
+  "gcp_project": {"display_name": "salmon-chan", "project_id": "central-bulwark-427114-j7"},
+  "cloud_run": {"region": "asia-northeast1", "job": "ishikawa-spots-daily", "schedule": "毎朝7時 JST (Cloud Scheduler: ishikawa-spots-daily-trigger)"},
   "x_query": "回覧板 (金沢 OR 石川) -is:retweet",
   "xdev_dataset": "pocopea-ishikawa",
   "schedule": "daily",
