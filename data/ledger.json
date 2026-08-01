@@ -148,6 +148,50 @@
    "date": "2026-08-01",
    "result": "processed",
    "author": "YD8uZ9ZzRY66388"
+  },
+  "2083672098271297989": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083669274095476968": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083469741591867540": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083465624924332524": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083461694907711896": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083458990705676561": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083422590090248593": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083160145824288774": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083085260238291290": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082968663771287963": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082966067249647826": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -174,6 +218,12 @@
    "author": "walk_teku_teku",
    "date": "2026-08-02",
    "until": "2026-09-06"
+  },
+  "2082957013697634519": {
+   "kind": "reco_post",
+   "author": "YD8uZ9ZzRY66388",
+   "date": "2026-08-01",
+   "until": "2026-09-05"
   }
  }
 }
