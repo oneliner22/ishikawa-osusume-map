@@ -538,6 +538,30 @@
     }
    ],
    "url": "http://www.noto-airport.jp/"
+  },
+  {
+   "slug": "nagamachi-bukeyashiki",
+   "name": "長町武家屋敷跡",
+   "area": "katamachi",
+   "cat": "観光",
+   "lat": 36.56375,
+   "lng": 136.65101,
+   "approx": false,
+   "desc": "土塀と石畳が続く城下町の静かな街並みが楽しめる観光名所。落ち着いた雰囲気のなか、金沢の歴史を感じながらの散策に最適。",
+   "address": "日本、〒920-0865 石川県金沢市長町１丁目３−１２−２",
+   "place_id": "ChIJhycOJtYz-F8RO54LaTG6_p0",
+   "added": "2026-08-01",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2082957013697634519",
+     "author": "YD8uZ9ZzRY66388",
+     "date": "2026-07-30",
+     "quote": "落ち着いた雰囲気が魅力 土塀と石畳が続く城下町で静かな街並みを楽しめる"
+    }
+   ],
+   "hours": "月曜日: 24 時間営業 / 火曜日: 24 時間営業 ほか",
+   "url": "https://www.kanazawa-kankoukyoukai.or.jp/spot/detail_10195.html"
   }
  ]
 }

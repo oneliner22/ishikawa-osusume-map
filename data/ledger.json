@@ -59,6 +59,95 @@
   "2081177903749062938": {
    "date": "2026-08-01",
    "result": "not_recommendation"
+  },
+  "2083544272402542608": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083524450629378286": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083522249794191773": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083505208139932023": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083180273844507080": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083125166109016110": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082448271340146889": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082445310715134357": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082438943468048704": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082316339205861489": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082301480468709540": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082269202401075711": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082067523827363995": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082049439146053714": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081649449068290490": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081616987625853193": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081419999185678710": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081419641134665765": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081417488324272523": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081409168041500953": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081333982646747581": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082957013697634519": {
+   "date": "2026-08-01",
+   "result": "processed",
+   "author": "YD8uZ9ZzRY66388"
   }
  },
  "authors": {
@@ -71,6 +160,14 @@
    "verdict": "fan",
    "name": "hirotakashi",
    "date": "2026-08-01"
+  }
+ },
+ "seeds": {
+  "2082659093798596944": {
+   "kind": "reco_post",
+   "author": "",
+   "date": "2026-08-01",
+   "until": "2026-09-05"
   }
  }
 }
