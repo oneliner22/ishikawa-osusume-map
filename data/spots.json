@@ -41,12 +41,27 @@
    "lng": 136.6667,
    "approx": false,
    "desc": "歴史あるレトロな街並みが魅力の金沢随一の観光名所。浴衣をレンタルして和傘を差しながら散策すると風情倍増。金箔ソフトや金箔かき氷、フルーツ大福など映えスイーツの宝庫。",
-   "videos": [
-    "IQEjL6koxoU",
-    "fAJonNwHvNI",
-    "Xe50E0cVjSY",
-    "IS1YgB2f1C4",
-    "AeQIsxmDoDQ"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    },
+    {
+     "type": "youtube",
+     "id": "fAJonNwHvNI"
+    },
+    {
+     "type": "youtube",
+     "id": "Xe50E0cVjSY"
+    },
+    {
+     "type": "youtube",
+     "id": "IS1YgB2f1C4"
+    },
+    {
+     "type": "youtube",
+     "id": "AeQIsxmDoDQ"
+    }
    ]
   },
   {
@@ -58,8 +73,11 @@
    "lng": 136.6674,
    "approx": true,
    "desc": "ひがし茶屋街の町家にある静かで落ち着いたバー（東山1-16-5）。サイフォン珈琲とウイスキー300種。夜の茶屋街で過ごす大人の時間に。",
-   "videos": [
-    "78piZBG6C4c"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "78piZBG6C4c"
+    }
    ]
   },
   {
@@ -71,8 +89,11 @@
    "lng": 136.666,
    "approx": true,
    "desc": "ひがし茶屋街近くの「おでん・輪島ふぐ・のどぐろ AMIYA」（東山1-12-12）。贅沢にのどぐろを敷き詰めた「のどぐろひつまぶし」（約3,080円）が看板。お茶漬けにして二度楽しめる。",
-   "videos": [
-    "IQEjL6koxoU"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    }
    ]
   },
   {
@@ -84,11 +105,23 @@
    "lng": 136.6624,
    "approx": false,
    "desc": "日本三名園の一つ。美しい庭園を眺めながら名物「加賀あんころ餅」を抹茶とともにいただくのが定番。名酒の飲み比べができる時期も。",
-   "videos": [
-    "IQEjL6koxoU",
-    "Xe50E0cVjSY",
-    "fAJonNwHvNI",
-    "AeQIsxmDoDQ"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    },
+    {
+     "type": "youtube",
+     "id": "Xe50E0cVjSY"
+    },
+    {
+     "type": "youtube",
+     "id": "fAJonNwHvNI"
+    },
+    {
+     "type": "youtube",
+     "id": "AeQIsxmDoDQ"
+    }
    ]
   },
   {
@@ -100,9 +133,15 @@
    "lng": 136.6594,
    "approx": false,
    "desc": "兼六園とセットで巡りたい加賀百万石のシンボル。石川門とお堀の景観が見事。",
-   "videos": [
-    "IQEjL6koxoU",
-    "Xe50E0cVjSY"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    },
+    {
+     "type": "youtube",
+     "id": "Xe50E0cVjSY"
+    }
    ]
   },
   {
@@ -114,9 +153,15 @@
    "lng": 136.6582,
    "approx": false,
    "desc": "有名な「スイミング・プール」（要予約）やうさぎの椅子など、写真映えするポップな現代アートが並ぶ人気美術館。",
-   "videos": [
-    "IQEjL6koxoU",
-    "AeQIsxmDoDQ"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    },
+    {
+     "type": "youtube",
+     "id": "AeQIsxmDoDQ"
+    }
    ]
   },
   {
@@ -128,8 +173,11 @@
    "lng": 136.6804,
    "approx": false,
    "desc": "円形劇場のような美しく立体的な大空間。テーマ別のユニークな陳列、作業用デスクやおしゃれなカフェも併設。1日中居たくなる美しさ。",
-   "videos": [
-    "IS1YgB2f1C4"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IS1YgB2f1C4"
+    }
    ]
   },
   {
@@ -141,8 +189,11 @@
    "lng": 136.689,
    "approx": false,
    "desc": "石川県民のソウルフード（もりの里1-259）。カリカリ・ジューシーな「ホワイト餃子」は一度食べたら病みつき。地元民でも並ぶ人気店。",
-   "videos": [
-    "78piZBG6C4c"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "78piZBG6C4c"
+    }
    ]
   },
   {
@@ -154,12 +205,27 @@
    "lng": 136.656,
    "approx": false,
    "desc": "金沢の台所。朝からカニ（冬は香箱蟹・カニ面）、大ぶりの生牡蠣、ウニ、大トロ、ホタテなどをその場で食べ歩き。サクサクの「近江町コロッケ」も大人気。",
-   "videos": [
-    "78piZBG6C4c",
-    "LoxqRUcfqRY",
-    "IS1YgB2f1C4",
-    "AeQIsxmDoDQ",
-    "IQEjL6koxoU"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "78piZBG6C4c"
+    },
+    {
+     "type": "youtube",
+     "id": "LoxqRUcfqRY"
+    },
+    {
+     "type": "youtube",
+     "id": "IS1YgB2f1C4"
+    },
+    {
+     "type": "youtube",
+     "id": "AeQIsxmDoDQ"
+    },
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    }
    ]
   },
   {
@@ -171,8 +237,11 @@
    "lng": 136.6554,
    "approx": false,
    "desc": "近江町いちば館2Fにある大口水産直営の海鮮居酒屋（青草町88）。のど黒をまるごと使った「のど黒ひつまぶし」が看板で、3通りの食べ方で楽しめる。",
-   "videos": [
-    "Xe50E0cVjSY"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "Xe50E0cVjSY"
+    }
    ]
   },
   {
@@ -184,9 +253,15 @@
    "lng": 136.6498,
    "approx": false,
    "desc": "地元でも大行列を作る回転寿司（金沢フォーラス6F）。ガスエビやカニなど新鮮で肉厚な北陸の幸を贅沢に。近江町店など市内に複数店舗あり。",
-   "videos": [
-    "IQEjL6koxoU",
-    "9jCGPugyhBw"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    },
+    {
+     "type": "youtube",
+     "id": "9jCGPugyhBw"
+    }
    ]
   },
   {
@@ -198,8 +273,11 @@
    "lng": 136.6557,
    "approx": true,
    "desc": "金沢城近くの和モダンなブティックホテル（尾山町6-30）。掘りごたつのラウンジ、無料のお蕎麦、こだわりのアメニティが魅力。",
-   "videos": [
-    "IQEjL6koxoU"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    }
    ]
   },
   {
@@ -211,8 +289,11 @@
    "lng": 136.6483,
    "approx": true,
    "desc": "金沢おでんの人気店（片町2-2-15 北國ビルB1F）。出汁の染みた大根やバイ貝、冬限定の「カニ面」は絶品。カニの甲羅に熱燗を注ぐ締めの一杯も格別。",
-   "videos": [
-    "IQEjL6koxoU"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    }
    ]
   },
   {
@@ -224,8 +305,11 @@
    "lng": 136.6503,
    "approx": true,
    "desc": "創業昭和11年の金沢おでんの老舗（片町1-3-29）。地元の人に愛され続ける味。カニ面を筆頭に冬の味覚が揃う。",
-   "videos": [
-    "78piZBG6C4c"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "78piZBG6C4c"
+    }
    ]
   },
   {
@@ -237,8 +321,11 @@
    "lng": 136.6545,
    "approx": false,
    "desc": "香林坊にある蒸留所併設のブティックホテル（片町1-1-31）。サウナ付きのおしゃれな滞在が人気。",
-   "videos": [
-    "LoxqRUcfqRY"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "LoxqRUcfqRY"
+    }
    ]
   },
   {
@@ -250,8 +337,11 @@
    "lng": 136.3615,
    "approx": false,
    "desc": "山代温泉のシンボル。明治時代の共同浴場を復元したレトロな温泉で、ステンドグラスと九谷焼タイルが美しい。心まで温まる。",
-   "videos": [
-    "IQEjL6koxoU"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    }
    ]
   },
   {
@@ -263,8 +353,11 @@
    "lng": 136.362,
    "approx": true,
    "desc": "古総湯の目の前に建つ温泉旅館（山代温泉18-47）。九谷焼や山中漆器の器で味わう蟹・のどぐろのフルコース、毎晩の加賀獅子舞、館内工房での「金継ぎ」体験も。",
-   "videos": [
-    "IQEjL6koxoU"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    }
    ]
   },
   {
@@ -276,8 +369,11 @@
    "lng": 136.3528,
    "approx": true,
    "desc": "北陸最大級の九谷焼専門店（加賀市中代町ル95-2）。ろくろ・絵付け体験で湯呑み作りに挑戦できる。九谷焼の豆皿やお猪口のお土産選びも。",
-   "videos": [
-    "IQEjL6koxoU"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "IQEjL6koxoU"
+    }
    ]
   },
   {
@@ -289,8 +385,11 @@
    "lng": 136.4375,
    "approx": false,
    "desc": "13万坪の敷地に伝統工芸の体験館が集まるテーマパーク（小松市粟津町ナ3-3）。グラスにイラストを刻むサンドブラスト体験などが楽しめる。",
-   "videos": [
-    "fAJonNwHvNI"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "fAJonNwHvNI"
+    }
    ]
   },
   {
@@ -302,8 +401,11 @@
    "lng": 136.7621,
    "approx": false,
    "desc": "日本で唯一、車やバイクで波打ち際の砂浜を走れる爽快なドライブコース（全長約8km）。夕日の時間帯は特に絶景。",
-   "videos": [
-    "Xe50E0cVjSY"
+   "sources": [
+    {
+     "type": "youtube",
+     "id": "Xe50E0cVjSY"
+    }
    ]
   }
  ]

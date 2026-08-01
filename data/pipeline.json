@@ -1,0 +1,24 @@
+{
+  "gcp_project": {"display_name": "salmon-chan", "project_id": null},
+  "x_query": "回覧板 (金沢 OR 石川) -is:retweet",
+  "xdev_dataset": "pocopea-ishikawa",
+  "schedule": "daily",
+  "models": {
+    "extract": "gemini-flash-3.5-lite",
+    "judge": "gemini-3.1-pro-preview",
+    "note": "デプロイ時に Vertex AI の正式モデルIDへ差し替えること"
+  },
+  "bbox": {
+    "lat_min": 35.8, "lat_max": 38.1,
+    "lng_min": 135.9, "lng_max": 137.7,
+    "note": "石川県 + 約20-30kmマージン。県外通過分は spot に out_of_pref: true を付与"
+  },
+  "gates": {
+    "places_match_required": true,
+    "business_status_required": "OPERATIONAL",
+    "author_bot_check": "2段構え: 投稿単体+著者メタで判定し、曖昧な場合のみ from: 検索で直近ポストを確認。判定は ledger.authors にキャッシュ",
+    "daily_new_spot_cap": 300,
+    "cap_behavior": "超過日は入稿を全停止し GitHub Issue を起票（部分反映しない）"
+  },
+  "geocode_fallback": "Nominatim (Places で引けない場合のみ。approx: true を付与)"
+}

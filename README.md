@@ -1,30 +1,72 @@
-# 石川・金沢おすすめMAP 〜YouTube旅Vlogから〜
+# 石川・金沢おすすめMAP 〜YouTube旅Vlog & Xのファン投稿から〜
 
-YouTubeの旅Vlog 8本から洗い出した石川県（金沢・加賀・羽咋）のおすすめスポットを、
-エリア別に色分けした地図＋一覧にまとめた単一HTMLサイト。
-スポットをクリックすると、実際に訪れている紹介動画（YouTube埋め込み）がモーダルで見られる。
+石川県（金沢・加賀・羽咋）のおすすめスポットを、エリア別に色分けした地図＋一覧にまとめた静的サイト。
+スポットをクリックすると出典（YouTube紹介動画の埋め込み / Xポストへのリンク）がモーダルで見られる。
+
+出典は2系統:
+
+1. **YouTube旅Vlog 8本**（初期データ、手動で洗い出し）
+2. **Xの「#ぽこピーの回覧板」石川公演 関連のおすすめ投稿**（日次自動収集、下記パイプライン）
 
 公開URL: https://oneliner22.github.io/ishikawa-osusume-map/
 
 ## 構成
 
-- `index.html` — 生成物（データ埋め込み済み単一ファイル、file:// でも動く）
-- `template.html` — テンプレート（Leaflet + markercluster、YouTube埋め込みモーダル）
-- `build_spots.py` — スポット定義（エリア/カテゴリ/座標/説明/出典動画ID）→ `data/spots.json`
-- `build_html.py` — `data/*.json` + `template.html` → `index.html`
-- `data/videos.json` — 出典YouTube動画（ID → タイトル/チャンネル）
+- `index.html` — アプリ本体。`data/*.json` を実行時に fetch して描画（ビルド工程なし）
+- `data/spots.json` — **スポットデータの正本**（エリア/カテゴリ/座標/説明/出典）
+- `data/videos.json` — YouTube出典のメタ情報（動画ID → タイトル/チャンネル）
 - `data/config.json` — タイトル・リード文・地図中心/ズーム等
+- `data/pipeline.json` — 自動収集パイプラインの設定（クエリ/bbox/受入ゲート/モデル）
+- `data/ledger.json` — 処理済みXポストID・著者判定のキャッシュ（二重入稿防止）
+- `data/aliases.json` — 略称→正規スポット名（「21美」→「金沢21世紀美術館」等）
+- `data/pending.json` — 受入ゲート不合格で保留になった候補（地図には出ない）
+- `validate.py` — データ整合性チェック（`python validate.py`）
 
-## ビルド
+`spots.json` のスポットは `sources` 配列で出典を持つ:
+
+```json
+{"type": "youtube", "id": "IQEjL6koxoU"}
+{"type": "x", "url": "https://x.com/.../status/...", "author": "@...", "date": "2026-07-31", "quote": "..."}
+```
+
+自動追加スポットは任意で `address` / `hours` / `url` / `place_id` / `added` / `out_of_pref` を持つ。
+
+## ローカルプレビュー
+
+fetch を使うため file:// では動かない。リポジトリ直下で:
 
 ```
-python build_spots.py
-python build_html.py
+python -m http.server
+# → http://localhost:8000/
 ```
 
-## 出典
+編集後は `python validate.py` で整合性チェック。
 
-スポット情報は以下の旅Vlogに基づく（動画の著作権は各チャンネルに帰属）:
+## 自動収集パイプライン（Cloud Run Jobs）
+
+日次で以下を実行し、合格スポットを `spots.json` に直接コミットする（人手レビューなし）:
+
+```
+Cloud Scheduler → Cloud Run Job (GCP: salmon-chan)
+ 1. xdev で X を検索 (回覧板 (金沢 OR 石川) -is:retweet)、台帳にない新規ポストを取得
+ 2. 添付画像をダウンロード（おすすめリストは画像内記載が主流）
+ 3. Gemini (flash lite) が本文+全画像からスポット候補を抽出
+ 4. aliases + 既存スポットと照合。既存なら sources に言及を追記
+ 5. Google Places API で裏取り（実在/正規名称/住所/座標/営業時間/営業状況）
+ 6. 受入ゲート（コード強制）:
+    - Places 一致（Gemini pro が同一性を判定）
+    - business_status = OPERATIONAL
+    - マージン付きbbox内 (lat 35.8-38.1 / lng 135.9-137.7)
+    - 著者がbotでない（投稿単体判定→曖昧なら from: 検索、著者単位でキャッシュ）
+    - 日次300件のサーキットブレーカー（超過時は全停止+Issue起票）
+ 7. 不合格は pending.json へ。合格分を commit & push（GitHub Pages が自動配信）
+```
+
+誤入稿時は `sources` に由来が残っているため `git revert` で戻せる。
+
+## 出典・クレジット
+
+スポット情報は以下の旅Vlogおよび X のファン投稿に基づく（著作権は各投稿者に帰属）:
 東海オンエア / ponz pon! / なぐもふうか / なかはらちゃんねる / まめとだいふく / 古田愛理 / HOWELL / かっぱちゃんねる
 
-座標は OpenStreetMap Nominatim / 公式サイト等で裏取り。番地が確定できないものは「およその位置」と明記。
+座標は Google Places / OpenStreetMap Nominatim / 公式サイト等で裏取り。番地が確定できないものは「およその位置」と明記。
