@@ -1,4 +1,80 @@
 {
-  "processed_posts": {},
-  "authors": {}
+ "processed_posts": {
+  "2083569957049344113": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083547304200712550": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083498592346796285": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083397414833291629": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083250600507257203": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2083230492552552532": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082957013697634519": {
+   "date": "2026-08-01",
+   "result": "processed"
+  },
+  "2082756597022138560": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082659093798596944": {
+   "date": "2026-08-01",
+   "result": "processed"
+  },
+  "2082634823424995527": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082474301182423073": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2082472510847942897": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081989037771063737": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081756976347017575": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081411282188779566": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  },
+  "2081177903749062938": {
+   "date": "2026-08-01",
+   "result": "not_recommendation"
+  }
+ },
+ "authors": {
+  "1852523672004956160": {
+   "verdict": "fan",
+   "name": "YD8uZ9ZzRY66388",
+   "date": "2026-08-01"
+  },
+  "70422605": {
+   "verdict": "fan",
+   "name": "hirotakashi",
+   "date": "2026-08-01"
+  }
+ }
 }

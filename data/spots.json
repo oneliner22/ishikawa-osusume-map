@@ -29,6 +29,11 @@
    "id": "hakui",
    "name": "羽咋・千里浜",
    "color": "#b07d2a"
+  },
+  {
+   "id": "notoairport-area",
+   "name": "輪島・奥能登",
+   "color": "#5c8f3f"
   }
  ],
  "spots": [
@@ -61,6 +66,13 @@
     {
      "type": "youtube",
      "id": "AeQIsxmDoDQ"
+    },
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2082957013697634519",
+     "author": "YD8uZ9ZzRY66388",
+     "date": "2026-07-30",
+     "quote": "伝統的な街並みが残るエリア。金箔ソフトもおすすめ🍦"
     }
    ]
   },
@@ -121,6 +133,13 @@
     {
      "type": "youtube",
      "id": "AeQIsxmDoDQ"
+    },
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2082957013697634519",
+     "author": "YD8uZ9ZzRY66388",
+     "date": "2026-07-30",
+     "quote": "日本三名園のひとつ。四季折々の景色が綺麗です✨"
     }
    ]
   },
@@ -161,6 +180,13 @@
     {
      "type": "youtube",
      "id": "AeQIsxmDoDQ"
+    },
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2082957013697634519",
+     "author": "YD8uZ9ZzRY66388",
+     "date": "2026-07-30",
+     "quote": "金沢の定番！現代アートが楽しめる素敵な美術館です🎨"
     }
    ]
   },
@@ -225,6 +251,13 @@
     {
      "type": "youtube",
      "id": "IQEjL6koxoU"
+    },
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2082957013697634519",
+     "author": "YD8uZ9ZzRY66388",
+     "date": "2026-07-30",
+     "quote": "金沢の台所！新鮮な海鮮丼や食べ歩きが楽しめます🦀"
     }
    ]
   },
@@ -407,6 +440,29 @@
      "id": "Xe50E0cVjSY"
     }
    ]
+  },
+  {
+   "slug": "noto-airport",
+   "name": "能登空港（のと里山空港）",
+   "area": "notoairport-area",
+   "cat": "観光",
+   "lat": 37.29508,
+   "lng": 136.95749,
+   "approx": false,
+   "desc": "奥能登の空の玄関口。「のと里山ポケモン・ウィズ・ユー空港」としても親しまれており、ポケモンの可愛い装飾がお出迎えしてくれる。能登観光の始まりや締めくくりに立ち寄りたいスポット。",
+   "address": "日本、〒929-2372 石川県輪島市三井町洲衛１０−１１−１",
+   "place_id": "ChIJwdt5LezU9l8RNh7VC4chFQE",
+   "added": "2026-08-01",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2082659093798596944",
+     "author": "hirotakashi",
+     "date": "2026-07-30",
+     "quote": "「のと里山ポケモン・ウィズ・ユー空港」もあるしね。"
+    }
+   ],
+   "url": "http://www.noto-airport.jp/"
   }
  ]
 }
