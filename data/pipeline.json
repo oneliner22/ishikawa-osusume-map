@@ -21,5 +21,11 @@
     "daily_new_spot_cap": 300,
     "cap_behavior": "超過日は入稿を全停止し GitHub Issue を起票（部分反映しない）"
   },
-  "geocode_fallback": "Nominatim (Places で引けない場合のみ。approx: true を付与)"
+  "geocode_fallback": "Nominatim (Places で引けない場合のみ。approx: true を付与)",
+  "reply_harvest": {
+    "official_accounts": ["ponpokoka"],
+    "seed_ttl_days": 35,
+    "max_active_seeds": 25,
+    "note": "公式の「おすすめ教えて」投稿と、処理済みおすすめ投稿をシードとして、conversation_id/url 検索で reply・引用RTを収穫し通常パイプラインに合流させる"
+  }
 }

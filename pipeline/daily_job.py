@@ -28,6 +28,7 @@ from datetime import date
 import requests
 from google import genai
 from mcp_client import McpClient
+from datetime import timedelta
 
 REPO = os.environ["GITHUB_REPO"]
 TOKEN = os.environ["GITHUB_TOKEN"]
@@ -80,6 +81,26 @@ def save(workdir, name, obj):
               ensure_ascii=False, indent=1)
 
 
+def commit_if_changed(workdir, msg):
+    subprocess.run(["git", "-C", workdir, "config", "user.name", "oneliner22"], check=True)
+    subprocess.run(["git", "-C", workdir, "config", "user.email",
+                    "oneliner22@users.noreply.github.com"], check=True)
+    subprocess.run(["git", "-C", workdir, "add", "data"], check=True)
+    diff = subprocess.run(["git", "-C", workdir, "diff", "--cached", "--stat"],
+                          capture_output=True, encoding="utf-8",
+                          errors="replace").stdout.strip()
+    if not diff:
+        log("no changes")
+        return
+    log(diff)
+    if DRY_RUN:
+        log("DRY_RUN: skip commit/push")
+        return
+    subprocess.run(["git", "-C", workdir, "commit", "-m", msg], check=True)
+    subprocess.run(["git", "-C", workdir, "push"], check=True)
+    log("pushed")
+
+
 def github_issue(title, body):
     r = requests.post(f"https://api.github.com/repos/{REPO}/issues",
                       headers={"Authorization": f"Bearer {TOKEN}"},
@@ -89,17 +110,21 @@ def github_issue(title, body):
 
 # ---------------- 収集 ----------------
 
-def fetch_new_posts(mcp, pipeline_cfg, ledger):
-    ing = mcp.call("x_ingest", {"query": pipeline_cfg["x_query"], "max_posts": 200})
+def fetch_posts(mcp, ledger, query, max_posts=200, include_refs=False):
+    """query を ingest し、台帳未処理の投稿を返す。include_refs=True で reply/引用も含む。"""
+    ing = mcp.call("x_ingest", {"query": query, "max_posts": max_posts})
     dataset = ing.get("dataset") if isinstance(ing, dict) else None
     if not dataset:
         raise RuntimeError(f"x_ingest から dataset を特定できない: {ing}")
-    log("ingest:", {k: ing.get(k) for k in ("dataset", "fetched", "inserted") if isinstance(ing, dict)})
+    ref_cond = "" if include_refs else "AND t.ref_type IS NULL "
+    # media_urls は ingest 時期によって NULL の区画があるため、同一IDの別区画から補完する
     rows = mcp.call("run_sql", {"max_rows": 500, "query":
-        "SELECT id, created_at, author_id, author_name, author_followers, text, "
-        "media_urls, like_count, reply_count "
-        f"FROM tweets WHERE dataset='{dataset}' AND ref_type IS NULL "
-        "ORDER BY created_at DESC"})
+        "SELECT t.id, t.created_at, t.author_id, t.author_name, t.author_followers, "
+        "t.text, COALESCE(t.media_urls, mm.mu) media_urls, t.like_count, t.reply_count "
+        "FROM tweets t LEFT JOIN (SELECT id, arg_max(media_urls, ingested_at) mu "
+        "FROM tweets WHERE media_urls IS NOT NULL GROUP BY id) mm ON mm.id = t.id "
+        f"WHERE t.dataset='{dataset}' {ref_cond}"
+        "ORDER BY t.created_at DESC"})
     posts = rows.get("rows", rows) if isinstance(rows, dict) else rows
     if posts and isinstance(posts[0], list):  # 列配列形式への保険
         cols = rows.get("columns", [])
@@ -107,9 +132,77 @@ def fetch_new_posts(mcp, pipeline_cfg, ledger):
     return [p for p in posts if str(p["id"]) not in ledger["processed_posts"]]
 
 
+ASK_SCHEMA = {"type": "object", "properties": {
+    "is_seed": {"type": "boolean"}, "reason": {"type": "string"}},
+    "required": ["is_seed"]}
+
+
+def add_seed(ledger, pid, kind, author, base_date, ttl_days):
+    if pid in ledger["seeds"]:
+        return
+    until = (date.fromisoformat(base_date) + timedelta(days=ttl_days)).isoformat()
+    ledger["seeds"][pid] = {"kind": kind, "author": author,
+                            "date": base_date, "until": until}
+    log(f"seed added: {pid} ({kind}, {author}, until {until})")
+
+
+def watch_official(mcp, ledger, rh):
+    """公式アカウントの投稿を監視し、おすすめ募集らしき投稿をシード化。投稿自体も処理対象として返す。"""
+    accounts = rh.get("official_accounts", [])
+    if not accounts:
+        return []
+    q = " OR ".join(f"from:{a}" for a in accounts)
+    posts = fetch_posts(mcp, ledger, f"({q})" if len(accounts) > 1 else q,
+                        max_posts=50, include_refs=True)
+    for p in posts:
+        j = gen_json(MODEL_EXTRACT, ASK_SCHEMA, [
+            "以下はぽこピー(ぽんぽこ・ピーナッツくん)公式アカウントのX投稿です。"
+            "石川公演「ぽこピーの回覧板」に関連して、ファンにおすすめスポット・グルメ等の"
+            "情報提供を呼びかけたり質問したりする投稿(そのreplyや引用RTにおすすめ情報が"
+            "集まりそうな投稿)かを判定してください。\n"
+            f"投稿: {p.get('text', '')}"])
+        if j.get("is_seed"):
+            add_seed(ledger, str(p["id"]), "official_ask", p.get("author_name", ""),
+                     str(p.get("created_at", ""))[:10] or TODAY, rh.get("seed_ttl_days", 35))
+    return posts
+
+
+def harvest_seeds(mcp, ledger, rh):
+    """有効なシードの reply・引用RTを収穫する。"""
+    active = [(pid, s) for pid, s in ledger["seeds"].items() if s["until"] >= TODAY]
+    active.sort(key=lambda kv: kv[1]["date"], reverse=True)
+    active = active[:rh.get("max_active_seeds", 25)]
+    harvested = []
+    for pid, s in active:
+        try:
+            harvested += fetch_posts(
+                mcp, ledger, f"(conversation_id:{pid} OR url:{pid}) -is:retweet",
+                max_posts=50, include_refs=True)
+        except Exception as e:
+            log("harvest skip:", pid, repr(e))
+    ledger["seeds"] = {pid: s for pid, s in ledger["seeds"].items()
+                       if s["until"] >= TODAY}
+    return harvested, len(active)
+
+
+def as_url_list(v):
+    """run_sql の VARCHAR[] は list でも文字列表現でも返り得るため正規化する。"""
+    if isinstance(v, list):
+        return [u for u in v if isinstance(u, str) and u.startswith("http")]
+    if isinstance(v, str):
+        try:
+            parsed = json.loads(v)
+            if isinstance(parsed, list):
+                return [u for u in parsed if isinstance(u, str) and u.startswith("http")]
+        except ValueError:
+            pass
+        return re.findall(r"https?://[^\s'\"\],]+", v)
+    return []
+
+
 def download_images(media_urls, limit=8):
     images = []
-    for u in (media_urls or [])[:limit]:
+    for u in as_url_list(media_urls)[:limit]:
         try:
             r = requests.get(u, timeout=30)
             mime = r.headers.get("content-type", "")
@@ -309,9 +402,29 @@ def main():
     style_examples = [s["desc"] for s in spots[:3]]
 
     mcp = McpClient(os.environ["XDEV_MCP_URL"])
-    posts = fetch_new_posts(mcp, pipeline_cfg, ledger)
-    log(f"new posts: {len(posts)}")
+    ledger.setdefault("seeds", {})
+    rh = pipeline_cfg.get("reply_harvest", {})
+    ttl = rh.get("seed_ttl_days", 35)
+
+    # 過去に「おすすめ投稿」として処理済みのものをシードに昇格 (reply/引用RT収穫対象)
+    for pid, rec in ledger["processed_posts"].items():
+        if rec.get("result") == "processed":
+            add_seed(ledger, pid, "reco_post", rec.get("author", ""),
+                     rec.get("date", TODAY), ttl)
+
+    official = watch_official(mcp, ledger, rh)
+    main_posts = fetch_posts(mcp, ledger, pipeline_cfg["x_query"], max_posts=200)
+    harvested, n_seeds = harvest_seeds(mcp, ledger, rh)
+    seen_ids, posts = set(), []
+    for p in official + main_posts + harvested:
+        if str(p["id"]) not in seen_ids:
+            seen_ids.add(str(p["id"]))
+            posts.append(p)
+    log(f"new posts: {len(posts)} (official {len(official)} / main {len(main_posts)} "
+        f"/ harvested {len(harvested)} from {n_seeds} seeds)")
     if not posts:
+        save(workdir, "ledger.json", ledger)  # シード整理だけでも保存対象
+        commit_if_changed(workdir, f"auto-ingest {TODAY}: no new posts (seeds {n_seeds})")
         return
 
     stats = {"posts": len(posts), "added": [], "source_added": [], "pending": 0,
@@ -348,7 +461,8 @@ def main():
                     desc_refresh[existing["slug"]] = existing
             else:
                 new_candidates.append(cand)
-        ledger["processed_posts"][pid] = {"date": TODAY, "result": "processed"}
+        ledger["processed_posts"][pid] = {"date": TODAY, "result": "processed",
+                                          "author": post.get("author_name", "")}
 
     cap = pipeline_cfg["gates"]["daily_new_spot_cap"]
     if len(new_candidates) > cap:
@@ -447,25 +561,10 @@ def main():
     msg = (f"auto-ingest {TODAY}: +{len(stats['added'])} spots"
            f"{' (' + ', '.join(stats['added'][:5]) + ')' if stats['added'] else ''}, "
            f"src+{len(stats['source_added'])}, pending {stats['pending']}, "
-           f"posts {stats['posts']} (bot {stats['skipped_bot']} / offtopic {stats['skipped_offtopic']})")
+           f"posts {stats['posts']} (bot {stats['skipped_bot']} / offtopic {stats['skipped_offtopic']}, "
+           f"seeds {n_seeds})")
     log("summary:", msg)
-    subprocess.run(["git", "-C", workdir, "config", "user.name", "oneliner22"], check=True)
-    subprocess.run(["git", "-C", workdir, "config", "user.email",
-                    "oneliner22@users.noreply.github.com"], check=True)
-    subprocess.run(["git", "-C", workdir, "add", "data"], check=True)
-    diff = subprocess.run(["git", "-C", workdir, "diff", "--cached", "--stat"],
-                          capture_output=True, encoding="utf-8",
-                          errors="replace").stdout.strip()
-    if not diff:
-        log("no changes")
-        return
-    log(diff)
-    if DRY_RUN:
-        log("DRY_RUN: skip commit/push")
-        return
-    subprocess.run(["git", "-C", workdir, "commit", "-m", msg], check=True)
-    subprocess.run(["git", "-C", workdir, "push"], check=True)
-    log("pushed")
+    commit_if_changed(workdir, msg)
 
 
 if __name__ == "__main__":
