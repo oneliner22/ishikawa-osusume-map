@@ -60,7 +60,8 @@ def gen_json(model, schema, parts):
             contents.append(genai.types.Part.from_bytes(data=p[0], mime_type=p[1]))
     res = client.models.generate_content(
         model=model, contents=contents,
-        config={"response_mime_type": "application/json", "response_schema": schema})
+        config={"response_mime_type": "application/json", "response_schema": schema,
+                "temperature": 0})
     return json.loads(res.text)
 
 
@@ -235,12 +236,44 @@ def extract_spots(post, images):
         "石川県・北陸のおすすめスポット紹介かどうかを判定し、紹介されている具体的な"
         "スポット(店・施設・観光地)を漏れなく抽出してください。\n"
         "- おすすめリストは本文ではなく添付画像内に書かれていることが多い。画像を必ず読むこと。\n"
+        "- 【最重要】本文または画像に実際に名前が記載されているスポットのみを抽出すること。"
+        "「金沢のおすすめ」という文脈から定番観光地を推測・補完することは厳禁。"
+        "名前の記載がなければ candidates は空にする。\n"
         "- name はスポットの正式名称に最も近い表記。hint は住所・エリア・ジャンルなど"
-        "特定の手がかり。quote はそのスポットについて投稿者が書いた一言(30字程度、原文ベース)。\n"
+        "特定の手がかり。quote は投稿者の実際の記述の抜粋(30字程度)。実際の記述が"
+        "なければ空文字にする。創作・脚色は厳禁。\n"
         "- 一般名詞(「海鮮丼」「温泉」等)や県外が明らかなスポットは含めない。\n"
         f"本文: {post.get('text', '')}"]
     parts += images
     return gen_json(MODEL_EXTRACT, EXTRACT_SCHEMA, parts)
+
+
+GROUND_SCHEMA = {"type": "object", "properties": {
+    "grounded_names": {"type": "array", "items": {"type": "string"}}},
+    "required": ["grounded_names"]}
+
+
+def ground_candidates(post, images, candidates):
+    """抽出候補が投稿(本文+画像)に実際に記載されているか検証し、記載のあるものだけ残す。
+    文脈からの推測で定番スポットが捏造されるのを防ぐ二重チェック。"""
+    if not candidates:
+        return candidates
+    names = [c["name"] for c in candidates]
+    parts = [
+        "以下のX投稿(本文+添付画像)に、候補リストの各スポット名が【実際に文字として記載"
+        "されているか】を確認してください。表記ゆれ・略称は同一とみなしてよいが、"
+        "記載がないものを文脈や一般常識から「ありそう」と補完することは厳禁。\n"
+        f"候補: {json.dumps(names, ensure_ascii=False)}\n"
+        f"本文: {post.get('text', '')}\n"
+        "実際に記載が確認できた候補名のみを grounded_names にそのまま列挙すること。"]
+    parts += images
+    j = gen_json(MODEL_EXTRACT, GROUND_SCHEMA, parts)
+    ok = set(j.get("grounded_names", []))
+    kept = [c for c in candidates if c["name"] in ok]
+    if len(kept) < len(candidates):
+        dropped = [c["name"] for c in candidates if c["name"] not in ok]
+        log("grounding dropped:", dropped)
+    return kept
 
 
 AUTHOR_SCHEMA = {"type": "object", "properties": {
@@ -437,7 +470,9 @@ def main():
         post_url = f"https://x.com/i/web/status/{pid}"
         images = download_images(post.get("media_urls"))
         ex = extract_spots(post, images)
-        if not ex["is_recommendation"] or not ex["candidates"]:
+        cands = ground_candidates(post, images, ex["candidates"]) \
+            if ex["is_recommendation"] else []
+        if not cands:
             ledger["processed_posts"][pid] = {"date": TODAY, "result": "not_recommendation"}
             stats["skipped_offtopic"] += 1
             continue
@@ -447,7 +482,7 @@ def main():
             stats["skipped_bot"] += 1
             continue
         post_date = str(post.get("created_at", ""))[:10] or TODAY
-        for cand in ex["candidates"]:
+        for cand in cands:
             cand["_post"] = {"id": pid, "url": post_url, "date": post_date,
                              "author": post.get("author_name", ""),
                              "author_uncertain": verdict == "uncertain"}
