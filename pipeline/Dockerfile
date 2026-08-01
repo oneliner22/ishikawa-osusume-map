@@ -1,4 +1,5 @@
 FROM python:3.12-slim
+ENV PYTHONUTF8=1 PYTHONIOENCODING=utf-8
 RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app

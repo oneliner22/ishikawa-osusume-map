@@ -143,6 +143,7 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script>window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return window.twttr;}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t=window.twttr||{};t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));</script>
 <script>
 function esc(s){return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function ytOf(s){return s.sources.filter(x=>x.type==='youtube').map(x=>x.id);}
@@ -277,6 +278,21 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
     if(s.url)     info.push(`🔗 <a href="${esc(s.url)}" target="_blank" rel="noopener">公式サイト ↗</a>`);
     if(info.length) html+=`<div class="modal-info">${info.join('<br>')}</div>`;
     const yts=ytOf(s), xs=xOf(s);
+    if(xs.length){
+      html+=`<div class="reply-label">Xでのおすすめ言及（${xs.length}件）</div>`;
+      xs.forEach(x=>{
+        const idm=(x.url||'').match(/status(?:es)?\/(\d+)/); const tid=idm?idm[1]:null;
+        html+=`<div class="embed-wrap">`+
+          `<div class="x-card fallback">`+
+            `<span class="x-author">${esc(x.author||'')}</span>`+
+            (x.date?`<span class="x-date">${esc(x.date)}</span>`:'')+
+            (x.quote?`<div class="x-quote">${esc(x.quote)}</div>`:'')+
+            `<div><a class="x-link" href="${esc(x.url)}" target="_blank" rel="noopener">𝕏 ポストを開く ↗</a></div>`+
+          `</div>`+
+          (tid?`<div class="tweet-slot" id="tw-${tid}"></div>`:'')+
+          `</div>`;
+      });
+    }
     if(yts.length){
       html+=`<div class="reply-label">この場所が登場するYouTube動画（${yts.length}本）</div>`;
       yts.forEach(id=>{
@@ -290,19 +306,19 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
           `</div>`;
       });
     }
-    if(xs.length){
-      html+=`<div class="reply-label">Xでのおすすめ言及（${xs.length}件）</div>`;
-      xs.forEach(x=>{
-        html+=`<div class="x-card">`+
-          `<span class="x-author">${esc(x.author||'')}</span>`+
-          (x.date?`<span class="x-date">${esc(x.date)}</span>`:'')+
-          (x.quote?`<div class="x-quote">${esc(x.quote)}</div>`:'')+
-          `<div><a class="x-link" href="${esc(x.url)}" target="_blank" rel="noopener">𝕏 ポストを開く ↗</a></div>`+
-          `</div>`;
-      });
-    }
     if(!yts.length && !xs.length) html+=`<div class="loading">このスポットに紐づく出典はありません。</div>`;
     body.innerHTML=html; body.scrollTop=0; backdrop.classList.add('on');
+    if(xs.length && window.twttr && window.twttr.ready){
+      window.twttr.ready(tw=>{
+        xs.forEach(x=>{
+          const idm=(x.url||'').match(/status(?:es)?\/(\d+)/); if(!idm) return;
+          const slot=document.getElementById('tw-'+idm[1]); if(!slot||slot.childNodes.length) return;
+          tw.widgets.createTweet(idm[1], slot, {conversation:'none', theme:'light', align:'center', dnt:true})
+            .then(el=>{ if(el){ const fb=slot.parentElement.querySelector('.fallback'); if(fb) fb.style.display='none'; } })
+            .catch(()=>{});
+        });
+      });
+    }
   }
   function closeModal(){ backdrop.classList.remove('on'); lastSlug=null; document.getElementById('m-body').innerHTML=''; }
   document.getElementById('m-close').onclick=closeModal;

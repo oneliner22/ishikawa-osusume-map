@@ -201,6 +201,27 @@ def places_search(name, hint, bbox):
     return r.json().get("places", [])[:3]
 
 
+DESC_SCHEMA = {"type": "object", "properties": {"desc": {"type": "string"}},
+               "required": ["desc"]}
+
+
+def refresh_desc(spot):
+    """X言及が増えたスポットの紹介文を、言及内容を織り込んで更新する。"""
+    quotes = [f"- {x.get('author', '')}: {x.get('quote', '')}"
+              for x in spot["sources"] if x.get("type") == "x" and x.get("quote")]
+    if not quotes:
+        return
+    j = gen_json(MODEL_EXTRACT, DESC_SCHEMA, [
+        "スポット紹介文を更新してください。既存の紹介文の情報(動画由来)を核に残しつつ、"
+        "Xでのファン言及から加わった観点や推しポイントを自然に織り込むこと。"
+        "文体は既存文に合わせ常体(だ・である調/体言止め中心、です・ます調禁止)、"
+        "60〜110字、絵文字なし、事実の捏造なし。\n"
+        f"スポット名: {spot['name']}\n既存の紹介文: {spot['desc']}\n"
+        "Xでの言及:\n" + "\n".join(quotes)])
+    if j.get("desc"):
+        spot["desc"] = j["desc"]
+
+
 JUDGE_SCHEMA = {"type": "object", "properties": {
     "match": {"type": "boolean"},
     "place_index": {"type": "integer"},
@@ -229,7 +250,8 @@ def judge_candidate(cand, places, areas, style_examples):
         "   どれにも地理的に属さない場合のみ area_id='new' とし new_area_name に"
         "「輪島・奥能登」のような簡潔なエリア名を提案。\n"
         "4. slug は小文字英数の短い識別子。\n"
-        "5. desc はこの地図の紹介文。以下の文体に合わせ、言及内容を踏まえ50-90字:\n" +
+        "5. desc はこの地図の紹介文。以下の文体(常体・体言止め中心、です・ます調禁止)に合わせ、"
+        "言及内容を踏まえ50-90字:\n" +
         "\n".join(f"例: {e}" for e in style_examples)])
 
 
@@ -295,6 +317,7 @@ def main():
     stats = {"posts": len(posts), "added": [], "source_added": [], "pending": 0,
              "skipped_bot": 0, "skipped_offtopic": 0}
     new_candidates = []  # (cand, post)
+    desc_refresh = {}    # slug -> spot: 今回X言及が増え紹介文を更新すべきスポット
 
     for post in posts:
         pid = str(post["id"])
@@ -322,6 +345,7 @@ def main():
                         "type": "x", "url": post_url, "author": cand["_post"]["author"],
                         "date": post_date, "quote": cand.get("quote", "")})
                     stats["source_added"].append(existing["name"])
+                    desc_refresh[existing["slug"]] = existing
             else:
                 new_candidates.append(cand)
         ledger["processed_posts"][pid] = {"date": TODAY, "result": "processed"}
@@ -369,6 +393,7 @@ def main():
                                            "author": meta["author"], "date": meta["date"],
                                            "quote": cand.get("quote", "")})
                 stats["source_added"].append(ex_spot["name"])
+                desc_refresh[ex_spot["slug"]] = ex_spot
             continue
         area_id = judged.get("area_id", "new")
         if area_id == "new" or area_id not in {a["id"] for a in areas}:
@@ -402,12 +427,18 @@ def main():
         known_place_ids[place_id] = spot
         stats["added"].append(spot["name"])
 
+    for spot in desc_refresh.values():
+        try:
+            refresh_desc(spot)
+        except Exception as e:
+            log("desc refresh skip:", spot["slug"], repr(e))
+
     save(workdir, "spots.json", spots_doc)
     save(workdir, "ledger.json", ledger)
     save(workdir, "pending.json", pending)
 
     v = subprocess.run([sys.executable, "validate.py"], cwd=workdir,
-                       capture_output=True, text=True)
+                       capture_output=True, encoding="utf-8", errors="replace")
     log(v.stdout.strip())
     if v.returncode != 0:
         github_issue("[auto-ingest] validate.py 失敗のため入稿中止", v.stdout + v.stderr)
@@ -423,7 +454,8 @@ def main():
                     "oneliner22@users.noreply.github.com"], check=True)
     subprocess.run(["git", "-C", workdir, "add", "data"], check=True)
     diff = subprocess.run(["git", "-C", workdir, "diff", "--cached", "--stat"],
-                          capture_output=True, text=True).stdout.strip()
+                          capture_output=True, encoding="utf-8",
+                          errors="replace").stdout.strip()
     if not diff:
         log("no changes")
         return

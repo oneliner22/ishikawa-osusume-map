@@ -42,10 +42,10 @@
    "name": "ひがし茶屋街",
    "area": "higashiyama",
    "cat": "レトロ",
-   "lat": 36.5726,
-   "lng": 136.6667,
+   "lat": 36.57258,
+   "lng": 136.66656,
    "approx": false,
-   "desc": "歴史あるレトロな街並みが魅力の金沢随一の観光名所。浴衣をレンタルして和傘を差しながら散策すると風情倍増。金箔ソフトや金箔かき氷、フルーツ大福など映えスイーツの宝庫。",
+   "desc": "歴史あるレトロな街並みが魅力の金沢随一の観光名所。浴衣をレンタルし和傘を差した散策や、人気の金箔ソフトなど映えスイーツめぐりが楽しめる。",
    "sources": [
     {
      "type": "youtube",
@@ -74,49 +74,60 @@
      "date": "2026-07-30",
      "quote": "伝統的な街並みが残るエリア。金箔ソフトもおすすめ🍦"
     }
-   ]
+   ],
+   "place_id": "ChIJsfC6oXQz-F8RdA1qXiF6jLs",
+   "address": "日本、〒920-0831 石川県金沢市東山１丁目１３",
+   "url": "https://www4.city.kanazawa.lg.jp/soshikikarasagasu/bunkazaihogoka/gyomuannai/3/1/1/siteibunkazai/7/5808.html",
+   "hours": "月曜日: 24 時間営業 / 火曜日: 24 時間営業 ほか"
   },
   {
    "slug": "gauche",
    "name": "茶房＆BAR ゴーシュ",
    "area": "higashiyama",
    "cat": "カフェ・喫茶",
-   "lat": 36.5721,
-   "lng": 136.6674,
-   "approx": true,
+   "lat": 36.57216,
+   "lng": 136.66714,
+   "approx": false,
    "desc": "ひがし茶屋街の町家にある静かで落ち着いたバー（東山1-16-5）。サイフォン珈琲とウイスキー300種。夜の茶屋街で過ごす大人の時間に。",
    "sources": [
     {
      "type": "youtube",
      "id": "78piZBG6C4c"
     }
-   ]
+   ],
+   "place_id": "ChIJ_Vr2lXQz-F8RHc68L8X9XZM",
+   "address": "日本、〒920-0831 石川県金沢市東山１丁目１６−５ ゴーシュ",
+   "url": "https://www.instagram.com/bar_gauche/",
+   "hours": "月曜日: 11時00分～1時00分 / 火曜日: 定休日 ほか"
   },
   {
    "slug": "amiya",
    "name": "金澤東山 AMIYA",
    "area": "higashiyama",
    "cat": "グルメ",
-   "lat": 36.5716,
-   "lng": 136.666,
-   "approx": true,
+   "lat": 36.57296,
+   "lng": 136.66699,
+   "approx": false,
    "desc": "ひがし茶屋街近くの「おでん・輪島ふぐ・のどぐろ AMIYA」（東山1-12-12）。贅沢にのどぐろを敷き詰めた「のどぐろひつまぶし」（約3,080円）が看板。お茶漬けにして二度楽しめる。",
    "sources": [
     {
      "type": "youtube",
      "id": "IQEjL6koxoU"
     }
-   ]
+   ],
+   "place_id": "ChIJL7H7RI4z-F8RPwQ3Pl1MES4",
+   "address": "日本、〒920-0831 石川県金沢市東山１丁目１２−１２",
+   "url": "https://www.instagram.com/higashiyama_amiya0321/"
   },
   {
    "slug": "kenrokuen",
    "name": "兼六園",
    "area": "kenrokuen",
    "cat": "観光",
-   "lat": 36.5624,
-   "lng": 136.6624,
+   "lat": 36.56213,
+   "lng": 136.66265,
    "approx": false,
-   "desc": "日本三名園の一つ。美しい庭園を眺めながら名物「加賀あんころ餅」を抹茶とともにいただくのが定番。名酒の飲み比べができる時期も。",
+   "desc": "日本三名園の一つ。四季折々の美しい景色を眺めながら、名物「加賀あんころ餅」を抹茶とともにいただくのが定番。名酒の飲み比べができる時期も。",
    "sources": [
     {
      "type": "youtube",
@@ -141,15 +152,19 @@
      "date": "2026-07-30",
      "quote": "日本三名園のひとつ。四季折々の景色が綺麗です✨"
     }
-   ]
+   ],
+   "place_id": "ChIJBVmy-YMz-F8R5PID8D17Cpc",
+   "address": "日本、〒920-0936 石川県金沢市兼六町１",
+   "url": "https://www.pref.ishikawa.jp/siro-niwa/kenrokuen/",
+   "hours": "月曜日: 7時00分～18時00分 / 火曜日: 7時00分～18時00分 ほか"
   },
   {
    "slug": "kanazawajo",
    "name": "金沢城公園",
    "area": "kenrokuen",
    "cat": "観光",
-   "lat": 36.5658,
-   "lng": 136.6594,
+   "lat": 36.56595,
+   "lng": 136.65885,
    "approx": false,
    "desc": "兼六園とセットで巡りたい加賀百万石のシンボル。石川門とお堀の景観が見事。",
    "sources": [
@@ -161,17 +176,21 @@
      "type": "youtube",
      "id": "Xe50E0cVjSY"
     }
-   ]
+   ],
+   "place_id": "ChIJlUfxPYIz-F8RSh7ml54YJ6g",
+   "address": "日本、〒920-0937 石川県金沢市丸の内１−１",
+   "url": "http://www.pref.ishikawa.jp/siro-niwa/kanazawajou/",
+   "hours": "月曜日: 7時00分～18時00分 / 火曜日: 7時00分～18時00分 ほか"
   },
   {
    "slug": "museum21",
    "name": "金沢21世紀美術館",
    "area": "kenrokuen",
    "cat": "観光",
-   "lat": 36.5608,
-   "lng": 136.6582,
+   "lat": 36.56087,
+   "lng": 136.65853,
    "approx": false,
-   "desc": "有名な「スイミング・プール」（要予約）やうさぎの椅子など、写真映えするポップな現代アートが並ぶ人気美術館。",
+   "desc": "有名な「スイミング・プール」（要予約）やうさぎの椅子など、現代アートを楽しめる金沢の定番人気美術館。",
    "sources": [
     {
      "type": "youtube",
@@ -188,15 +207,19 @@
      "date": "2026-07-30",
      "quote": "金沢の定番！現代アートが楽しめる素敵な美術館です🎨"
     }
-   ]
+   ],
+   "place_id": "ChIJAbhT24Az-F8RwWhli9sBKlE",
+   "address": "日本、〒920-8509 石川県金沢市広坂１丁目２−１",
+   "url": "https://www.kanazawa21.jp/",
+   "hours": "月曜日: 定休日 / 火曜日: 10時00分～18時00分 ほか"
   },
   {
    "slug": "library",
    "name": "石川県立図書館",
    "area": "kenrokuen",
    "cat": "観光",
-   "lat": 36.5487,
-   "lng": 136.6804,
+   "lat": 36.5488,
+   "lng": 136.68034,
    "approx": false,
    "desc": "円形劇場のような美しく立体的な大空間。テーマ別のユニークな陳列、作業用デスクやおしゃれなカフェも併設。1日中居たくなる美しさ。",
    "sources": [
@@ -204,15 +227,19 @@
      "type": "youtube",
      "id": "IS1YgB2f1C4"
     }
-   ]
+   ],
+   "place_id": "ChIJ41m2cYcz-F8RoXer9PdlD54",
+   "address": "日本、〒920-0942 石川県金沢市小立野２丁目４３−１",
+   "url": "https://www.library.pref.ishikawa.lg.jp/",
+   "hours": "月曜日: 定休日 / 火曜日: 9時00分～19時00分 ほか"
   },
   {
    "slug": "dai7gyoza",
    "name": "第七ギョーザの店",
    "area": "kenrokuen",
    "cat": "グルメ",
-   "lat": 36.5508,
-   "lng": 136.689,
+   "lat": 36.55077,
+   "lng": 136.68904,
    "approx": false,
    "desc": "石川県民のソウルフード（もりの里1-259）。カリカリ・ジューシーな「ホワイト餃子」は一度食べたら病みつき。地元民でも並ぶ人気店。",
    "sources": [
@@ -220,17 +247,21 @@
      "type": "youtube",
      "id": "78piZBG6C4c"
     }
-   ]
+   ],
+   "place_id": "ChIJgT4MFGcz-F8RiavAsJOJfzg",
+   "address": "日本、〒920-1167 石川県金沢市もりの里１丁目２５９",
+   "url": "http://dai7gyoza.com/",
+   "hours": "月曜日: 11時00分～21時00分 / 火曜日: 定休日 ほか"
   },
   {
    "slug": "omicho",
    "name": "近江町市場",
    "area": "omicho",
    "cat": "グルメ",
-   "lat": 36.5717,
-   "lng": 136.656,
+   "lat": 36.57173,
+   "lng": 136.65587,
    "approx": false,
-   "desc": "金沢の台所。朝からカニ（冬は香箱蟹・カニ面）、大ぶりの生牡蠣、ウニ、大トロ、ホタテなどをその場で食べ歩き。サクサクの「近江町コロッケ」も大人気。",
+   "desc": "金沢の台所として親しまれる市場。朝から新鮮な海鮮丼や大ぶりの生牡蠣、ウニ、大トロなどをその場で食べ歩きでき、サクサクの近江町コロッケも大人気。",
    "sources": [
     {
      "type": "youtube",
@@ -259,15 +290,19 @@
      "date": "2026-07-30",
      "quote": "金沢の台所！新鮮な海鮮丼や食べ歩きが楽しめます🦀"
     }
-   ]
+   ],
+   "place_id": "ChIJ0xPT93Az-F8RpTSlbHwo9L8",
+   "address": "日本、〒920-0905 石川県金沢市上近江町５０",
+   "url": "http://ohmicho-ichiba.com/",
+   "hours": "月曜日: 9時00分～17時00分 / 火曜日: 9時00分～17時00分 ほか"
   },
   {
    "slug": "enishi",
    "name": "鮮彩 えにし",
    "area": "omicho",
    "cat": "グルメ",
-   "lat": 36.5711,
-   "lng": 136.6554,
+   "lat": 36.57155,
+   "lng": 136.65592,
    "approx": false,
    "desc": "近江町いちば館2Fにある大口水産直営の海鮮居酒屋（青草町88）。のど黒をまるごと使った「のど黒ひつまぶし」が看板で、3通りの食べ方で楽しめる。",
    "sources": [
@@ -275,15 +310,19 @@
      "type": "youtube",
      "id": "Xe50E0cVjSY"
     }
-   ]
+   ],
+   "place_id": "ChIJh9CWN3Az-F8Rpi8NpWUXdkw",
+   "address": "日本、〒920-0907 石川県金沢市青草町８８ 2F",
+   "url": "https://enishioumicho.gorp.jp/",
+   "hours": "月曜日: 11時00分～15時00分, 17時00分～21時00分 / 火曜日: 11時00分～15時00分, 17時00分～21時00分 ほか"
   },
   {
    "slug": "morimori",
    "name": "もりもり寿し 金沢駅前店",
    "area": "omicho",
    "cat": "グルメ",
-   "lat": 36.5793,
-   "lng": 136.6498,
+   "lat": 36.57935,
+   "lng": 136.64981,
    "approx": false,
    "desc": "地元でも大行列を作る回転寿司（金沢フォーラス6F）。ガスエビやカニなど新鮮で肉厚な北陸の幸を贅沢に。近江町店など市内に複数店舗あり。",
    "sources": [
@@ -295,63 +334,79 @@
      "type": "youtube",
      "id": "9jCGPugyhBw"
     }
-   ]
+   ],
+   "place_id": "ChIJp45QVlcz-F8RQ-_oMHY920I",
+   "address": "日本、〒920-0849 石川県金沢市堀川新町３−１ 6F",
+   "url": "https://www.forus.co.jp/kanazawa/shop/1220",
+   "hours": "月曜日: 11時00分～21時30分 / 火曜日: 11時00分～21時30分 ほか"
   },
   {
    "slug": "uan",
    "name": "雨庵 金沢",
    "area": "omicho",
    "cat": "宿",
-   "lat": 36.5674,
-   "lng": 136.6557,
-   "approx": true,
+   "lat": 36.56926,
+   "lng": 136.65657,
+   "approx": false,
    "desc": "金沢城近くの和モダンなブティックホテル（尾山町6-30）。掘りごたつのラウンジ、無料のお蕎麦、こだわりのアメニティが魅力。",
    "sources": [
     {
      "type": "youtube",
      "id": "IQEjL6koxoU"
     }
-   ]
+   ],
+   "place_id": "ChIJYQj5nnkz-F8Rsj6HAm4kAIc",
+   "address": "日本、〒920-0918 石川県金沢市尾山町６−３０",
+   "url": "https://www.uan-kanazawa.com/?utm_source=google&utm_medium=gbp&utm_campaign=gbp_uan",
+   "hours": "月曜日: 24 時間営業 / 火曜日: 24 時間営業 ほか"
   },
   {
    "slug": "appare",
    "name": "元祖 金沢炉端 あっぱれ 片町本店",
    "area": "katamachi",
    "cat": "グルメ",
-   "lat": 36.5594,
-   "lng": 136.6483,
-   "approx": true,
+   "lat": 36.55998,
+   "lng": 136.65203,
+   "approx": false,
    "desc": "金沢おでんの人気店（片町2-2-15 北國ビルB1F）。出汁の染みた大根やバイ貝、冬限定の「カニ面」は絶品。カニの甲羅に熱燗を注ぐ締めの一杯も格別。",
    "sources": [
     {
      "type": "youtube",
      "id": "IQEjL6koxoU"
     }
-   ]
+   ],
+   "place_id": "ChIJyQqcrX80-F8REEML2Ral9o4",
+   "address": "日本、〒920-0981 石川県金沢市片町２丁目２−１５ 北國ビルディング B1F",
+   "url": "https://appare-kanazawa-katamachi.com/",
+   "hours": "月曜日: 17時00分～23時00分 / 火曜日: 17時00分～23時00分 ほか"
   },
   {
    "slug": "takasago",
    "name": "おでん 高砂",
    "area": "katamachi",
    "cat": "グルメ",
-   "lat": 36.5608,
-   "lng": 136.6503,
-   "approx": true,
+   "lat": 36.56173,
+   "lng": 136.65388,
+   "approx": false,
    "desc": "創業昭和11年の金沢おでんの老舗（片町1-3-29）。地元の人に愛され続ける味。カニ面を筆頭に冬の味覚が揃う。",
    "sources": [
     {
      "type": "youtube",
      "id": "78piZBG6C4c"
     }
-   ]
+   ],
+   "place_id": "ChIJmW8kDIAz-F8RNhhBuOdAUZw",
+   "address": "日本、〒920-0981 石川県金沢市片町１丁目３−２９",
+   "url": "http://oden-takasago.com/",
+   "hours": "月曜日: 16時00分～21時00分 / 火曜日: 16時00分～21時00分 ほか"
   },
   {
    "slug": "korinkyo",
    "name": "香林居",
    "area": "katamachi",
    "cat": "宿",
-   "lat": 36.5619,
-   "lng": 136.6545,
+   "lat": 36.56189,
+   "lng": 136.65445,
    "approx": false,
    "desc": "香林坊にある蒸留所併設のブティックホテル（片町1-1-31）。サウナ付きのおしゃれな滞在が人気。",
    "sources": [
@@ -359,15 +414,18 @@
      "type": "youtube",
      "id": "LoxqRUcfqRY"
     }
-   ]
+   ],
+   "place_id": "ChIJ1z3yzAEz-F8R2tyaIAmpN5I",
+   "address": "日本、〒920-0981 石川県金沢市片町１丁目１−３１",
+   "url": "https://www.korinkyo.com/"
   },
   {
    "slug": "kosoyu",
    "name": "山代温泉 古総湯",
    "area": "kaga",
    "cat": "温泉",
-   "lat": 36.289,
-   "lng": 136.3615,
+   "lat": 36.2889,
+   "lng": 136.36147,
    "approx": false,
    "desc": "山代温泉のシンボル。明治時代の共同浴場を復元したレトロな温泉で、ステンドグラスと九谷焼タイルが美しい。心まで温まる。",
    "sources": [
@@ -375,47 +433,58 @@
      "type": "youtube",
      "id": "IQEjL6koxoU"
     }
-   ]
+   ],
+   "place_id": "ChIJf7hu5xz3-F8RO-YeahYuKhI",
+   "address": "日本、〒922-0256 石川県加賀市山代温泉万松園通18−１２８",
+   "url": "https://yamashiro-spa.or.jp/",
+   "hours": "月曜日: 7時00分～21時00分 / 火曜日: 7時00分～21時00分 ほか"
   },
   {
    "slug": "kaikaga",
    "name": "星野リゾート 界 加賀",
    "area": "kaga",
    "cat": "宿",
-   "lat": 36.2887,
-   "lng": 136.362,
-   "approx": true,
+   "lat": 36.28875,
+   "lng": 136.36093,
+   "approx": false,
    "desc": "古総湯の目の前に建つ温泉旅館（山代温泉18-47）。九谷焼や山中漆器の器で味わう蟹・のどぐろのフルコース、毎晩の加賀獅子舞、館内工房での「金継ぎ」体験も。",
    "sources": [
     {
      "type": "youtube",
      "id": "IQEjL6koxoU"
     }
-   ]
+   ],
+   "place_id": "ChIJ23n_wRz3-F8RURCBZXFLT6w",
+   "address": "日本、〒922-0242 石川県加賀市山代温泉万松園通１８−４７",
+   "url": "https://hoshinoresorts.com/ja/hotels/kaikaga/?utm_source=google&utm_medium=mybusiness"
   },
   {
    "slug": "mangetsu",
    "name": "九谷満月",
    "area": "kaga",
    "cat": "体験",
-   "lat": 36.304,
-   "lng": 136.3528,
-   "approx": true,
+   "lat": 36.30588,
+   "lng": 136.3523,
+   "approx": false,
    "desc": "北陸最大級の九谷焼専門店（加賀市中代町ル95-2）。ろくろ・絵付け体験で湯呑み作りに挑戦できる。九谷焼の豆皿やお猪口のお土産選びも。",
    "sources": [
     {
      "type": "youtube",
      "id": "IQEjL6koxoU"
     }
-   ]
+   ],
+   "place_id": "ChIJp60Ks533-F8Rqm4_cNDkmU8",
+   "address": "日本、〒922-8566 石川県加賀市中代町ル−９５−２",
+   "url": "https://www.mangetsu.co.jp/",
+   "hours": "月曜日: 8時00分～17時00分 / 火曜日: 8時00分～17時00分 ほか"
   },
   {
    "slug": "yunokuni",
    "name": "加賀伝統工芸村 ゆのくにの森",
    "area": "kaga",
    "cat": "体験",
-   "lat": 36.3236,
-   "lng": 136.4375,
+   "lat": 36.32414,
+   "lng": 136.43584,
    "approx": false,
    "desc": "13万坪の敷地に伝統工芸の体験館が集まるテーマパーク（小松市粟津町ナ3-3）。グラスにイラストを刻むサンドブラスト体験などが楽しめる。",
    "sources": [
@@ -423,15 +492,19 @@
      "type": "youtube",
      "id": "fAJonNwHvNI"
     }
-   ]
+   ],
+   "place_id": "ChIJidTTiVlY-F8RkPi_UIUwSZk",
+   "address": "日本、〒923-0393 石川県小松市粟津温泉ナ−３−３",
+   "url": "https://yunokuninomori.jp/",
+   "hours": "月曜日: 9時00分～16時30分 / 火曜日: 9時00分～16時30分 ほか"
   },
   {
    "slug": "chirihama",
    "name": "千里浜なぎさドライブウェイ",
    "area": "hakui",
    "cat": "自然",
-   "lat": 36.8791,
-   "lng": 136.7621,
+   "lat": 36.86582,
+   "lng": 136.75839,
    "approx": false,
    "desc": "日本で唯一、車やバイクで波打ち際の砂浜を走れる爽快なドライブコース（全長約8km）。夕日の時間帯は特に絶景。",
    "sources": [
@@ -439,7 +512,9 @@
      "type": "youtube",
      "id": "Xe50E0cVjSY"
     }
-   ]
+   ],
+   "place_id": "ChIJeQ_qr0Zk918ROR-3BYy1Idk",
+   "address": "日本、石川県 千里浜なぎさドライブウェイ"
   },
   {
    "slug": "noto-airport",
@@ -449,7 +524,7 @@
    "lat": 37.29508,
    "lng": 136.95749,
    "approx": false,
-   "desc": "奥能登の空の玄関口。「のと里山ポケモン・ウィズ・ユー空港」としても親しまれており、ポケモンの可愛い装飾がお出迎えしてくれる。能登観光の始まりや締めくくりに立ち寄りたいスポット。",
+   "desc": "奥能登の空の玄関口。「のと里山ポケモン・ウィズ・ユー空港」として親しまれ、可愛いポケモンの装飾がお出迎え。能登観光の始まりや締めくくりに立ち寄りたいスポット。",
    "address": "日本、〒929-2372 石川県輪島市三井町洲衛１０−１１−１",
    "place_id": "ChIJwdt5LezU9l8RNh7VC4chFQE",
    "added": "2026-08-01",
