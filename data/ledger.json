@@ -272,6 +272,26 @@
   "2084042659686170790": {
    "date": "2026-08-03",
    "result": "not_recommendation"
+  },
+  "2084759867928240567": {
+   "date": "2026-08-04",
+   "result": "not_recommendation"
+  },
+  "2084751666340081794": {
+   "date": "2026-08-04",
+   "result": "not_recommendation"
+  },
+  "2084623297434824868": {
+   "date": "2026-08-04",
+   "result": "not_recommendation"
+  },
+  "2084743110916190346": {
+   "date": "2026-08-04",
+   "result": "author_bot"
+  },
+  "2084722064934736180": {
+   "date": "2026-08-04",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -284,6 +304,11 @@
    "verdict": "fan",
    "name": "hirotakashi",
    "date": "2026-08-01"
+  },
+  "1372829770908504066": {
+   "verdict": "bot",
+   "name": "_kill_er_",
+   "date": "2026-08-04"
   }
  },
  "seeds": {
