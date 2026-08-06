@@ -316,6 +316,77 @@
   "2084942178296762550": {
    "date": "2026-08-05",
    "result": "not_recommendation"
+  },
+  "2085482298233987351": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085363416517235115": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085281866505130344": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085195057376972835": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085386392633540763": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085384151004483648": {
+   "date": "2026-08-06",
+   "result": "processed",
+   "author": "kansoupkp"
+  },
+  "2085376881357115474": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085370914187952273": {
+   "date": "2026-08-06",
+   "result": "processed",
+   "author": "marori_popi"
+  },
+  "2085363982899261624": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085360783844933987": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085347846174445638": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085346184609382828": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085333208061894939": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085266321194012730": {
+   "date": "2026-08-06",
+   "result": "processed",
+   "author": "nao0"
+  },
+  "2085200626422886751": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085195110216814914": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
+  },
+  "2085194880880664859": {
+   "date": "2026-08-06",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -333,6 +404,21 @@
    "verdict": "bot",
    "name": "_kill_er_",
    "date": "2026-08-04"
+  },
+  "1855193004090490880": {
+   "verdict": "fan",
+   "name": "kansoupkp",
+   "date": "2026-08-06"
+  },
+  "1985689776448741377": {
+   "verdict": "fan",
+   "name": "marori_popi",
+   "date": "2026-08-06"
+  },
+  "11091152": {
+   "verdict": "fan",
+   "name": "nao0",
+   "date": "2026-08-06"
   }
  },
  "seeds": {

@@ -1,3 +1,46 @@
 {
- "items": []
+ "items": [
+  {
+   "name": "麺屋大河",
+   "reason": "low_confidence",
+   "hint": "金沢・ラーメン",
+   "post": "https://x.com/i/web/status/2085370914187952273",
+   "date": "2026-08-06"
+  },
+  {
+   "name": "ふむろ屋",
+   "reason": "low_confidence",
+   "hint": "お土産・おやつ麩",
+   "post": "https://x.com/i/web/status/2085370914187952273",
+   "date": "2026-08-06"
+  },
+  {
+   "name": "村上",
+   "reason": "low_confidence",
+   "hint": "お土産・ふくさ餅",
+   "post": "https://x.com/i/web/status/2085370914187952273",
+   "date": "2026-08-06"
+  },
+  {
+   "name": "中田屋",
+   "reason": "low_confidence",
+   "hint": "お土産・きんつば",
+   "post": "https://x.com/i/web/status/2085370914187952273",
+   "date": "2026-08-06"
+  },
+  {
+   "name": "烏鶏庵",
+   "reason": "low_confidence",
+   "hint": "お土産・カステラ",
+   "post": "https://x.com/i/web/status/2085370914187952273",
+   "date": "2026-08-06"
+  },
+  {
+   "name": "もりもり寿司",
+   "reason": "low_confidence",
+   "hint": "金沢・寿司",
+   "post": "https://x.com/i/web/status/2085266321194012730",
+   "date": "2026-08-06"
+  }
+ ]
 }

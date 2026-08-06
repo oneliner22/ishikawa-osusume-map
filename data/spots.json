@@ -34,6 +34,11 @@
    "id": "notoairport-area",
    "name": "輪島・奥能登",
    "color": "#5c8f3f"
+  },
+  {
+   "id": "matsuno-area",
+   "name": "かほく",
+   "color": "#c2543f"
   }
  ],
  "spots": [
@@ -221,11 +226,18 @@
    "lat": 36.5488,
    "lng": 136.68034,
    "approx": false,
-   "desc": "円形劇場のような美しく立体的な大空間。テーマ別のユニークな陳列、作業用デスクやおしゃれなカフェも併設。1日中居たくなる美しさ。",
+   "desc": "円形劇場のような美しく立体的な大空間。テーマ別のユニークな陳列に加え、作業用デスクやおしゃれなカフェも併設。アクセスの良さも魅力。",
    "sources": [
     {
      "type": "youtube",
      "id": "IS1YgB2f1C4"
+    },
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085384151004483648",
+     "author": "kansoupkp",
+     "date": "2026-08-06",
+     "quote": "会場から近いし、県立図書館な気もするな。"
     }
    ],
    "place_id": "ChIJ41m2cYcz-F8RoXer9PdlD54",
@@ -241,11 +253,18 @@
    "lat": 36.55077,
    "lng": 136.68904,
    "approx": false,
-   "desc": "石川県民のソウルフード（もりの里1-259）。カリカリ・ジューシーな「ホワイト餃子」は一度食べたら病みつき。地元民でも並ぶ人気店。",
+   "desc": "石川県民熱愛のソウルフード（もりの里1-259）。ほぼパンの生地が特徴のカリカリ・ジューシーなホワイト餃子は、地元民でも並ぶ病みつきの味。",
    "sources": [
     {
      "type": "youtube",
      "id": "78piZBG6C4c"
+    },
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・第七ギョーザ…地元民熱愛系ギョーザ。 ほぼパン（褒めてる）。"
     }
    ],
    "place_id": "ChIJgT4MFGcz-F8RiavAsJOJfzg",
@@ -555,6 +574,126 @@
    ],
    "hours": "月曜日: 24 時間営業 / 火曜日: 24 時間営業 ほか",
    "url": "https://www.kanazawa-kankoukyoukai.or.jp/spot/detail_10195.html"
+  },
+  {
+   "slug": "meimei",
+   "name": "梅梅 金沢店",
+   "area": "omicho",
+   "cat": "グルメ",
+   "lat": 36.57103,
+   "lng": 136.66266,
+   "approx": false,
+   "desc": "金沢市尾張町にある人気の中華料理店。本格的な中華料理が味わえると評判。町家を改装した趣ある店内で、こだわりの点心や一品料理を楽しめる。金沢観光の際のランチやディナーに最適。",
+   "address": "日本、〒920-0902 石川県金沢市尾張町１丁目９−１６",
+   "place_id": "ChIJ88dvAHQz-F8RLJeak7HGDaU",
+   "added": "2026-08-06",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・梅梅（めいめい）金沢…人気中華料理店。"
+    }
+   ],
+   "hours": "月曜日: 11時30分～15時00分, 17時00分～22時00分 / 火曜日: 定休日 ほか",
+   "url": "https://kiwa-group.co.jp/meimei_kanazawa/"
+  },
+  {
+   "slug": "hiramipan",
+   "name": "ひらみぱん",
+   "area": "katamachi",
+   "cat": "グルメ",
+   "lat": 36.56631,
+   "lng": 136.65105,
+   "approx": false,
+   "desc": "ジブリの世界に迷い込んだような、かわいらしい外観が人気の有名なパン屋。美味しいパンはもちろん、併設のカフェでのモーニングやランチもおすすめ。",
+   "address": "日本、〒920-0865 石川県金沢市長町１丁目６−１１",
+   "place_id": "ChIJ2X0WGHwz-F8RJNHksxrV4Qk",
+   "added": "2026-08-06",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・ひらみぱん…有名。かわいい。ジブリ。パン屋。"
+    }
+   ],
+   "hours": "月曜日: 定休日 / 火曜日: 8時00分～18時00分 ほか",
+   "url": "https://hiramipan.co.jp/"
+  },
+  {
+   "slug": "kakurezato-coffee",
+   "name": "kakurezato coffee",
+   "area": "kenrokuen",
+   "cat": "カフェ・喫茶",
+   "lat": 36.55912,
+   "lng": 136.65758,
+   "approx": false,
+   "desc": "金沢市下本多町にある、パイが人気のカフェ。サクサクのパイとこだわりのコーヒーが楽しめる。21世紀美術館からも近く、散策の合間の休憩にぴったり。",
+   "address": "日本、〒920-0993 石川県金沢市下本多町６番丁４０−１",
+   "place_id": "ChIJDdE5I8I1-F8RwImtWb2DvFA",
+   "added": "2026-08-06",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・kakurezato coffee…パイが人気のカフェ。"
+    }
+   ],
+   "hours": "月曜日: 定休日 / 火曜日: 定休日 ほか",
+   "url": "https://instagram.com/kakurezato_coffee"
+  },
+  {
+   "slug": "himito",
+   "name": "HIMITO",
+   "area": "katamachi",
+   "cat": "観光",
+   "lat": 36.55516,
+   "lng": 136.65465,
+   "approx": false,
+   "desc": "綿毛を使った幻想的な展示が広がるアートギャラリー。無数のたんぽぽの綿毛が宙を舞うような空間は、写真映えするスポットとして人気。非日常的なアートの世界に浸れる。",
+   "address": "日本、〒920-0975 石川県金沢市中川除町５１",
+   "place_id": "ChIJUQUEP3o0-F8Rp3FXUqQyXGs",
+   "added": "2026-08-06",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・HIMITO…アートギャラリー。綿毛を使った幻想的な展示の空間。"
+    }
+   ],
+   "hours": "月曜日: 12時30分～17時00分 / 火曜日: 12時30分～17時00分 ほか",
+   "url": "https://www.himitokanazawa.com/"
+  },
+  {
+   "slug": "matsuno",
+   "name": "寿司処 松の",
+   "area": "matsuno-area",
+   "cat": "グルメ",
+   "lat": 36.71942,
+   "lng": 136.7028,
+   "approx": false,
+   "desc": "石川県かほく市にある寿司店。石川一との呼び声も高い名店。車でのアクセスが必要だが、足を運ぶ価値あり。新鮮なネタを使った絶品の寿司が堪能できる。",
+   "address": "日本、〒929-1125 石川県かほく市宇野気チ−９０",
+   "place_id": "ChIJkWt4TffW-V8RyASJNrYj5hA",
+   "added": "2026-08-06",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・寿司処松の…石川一では？車あればぜひ"
+    }
+   ],
+   "hours": "月曜日: 10時30分～13時30分, 17時00分～19時00分 / 火曜日: 定休日 ほか",
+   "url": "http://matsuno.main.jp/"
   }
  ]
 }
