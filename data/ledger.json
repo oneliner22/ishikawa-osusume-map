@@ -387,6 +387,78 @@
   "2085194880880664859": {
    "date": "2026-08-06",
    "result": "not_recommendation"
+  },
+  "2085844402422075611": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085616484819349827": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085616257311871146": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085840966079115412": {
+   "date": "2026-08-07",
+   "result": "processed",
+   "author": "AKtNr_"
+  },
+  "2085671658426380614": {
+   "date": "2026-08-07",
+   "result": "processed",
+   "author": "yuupon7"
+  },
+  "2085662820084179452": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085658264499585532": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085608330119262699": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085575898821234808": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085552222180634723": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085701018424398133": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085695896273227875": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085693930717495462": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085659536141226052": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085657720657756513": {
+   "date": "2026-08-07",
+   "result": "processed",
+   "author": "marori_popi"
+  },
+  "2085443119328411820": {
+   "date": "2026-08-07",
+   "result": "not_recommendation"
+  },
+  "2085379765985480792": {
+   "date": "2026-08-07",
+   "result": "processed",
+   "author": "_y_n_p_p_"
   }
  },
  "authors": {
@@ -419,6 +491,21 @@
    "verdict": "fan",
    "name": "nao0",
    "date": "2026-08-06"
+  },
+  "1833330621856550912": {
+   "verdict": "fan",
+   "name": "AKtNr_",
+   "date": "2026-08-07"
+  },
+  "112932331": {
+   "verdict": "fan",
+   "name": "yuupon7",
+   "date": "2026-08-07"
+  },
+  "2023080928336351232": {
+   "verdict": "fan",
+   "name": "_y_n_p_p_",
+   "date": "2026-08-07"
   }
  },
  "seeds": {
@@ -439,6 +526,24 @@
    "author": "YD8uZ9ZzRY66388",
    "date": "2026-08-01",
    "until": "2026-09-05"
+  },
+  "2085384151004483648": {
+   "kind": "reco_post",
+   "author": "kansoupkp",
+   "date": "2026-08-06",
+   "until": "2026-09-10"
+  },
+  "2085370914187952273": {
+   "kind": "reco_post",
+   "author": "marori_popi",
+   "date": "2026-08-06",
+   "until": "2026-09-10"
+  },
+  "2085266321194012730": {
+   "kind": "reco_post",
+   "author": "nao0",
+   "date": "2026-08-06",
+   "until": "2026-09-10"
   }
  }
 }

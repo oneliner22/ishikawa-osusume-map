@@ -1,3 +1,18 @@
 {
- "items": []
+ "items": [
+  {
+   "name": "極楽湯",
+   "reason": "low_confidence",
+   "hint": "温泉",
+   "post": "https://x.com/i/web/status/2085840966079115412",
+   "date": "2026-08-07"
+  },
+  {
+   "name": "すしくいねぇ！",
+   "reason": "low_confidence",
+   "hint": "金沢の寿司",
+   "post": "https://x.com/i/web/status/2085671658426380614",
+   "date": "2026-08-07"
+  }
+ ]
 }
