@@ -336,7 +336,7 @@
    "lat": 36.57935,
    "lng": 136.64981,
    "approx": false,
-   "desc": "地元でも大行列を作る回転寿司（金沢フォーラス6F）。ガスエビやカニなど新鮮で肉厚な北陸の幸を贅沢に。近江町店など市内に複数店舗あり。",
+   "desc": "地元でも大行列を作る回転寿司（金沢フォーラス6F）。ガスエビやカニなど新鮮で肉厚な北陸の幸を贅沢に。「行きたい以外の感情を失った」とファンも焦がれる。近江町店など市内に複数店舗あり。",
    "sources": [
     {
      "type": "youtube",
@@ -345,6 +345,13 @@
     {
      "type": "youtube",
      "id": "9jCGPugyhBw"
+    },
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085266321194012730",
+     "author": "nao0",
+     "date": "2026-08-06",
+     "quote": "早く回覧板金沢で「もりもり寿司」に行きたい以外の感情を失った"
     }
    ],
    "place_id": "ChIJp45QVlcz-F8RQ-_oMHY920I",
@@ -694,6 +701,126 @@
    ],
    "hours": "月曜日: 10時30分～13時30分, 17時00分～19時00分 / 火曜日: 定休日 ほか",
    "url": "http://matsuno.main.jp/"
+  },
+  {
+   "slug": "menya-taiga",
+   "name": "麺屋大河",
+   "area": "omicho",
+   "cat": "グルメ",
+   "lat": 36.57882,
+   "lng": 136.6523,
+   "approx": false,
+   "desc": "金沢駅近くに構える味噌ラーメンの名店。連日行列が絶えないが、行列に耐えた者だけが味わえる至極の一杯と評される。",
+   "address": "日本、〒920-0847 石川県金沢市堀川町６−３",
+   "place_id": "ChIJC57BjGoz-F8Rp62XKDFihg4",
+   "added": "2026-08-07",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・麺屋大河…行列に耐えた者だけが味わう至極のラーメン"
+    }
+   ],
+   "hours": "月曜日: 11時00分～14時30分, 17時30分～22時30分 / 火曜日: 11時00分～14時30分, 17時30分～22時30分 ほか",
+   "url": "https://menyataiga.base.shop/"
+  },
+  {
+   "slug": "fumuroya",
+   "name": "不室屋 尾張町本店",
+   "area": "omicho",
+   "cat": "雑貨・土産",
+   "lat": 36.57195,
+   "lng": 136.65785,
+   "approx": false,
+   "desc": "加賀麩の老舗の本店。ひと口サイズの「おやつ麩」はバカうまとファンが太鼓判を押すお土産の定番。近江町市場から徒歩圏。",
+   "address": "日本、〒920-0902 石川県金沢市尾張町２丁目２−１８",
+   "place_id": "ChIJ4RabiX8z-F8RFsiBXELjbso",
+   "added": "2026-08-07",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・ふむろ屋のおやつ麩(バカうま)"
+    }
+   ],
+   "hours": "月曜日: 9時30分～17時30分 / 火曜日: 9時30分～17時30分 ほか",
+   "url": "https://www.fumuroya.co.jp/shop-list/owaricho-ten/"
+  },
+  {
+   "slug": "wagashi-murakami",
+   "name": "和菓子村上 長町店",
+   "area": "katamachi",
+   "cat": "雑貨・土産",
+   "lat": 36.56403,
+   "lng": 136.6497,
+   "approx": false,
+   "desc": "長町武家屋敷跡のすぐそばにある金沢の老舗和菓子店。名物の「ふくさ餅」はお土産のおすすめとして名が挙がる逸品。",
+   "address": "日本、〒920-0865 石川県金沢市長町２丁目３−３２",
+   "place_id": "ChIJvyJLPX4z-F8Rpg6370WfFZc",
+   "added": "2026-08-07",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・村上のふくさ餅"
+    }
+   ],
+   "hours": "月曜日: 10時00分～17時30分 / 火曜日: 10時00分～17時30分 ほか",
+   "url": "https://www.wagashi-murakami.com/"
+  },
+  {
+   "slug": "nakataya",
+   "name": "中田屋 東山茶屋街店",
+   "area": "higashiyama",
+   "cat": "雑貨・土産",
+   "lat": 36.57248,
+   "lng": 136.66601,
+   "approx": false,
+   "desc": "「きんつばといえば中田屋」と評される金沢の名店。艶やかな粒餡のきんつばはお土産の定番。ひがし茶屋街散策の途中に。",
+   "address": "日本、〒920-0831 石川県金沢市東山１丁目５−９ 2階",
+   "place_id": "ChIJzcRpnnQz-F8R0mJbMWXytjA",
+   "added": "2026-08-07",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・中田屋のきんつば"
+    }
+   ],
+   "hours": "月曜日: 9時00分～17時00分 / 火曜日: 9時00分～17時00分 ほか",
+   "url": "https://www.kintuba.co.jp/"
+  },
+  {
+   "slug": "ukeian",
+   "name": "烏鶏庵 本店",
+   "area": "omicho",
+   "cat": "雑貨・土産",
+   "lat": 36.5882,
+   "lng": 136.6324,
+   "approx": false,
+   "desc": "烏骨鶏の卵を使ったカステラで知られる金沢の菓子店。濃厚な味わいはお土産のおすすめとして名が挙がる。金沢駅にも近い本店。",
+   "address": "日本、〒920-0024 石川県金沢市西念４丁目２２−８",
+   "place_id": "ChIJ3QV4JEsz-F8Rjw2le2Me8FA",
+   "added": "2026-08-07",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085370914187952273",
+     "author": "marori_popi",
+     "date": "2026-08-06",
+     "quote": "・烏鶏庵のカステラ"
+    }
+   ],
+   "hours": "月曜日: 9時30分～18時30分 / 火曜日: 9時30分～18時30分 ほか",
+   "url": "https://www.ukokkei.co.jp/"
   }
  ]
 }
