@@ -66,4 +66,24 @@ else
     --http-method POST --oauth-service-account-email "$SA"
 fi
 
+# ---- 週次 pending 整理ジョブ (毎週金曜 6:05 JST、日次ジョブの前に走る) ----
+PJOB=ishikawa-spots-pending
+gcloud run jobs deploy "$PJOB" --image "$IMAGE" --region "$REGION" \
+  --service-account "$SA" --max-retries 0 --task-timeout 30m \
+  --command python --args pending_resolver.py \
+  --set-env-vars "GCP_PROJECT=${PROJECT},VERTEX_LOCATION=global,GITHUB_REPO=oneliner22/ishikawa-osusume-map" \
+  --set-secrets "GITHUB_TOKEN=github-token:latest,XDEV_MCP_URL=xdev-mcp-url:latest,PLACES_API_KEY=places-api-key:latest"
+
+PSCHED=ishikawa-spots-pending-trigger
+PSCHED_URI="https://run.googleapis.com/v2/projects/${PROJECT}/locations/${REGION}/jobs/${PJOB}:run"
+if gcloud scheduler jobs describe "$PSCHED" --location "$REGION" >/dev/null 2>&1; then
+  gcloud scheduler jobs update http "$PSCHED" --location "$REGION" \
+    --schedule "5 6 * * 5" --time-zone "Asia/Tokyo" --uri "$PSCHED_URI" \
+    --http-method POST --oauth-service-account-email "$SA"
+else
+  gcloud scheduler jobs create http "$PSCHED" --location "$REGION" \
+    --schedule "5 6 * * 5" --time-zone "Asia/Tokyo" --uri "$PSCHED_URI" \
+    --http-method POST --oauth-service-account-email "$SA"
+fi
+
 echo "done. manual run: gcloud run jobs execute $JOB --region $REGION --wait"
