@@ -457,14 +457,10 @@ def main():
     mcp = McpClient(os.environ["XDEV_MCP_URL"])
     ledger.setdefault("seeds", {})
     rh = pipeline_cfg.get("reply_harvest", {})
-    ttl = rh.get("seed_ttl_days", 35)
 
-    # 過去に「おすすめ投稿」として処理済みのものをシードに昇格 (reply/引用RT収穫対象)
-    for pid, rec in ledger["processed_posts"].items():
-        if rec.get("result") == "processed":
-            add_seed(ledger, pid, "reco_post", rec.get("author", ""),
-                     rec.get("date", TODAY), ttl)
-
+    # シード化は公式(ponpokoka)の呼びかけ検知のみ。処理済みおすすめ投稿の自動昇格は
+    # 廃止済み (シードごとに x_ingest が走るため、収穫対象は呼びかけ投稿に限定して
+    # API 課金を抑える)
     official = watch_official(mcp, ledger, rh)
     main_posts = fetch_posts(mcp, ledger, pipeline_cfg["x_query"], max_posts=200)
     harvested, n_seeds = harvest_seeds(mcp, ledger, rh)

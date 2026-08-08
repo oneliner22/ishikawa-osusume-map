@@ -26,6 +26,6 @@
     "official_accounts": ["ponpokoka"],
     "seed_ttl_days": 35,
     "max_active_seeds": 25,
-    "note": "公式の「おすすめ教えて」投稿と、処理済みおすすめ投稿をシードとして、conversation_id/url 検索で reply・引用RTを収穫し通常パイプラインに合流させる"
+    "note": "公式の「おすすめ教えて」投稿のみをシードとして、conversation_id/url 検索で reply・引用RTを収穫し通常パイプラインに合流させる (処理済みおすすめ投稿の自動シード昇格は 2026-08-08 に廃止。シードごとに x_ingest が走るため)"
   }
 }

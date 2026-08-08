@@ -508,42 +508,5 @@
    "date": "2026-08-07"
   }
  },
- "seeds": {
-  "2082659093798596944": {
-   "kind": "reco_post",
-   "author": "",
-   "date": "2026-08-01",
-   "until": "2026-09-05"
-  },
-  "2083669274095476968": {
-   "kind": "announcement",
-   "author": "walk_teku_teku",
-   "date": "2026-08-02",
-   "until": "2026-09-06"
-  },
-  "2082957013697634519": {
-   "kind": "reco_post",
-   "author": "YD8uZ9ZzRY66388",
-   "date": "2026-08-01",
-   "until": "2026-09-05"
-  },
-  "2085384151004483648": {
-   "kind": "reco_post",
-   "author": "kansoupkp",
-   "date": "2026-08-06",
-   "until": "2026-09-10"
-  },
-  "2085370914187952273": {
-   "kind": "reco_post",
-   "author": "marori_popi",
-   "date": "2026-08-06",
-   "until": "2026-09-10"
-  },
-  "2085266321194012730": {
-   "kind": "reco_post",
-   "author": "nao0",
-   "date": "2026-08-06",
-   "until": "2026-09-10"
-  }
- }
+ "seeds": {}
 }
