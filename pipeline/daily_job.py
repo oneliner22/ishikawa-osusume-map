@@ -47,8 +47,22 @@ MODEL_EXTRACT = os.environ.get("MODEL_EXTRACT", "gemini-3.5-flash-lite")
 MODEL_JUDGE = os.environ.get("MODEL_JUDGE", "gemini-3.1-pro-preview")
 
 
+SECRET_VALUES = [v for v in (TOKEN, os.environ.get("XDEV_MCP_URL"),
+                             os.environ.get("PLACES_API_KEY")) if v]
+
+
+def redact(s):
+    """出力文字列から秘密情報を伏せる。障害時の例外 repr にはトークン入り clone URL や
+    認証キー込み XDEV_MCP_URL が含まれ得るため、ログ・Issue に出る全経路で通すこと
+    (Issue は公開リポジトリなので漏れると即公開になる)。"""
+    s = str(s)
+    for v in SECRET_VALUES:
+        s = s.replace(v, "***")
+    return s
+
+
 def log(*a):
-    print(*a, flush=True)
+    print(*(redact(x) for x in a), flush=True)
 
 
 def gen_json(model, schema, parts):
@@ -106,7 +120,7 @@ def commit_if_changed(workdir, msg):
 def github_issue(title, body):
     r = requests.post(f"https://api.github.com/repos/{REPO}/issues",
                       headers={"Authorization": f"Bearer {TOKEN}"},
-                      json={"title": title, "body": body}, timeout=30)
+                      json={"title": redact(title), "body": redact(body)}, timeout=30)
     log("issue:", r.status_code, title)
 
 

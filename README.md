@@ -67,7 +67,7 @@ Cloud Scheduler → Cloud Run Job (GCP: salmon-chan)
 ### 日次 pending 整理（毎日 7:40 JST、日次ジョブ完了後）
 
 日次ジョブのワンショット判定で保留になった候補（表記揺れ・同名多店舗など）を、
-Gemini のツールループ（Places再検索・Webページ確認・出典ポスト再読）で精査して回収する:
+Gemini のツールループ（Places再検索・出典ポスト再読）で精査して回収する:
 
 - 掲載可能 → `spots.json` へ登録 / 既存スポットへ出典追記（名寄せ）
 - 表記揺れ → `aliases.json` に登録して再発防止

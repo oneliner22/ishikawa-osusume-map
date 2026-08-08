@@ -2,7 +2,7 @@
 """日次 pending 整理ジョブ (Cloud Run Jobs)。日次ジョブの完了後に走る。
 
 data/pending.json の保留候補(受入ゲート不合格分)を、Gemini のツールループ
-(Places再検索・Webページ確認)で1件ずつ精査し、
+(Places再検索)で1件ずつ精査し、
   - 掲載可能   → spots.json へ登録 / 既存スポットへ出典追記
   - 表記揺れ   → aliases.json へ登録して再発防止
   - 閉業・県外 → pending から削除
@@ -19,16 +19,13 @@ daily_job と同じく、掲載可否の最終判定は必ずコード側ゲー�
   PENDING_OVERRIDE テスト用: pending.json の代わりに処理する items のJSON文字列
 """
 import difflib
-import ipaddress
 import json
 import os
 import re
-import socket
 import subprocess
 import sys
 import tempfile
 from concurrent.futures import ThreadPoolExecutor
-from urllib.parse import urljoin, urlparse
 
 from google.genai import types
 
@@ -66,35 +63,8 @@ PLACES_DECL = {
         "query": {"type": "string", "description": "検索クエリ"}},
         "required": ["query"]},
 }
-FETCH_DECL = {
-    "name": "fetch_url",
-    "description": "URLのWebページ本文を取得する(公式サイト等の実在・営業確認用)。",
-    "parameters": {"type": "object", "properties": {
-        "url": {"type": "string", "description": "取得するURL"}},
-        "required": ["url"]},
-}
-
-
-METADATA_HOSTS = {"metadata.google.internal", "metadata.goog"}
-
-
-def _url_fetchable(url):
-    """SSRF対策: 公開ホストへの http(s) のみ許可。プライベート/リンクローカル/
-    メタデータサーバ宛は拒否する (投稿本文へのプロンプトインジェクション経由で
-    Cloud Run 内部の認証情報等へ到達させないため。DNS再解決のTOCTOUは許容)。"""
-    try:
-        p = urlparse(url)
-        if p.scheme not in ("http", "https") or not p.hostname:
-            return False
-        if p.hostname.lower().rstrip(".") in METADATA_HOSTS:
-            return False
-        infos = socket.getaddrinfo(
-            p.hostname, p.port or (443 if p.scheme == "https" else 80),
-            proto=socket.IPPROTO_TCP)
-        return bool(infos) and all(
-            ipaddress.ip_address(info[4][0]).is_global for info in infos)
-    except (ValueError, OSError):
-        return False
+# fetch_url ツールは廃止 (2026-08-08)。モデル駆動で任意URLを取得する構造は
+# DNS rebinding を含む SSRF の攻撃面になるため、裏取りは Places 検索のみで行う。
 
 
 def run_tool(name, args, collected):
@@ -112,27 +82,6 @@ def run_tool(name, args, collected):
                         "lng": p["location"]["longitude"],
                         "website": p.get("websiteUri", "")})
         return out or "ヒットなし"
-    if name == "fetch_url":
-        url = str(args.get("url", ""))
-        # リダイレクトも1ホップずつ検証する (公開URL→内部宛リダイレクトでの迂回防止)
-        for _ in range(4):
-            if not _url_fetchable(url):
-                return "エラー: このURLは取得できない (公開Webの http(s) のみ)"
-            try:
-                r = dj.requests.get(url, timeout=20, allow_redirects=False,
-                                    headers={"User-Agent": "Mozilla/5.0"})
-            except dj.requests.RequestException as e:
-                return f"取得失敗: {e}"
-            if r.is_redirect or r.is_permanent_redirect:
-                loc = r.headers.get("location")
-                if not loc:
-                    return "取得失敗: 不正なリダイレクト"
-                url = urljoin(url, loc)
-                continue
-            text = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", r.text)
-            text = re.sub(r"<[^>]+>", " ", text)
-            return re.sub(r"\s+", " ", text)[:4000]
-        return "取得失敗: リダイレクトが多すぎる"
     return f"不明なツール: {name}"
 
 
@@ -185,7 +134,6 @@ def investigate(item, post, images, doc, aliases, style_examples, collected):
         "- places_search で実在・営業状況・所在地を裏取りする。候補名が略称・表記揺れの"
         "可能性を考え、正式名称を推測してクエリを変えながら検索し直してよい"
         "(例: ふむろ屋→不室屋)。\n"
-        "- 必要なら fetch_url で公式サイト等を確認する。\n"
         "- チェーン店・多店舗の場合は本店または出典ポストの文脈に合う店舗を1つ選ぶ。\n"
         "- 掲載済みスポットと同一施設(別表記・別店舗の同一施設を含む)なら新規追加ではなく"
         "出典追記と判断する。\n"
@@ -196,7 +144,7 @@ def investigate(item, post, images, doc, aliases, style_examples, collected):
     for img in images:
         parts.append(types.Part.from_bytes(data=img[0], mime_type=img[1]))
     contents = [types.Content(role="user", parts=parts)]
-    tools = [types.Tool(function_declarations=[PLACES_DECL, FETCH_DECL])]
+    tools = [types.Tool(function_declarations=[PLACES_DECL])]
 
     for _ in range(MAX_TOOL_STEPS):
         res = dj.client.models.generate_content(
