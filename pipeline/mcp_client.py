@@ -2,6 +2,7 @@
 """xdev MCP (streamable HTTP) の最小クライアント。tools/call だけできればよい。"""
 import json
 import itertools
+import threading
 import requests
 
 
@@ -12,6 +13,8 @@ class McpClient:
         self.session_id = None
         self._ids = itertools.count(1)
         self._http = requests.Session()
+        # requests.Session はスレッドセーフでないため、並列ワーカーからの呼び出しは直列化する
+        self._lock = threading.Lock()
         self._initialize()
 
     def _headers(self):
@@ -22,6 +25,10 @@ class McpClient:
         return h
 
     def _post(self, payload):
+        with self._lock:
+            return self._post_locked(payload)
+
+    def _post_locked(self, payload):
         r = self._http.post(self.url, json=payload, headers=self._headers(),
                             timeout=self.timeout)
         r.raise_for_status()

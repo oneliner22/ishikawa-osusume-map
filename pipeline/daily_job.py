@@ -24,6 +24,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta, timezone
 
 import requests
@@ -112,6 +113,7 @@ def github_issue(title, body):
 # ---------------- 収集 ----------------
 
 INGEST_WINDOW_HOURS = float(os.environ.get("INGEST_WINDOW_HOURS", "25"))
+WORKERS = int(os.environ.get("WORKERS", "8"))  # 画像DL/Gemini/Places の並列度
 
 
 def fetch_posts(mcp, ledger, query, max_posts=200, include_refs=False, since=None):
@@ -483,13 +485,27 @@ def main():
     new_candidates = []  # (cand, post)
     desc_refresh = {}    # slug -> spot: 今回X言及が増え紹介文を更新すべきスポット
 
-    for post in posts:
-        pid = str(post["id"])
-        post_url = f"https://x.com/i/web/status/{pid}"
+    # 前処理 (画像DL→抽出→実記載チェック) と著者判定はポスト間で独立なので並列に流し、
+    # ledger・spots への反映は順序を保って逐次で行う
+    def prep(post):
         images = download_images(post.get("media_urls"))
         ex = extract_spots(post, images)
-        cands = ground_candidates(post, images, ex["candidates"]) \
+        return ground_candidates(post, images, ex["candidates"]) \
             if ex["is_recommendation"] else []
+
+    with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+        prepped = list(pool.map(prep, posts))
+        # 著者判定は候補ありポストの著者だけを著者単位で1回ずつ
+        # (結果は ledger["authors"] にキャッシュされ、下のループはキャッシュを引くだけ)
+        gate_posts = {}
+        for post, cands in zip(posts, prepped):
+            if cands:
+                gate_posts.setdefault(str(post["author_id"]), post)
+        list(pool.map(lambda p: author_gate(mcp, ledger, p), gate_posts.values()))
+
+    for post, cands in zip(posts, prepped):
+        pid = str(post["id"])
+        post_url = f"https://x.com/i/web/status/{pid}"
         if not cands:
             ledger["processed_posts"][pid] = {"date": TODAY, "result": "not_recommendation"}
             stats["skipped_offtopic"] += 1
@@ -530,7 +546,21 @@ def main():
     known_place_ids = {s.get("place_id"): s for s in spots if s.get("place_id")}
     slugs = {s["slug"] for s in spots}
 
-    for cand in new_candidates:
+    # Places検索と同一性判定 (外部API) は候補間で独立なので並列に先行実行し、
+    # ゲート・重複排除・登録は順序依存 (place_id の先勝ち等) のため逐次で適用する
+    def lookup(cand):
+        if cand["_post"]["author_uncertain"]:
+            return None  # pending 行きなので検索不要
+        try:
+            places = places_search(cand["name"], cand.get("hint"), bbox)
+        except requests.RequestException as e:
+            return ("places_error", str(e))
+        return ("ok", places, judge_candidate(cand, places, areas, style_examples))
+
+    with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+        looked = list(pool.map(lookup, new_candidates))
+
+    for cand, res in zip(new_candidates, looked):
         meta = cand["_post"]
         def hold(reason):
             stats["pending"] += 1
@@ -540,12 +570,10 @@ def main():
         if meta["author_uncertain"]:
             hold("author_uncertain")
             continue
-        try:
-            places = places_search(cand["name"], cand.get("hint"), bbox)
-        except requests.RequestException as e:
-            hold(f"places_error: {e}")
+        if res[0] == "places_error":
+            hold(f"places_error: {res[1]}")
             continue
-        judged = judge_candidate(cand, places, areas, style_examples)
+        _, places, judged = res
         idx = judged.get("place_index", 0)
         place = places[idx] if places and 0 <= idx < len(places) else {}
         reason = gate(judged, place, bbox) if place else "places_no_match"
@@ -565,9 +593,14 @@ def main():
         area_id = judged.get("area_id", "new")
         if area_id == "new" or area_id not in {a["id"] for a in areas}:
             new_name = judged.get("new_area_name") or "その他エリア"
-            area_id = re.sub(r"[^a-z0-9]", "", (judged.get("slug") or "area")) + "-area"
-            areas.append({"id": area_id, "name": new_name,
-                          "color": AREA_PALETTE[len(areas) % len(AREA_PALETTE)]})
+            # 判定は並列実行のため直前の候補が新設したエリアを知らない。同名なら再利用する
+            hit = next((a for a in areas if a["name"] == new_name), None)
+            if hit:
+                area_id = hit["id"]
+            else:
+                area_id = re.sub(r"[^a-z0-9]", "", (judged.get("slug") or "area")) + "-area"
+                areas.append({"id": area_id, "name": new_name,
+                              "color": AREA_PALETTE[len(areas) % len(AREA_PALETTE)]})
         slug = re.sub(r"[^a-z0-9-]", "", (judged.get("slug") or "spot").lower()) or "spot"
         while slug in slugs:
             slug += "2"
@@ -594,11 +627,13 @@ def main():
         known_place_ids[place_id] = spot
         stats["added"].append(spot["name"])
 
-    for spot in desc_refresh.values():
+    def _refresh(spot):
         try:
             refresh_desc(spot)
         except Exception as e:
             log("desc refresh skip:", spot["slug"], repr(e))
+    with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+        list(pool.map(_refresh, desc_refresh.values()))
 
     save(workdir, "spots.json", spots_doc)
     save(workdir, "ledger.json", ledger)
