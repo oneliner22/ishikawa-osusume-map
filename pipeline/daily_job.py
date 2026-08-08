@@ -223,14 +223,27 @@ def as_url_list(v):
     return []
 
 
+IMAGE_MAX_BYTES = 10_000_000
+
+
 def download_images(media_urls, limit=8):
     images = []
     for u in as_url_list(media_urls)[:limit]:
         try:
-            r = requests.get(u, timeout=30)
-            mime = r.headers.get("content-type", "")
-            if r.ok and mime.startswith("image/") and len(r.content) < 10_000_000:
-                images.append((r.content, mime.split(";")[0]))
+            # stream=True + content-length で、サイズ超過を全量DLせずに弾く
+            with requests.get(u, timeout=30, stream=True) as r:
+                mime = r.headers.get("content-type", "")
+                clen = int(r.headers.get("content-length") or 0)
+                if not (r.ok and mime.startswith("image/")) or clen > IMAGE_MAX_BYTES:
+                    continue
+                buf = bytearray()
+                for chunk in r.iter_content(65536):
+                    buf += chunk
+                    if len(buf) > IMAGE_MAX_BYTES:
+                        buf = None
+                        break
+                if buf:
+                    images.append((bytes(buf), mime.split(";")[0]))
         except requests.RequestException as e:
             log("image skip:", u, e)
     return images
@@ -547,20 +560,24 @@ def main():
     slugs = {s["slug"] for s in spots}
 
     # Places検索と同一性判定 (外部API) は候補間で独立なので並列に先行実行し、
-    # ゲート・重複排除・登録は順序依存 (place_id の先勝ち等) のため逐次で適用する
+    # ゲート・重複排除・登録は順序依存 (place_id の先勝ち等) のため逐次で適用する。
+    # 同名候補 (複数ポストが同じ店を紹介) は正規化名で代表1件だけ照会し結果を共有する
     def lookup(cand):
-        if cand["_post"]["author_uncertain"]:
-            return None  # pending 行きなので検索不要
         try:
             places = places_search(cand["name"], cand.get("hint"), bbox)
         except requests.RequestException as e:
             return ("places_error", str(e))
         return ("ok", places, judge_candidate(cand, places, areas, style_examples))
 
+    reps = {}
+    for cand in new_candidates:
+        if not cand["_post"]["author_uncertain"]:  # pending 直行分は検索不要
+            reps.setdefault(normalize(cand["name"]), cand)
     with ThreadPoolExecutor(max_workers=WORKERS) as pool:
-        looked = list(pool.map(lookup, new_candidates))
+        rep_results = dict(zip(reps, pool.map(lookup, reps.values())))
 
-    for cand, res in zip(new_candidates, looked):
+    for cand in new_candidates:
+        res = rep_results.get(normalize(cand["name"]))
         meta = cand["_post"]
         def hold(reason):
             stats["pending"] += 1

@@ -18,12 +18,17 @@ daily_job と同じく、掲載可否の最終判定は必ずコード側ゲー�
   MAX_ITEMS        1回の実行で処理する件数上限 (既定 12)
   PENDING_OVERRIDE テスト用: pending.json の代わりに処理する items のJSON文字列
 """
+import difflib
+import ipaddress
 import json
 import os
 import re
+import socket
 import subprocess
 import sys
 import tempfile
+from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import urljoin, urlparse
 
 from google.genai import types
 
@@ -70,6 +75,28 @@ FETCH_DECL = {
 }
 
 
+METADATA_HOSTS = {"metadata.google.internal", "metadata.goog"}
+
+
+def _url_fetchable(url):
+    """SSRF対策: 公開ホストへの http(s) のみ許可。プライベート/リンクローカル/
+    メタデータサーバ宛は拒否する (投稿本文へのプロンプトインジェクション経由で
+    Cloud Run 内部の認証情報等へ到達させないため。DNS再解決のTOCTOUは許容)。"""
+    try:
+        p = urlparse(url)
+        if p.scheme not in ("http", "https") or not p.hostname:
+            return False
+        if p.hostname.lower().rstrip(".") in METADATA_HOSTS:
+            return False
+        infos = socket.getaddrinfo(
+            p.hostname, p.port or (443 if p.scheme == "https" else 80),
+            proto=socket.IPPROTO_TCP)
+        return bool(infos) and all(
+            ipaddress.ip_address(info[4][0]).is_global for info in infos)
+    except (ValueError, OSError):
+        return False
+
+
 def run_tool(name, args, collected):
     """ツール実行。places_search の結果は collected に蓄積し、後段ゲートの根拠にする。"""
     if name == "places_search":
@@ -87,15 +114,25 @@ def run_tool(name, args, collected):
         return out or "ヒットなし"
     if name == "fetch_url":
         url = str(args.get("url", ""))
-        if not url.startswith("http"):
-            return "エラー: http(s) URLのみ"
-        try:
-            r = dj.requests.get(url, timeout=20, headers={"User-Agent": "Mozilla/5.0"})
+        # リダイレクトも1ホップずつ検証する (公開URL→内部宛リダイレクトでの迂回防止)
+        for _ in range(4):
+            if not _url_fetchable(url):
+                return "エラー: このURLは取得できない (公開Webの http(s) のみ)"
+            try:
+                r = dj.requests.get(url, timeout=20, allow_redirects=False,
+                                    headers={"User-Agent": "Mozilla/5.0"})
+            except dj.requests.RequestException as e:
+                return f"取得失敗: {e}"
+            if r.is_redirect or r.is_permanent_redirect:
+                loc = r.headers.get("location")
+                if not loc:
+                    return "取得失敗: 不正なリダイレクト"
+                url = urljoin(url, loc)
+                continue
             text = re.sub(r"(?is)<(script|style)[^>]*>.*?</\1>", " ", r.text)
             text = re.sub(r"<[^>]+>", " ", text)
             return re.sub(r"\s+", " ", text)[:4000]
-        except dj.requests.RequestException as e:
-            return f"取得失敗: {e}"
+        return "取得失敗: リダイレクトが多すぎる"
     return f"不明なツール: {name}"
 
 
@@ -114,9 +151,26 @@ DECISION_SCHEMA = {"type": "object", "properties": {
     "reason": {"type": "string"}}, "required": ["action", "reason"]}
 
 
+def shortlist_spots(name, doc, aliases, limit=40):
+    """候補名に類似する掲載済みスポットのみ返す。全件をプロンプトに同梱すると
+    トークンが spots 数×MAX_ITEMS に比例して増えるため (名寄せの最終判定は
+    apply_decision 側が全件走査するので、ここは名寄せのヒント提示でよい)。"""
+    rev = {}
+    for k, v in aliases.items():
+        rev.setdefault(v, []).append(k)
+    key = dj.normalize(name)
+
+    def score(s):
+        names = [s["name"]] + rev.get(s["name"], [])
+        return max(difflib.SequenceMatcher(None, key, dj.normalize(n)).ratio()
+                   for n in names)
+    return sorted(doc["spots"], key=score, reverse=True)[:limit]
+
+
 def investigate(item, post, images, doc, aliases, style_examples, collected):
     areas_desc = "\n".join(f"- {a['id']}: {a['name']}" for a in doc["areas"])
-    spots_digest = "\n".join(f"- {s['name']} (slug={s['slug']})" for s in doc["spots"])
+    spots_digest = "\n".join(f"- {s['name']} (slug={s['slug']})"
+                             for s in shortlist_spots(item["name"], doc, aliases))
     prompt = (
         "あなたは「ぽこピーの回覧板 in 石川」おすすめスポットマップの編集者です。"
         "自動入稿の受入ゲートで保留になった候補1件を精査し、掲載可否を判断します。\n\n"
@@ -124,7 +178,7 @@ def investigate(item, post, images, doc, aliases, style_examples, collected):
         f"# 出典ポスト\n著者: {(post or {}).get('author_name', '(取得不可)')}\n"
         f"本文: {(post or {}).get('text', '(取得不可)')}\n"
         "(添付画像があれば後続に含む。おすすめ記述は画像内にあることが多い)\n\n"
-        f"# 掲載済みスポット\n{spots_digest}\n\n"
+        f"# 掲載済みスポット (候補名との類似上位のみ抜粋)\n{spots_digest}\n\n"
         f"# 既存エイリアス(略称→正式名)\n{json.dumps(aliases, ensure_ascii=False)}\n\n"
         f"# エリア一覧\n{areas_desc}\n\n"
         "# 調査方針\n"
@@ -157,7 +211,7 @@ def investigate(item, post, images, doc, aliases, style_examples, collected):
         resp_parts = []
         for fc in calls:
             out = run_tool(fc.name, dict(fc.args or {}), collected)
-            log(f"  tool {fc.name}({dict(fc.args or {})}) -> "
+            log(f"  [{item['name']}] tool {fc.name}({dict(fc.args or {})}) -> "
                 f"{str(out)[:120]}")
             resp_parts.append(types.Part.from_function_response(
                 name=fc.name, response={"result": out}))
@@ -325,8 +379,12 @@ def main():
     style_examples = [s["desc"] for s in doc["spots"][:3]]
     stats = {"added": [], "appended": [], "dropped": [], "held": 0, "aliases": 0}
     new_items = []
-    for item in todo:
-        log(f"item: {item['name']} ({item.get('reason', '')})")
+
+    # 調査 (ポスト取得→画像DL→Gemini tool-loop) は item 間で独立なので並列に流し、
+    # spots/aliases への反映は順序を保って逐次で行う。並列調査は他 item が同時に
+    # 掲載する新規スポットを知らないが、同一施設は apply_decision の place_id 照合が
+    # 出典追記に倒すので二重登録にはならない
+    def resolve(item):
         post, images = None, []
         if mcp:
             try:
@@ -334,15 +392,29 @@ def main():
                 if post:
                     images = dj.download_images(post.get("media_urls"), limit=4)
             except Exception as e:
-                log("  post fetch skip:", repr(e))
+                log(f"  [{item['name']}] post fetch skip:", repr(e))
         collected = {}
         try:
             decision = investigate(item, post, images, doc, aliases,
                                    style_examples, collected)
+            return post, collected, decision, None
+        except Exception as e:
+            return post, collected, None, e
+
+    with ThreadPoolExecutor(max_workers=dj.WORKERS) as pool:
+        resolved = list(pool.map(resolve, todo))
+
+    for item, (post, collected, decision, err) in zip(todo, resolved):
+        log(f"item: {item['name']} ({item.get('reason', '')})")
+        if err:
+            log("  resolve error:", repr(err))
+            hold(item, new_items, f"実行エラー: {type(err).__name__}", stats)
+            continue
+        try:
             apply_decision(decision, item, post, doc, aliases,
                            new_items, collected, stats)
         except Exception as e:
-            log("  resolve error:", repr(e))
+            log("  apply error:", repr(e))
             hold(item, new_items, f"実行エラー: {type(e).__name__}", stats)
 
     pending["items"] = new_items + rest
