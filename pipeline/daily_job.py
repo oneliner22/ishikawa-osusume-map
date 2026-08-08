@@ -13,6 +13,7 @@ X検索(xdev) → 画像取得 → Gemini抽出 → bot判定 → Places裏取�
   PLACES_API_KEY
   GCP_PROJECT / VERTEX_LOCATION (既定 global)
   MODEL_EXTRACT / MODEL_JUDGE (既定は pipeline.json 参照)
+  INGEST_WINDOW_HOURS  x_ingest の取得窓 (既定 25。日次実行の再取得課金を抑える)
   DRY_RUN=1 で push しない (差分はログに出す)
 """
 import difflib
@@ -23,12 +24,11 @@ import re
 import subprocess
 import sys
 import tempfile
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 
 import requests
 from google import genai
 from mcp_client import McpClient
-from datetime import timedelta
 
 REPO = os.environ["GITHUB_REPO"]
 TOKEN = os.environ["GITHUB_TOKEN"]
@@ -111,9 +111,23 @@ def github_issue(title, body):
 
 # ---------------- 収集 ----------------
 
-def fetch_posts(mcp, ledger, query, max_posts=200, include_refs=False):
-    """query を ingest し、台帳未処理の投稿を返す。include_refs=True で reply/引用も含む。"""
-    ing = mcp.call("x_ingest", {"query": query, "max_posts": max_posts})
+INGEST_WINDOW_HOURS = float(os.environ.get("INGEST_WINDOW_HOURS", "25"))
+
+
+def fetch_posts(mcp, ledger, query, max_posts=200, include_refs=False, since=None):
+    """query を ingest し、台帳未処理の投稿を返す。include_refs=True で reply/引用も含む。
+
+    日次実行のため、既定では直近 INGEST_WINDOW_HOURS (25h) に絞って取得する
+    (X API の post read 課金の抑制。無指定だと recent 検索が7日分を毎日引き直す)。
+    since (aware datetime) 指定でさらに遡れるが、recent 検索の7日上限にクランプする。
+    """
+    now = datetime.now(timezone.utc)
+    if since is None:
+        since = now - timedelta(hours=INGEST_WINDOW_HOURS)
+    oldest = now - timedelta(days=7) + timedelta(minutes=10)
+    start = max(since, oldest).strftime("%Y-%m-%dT%H:%M:%SZ")
+    ing = mcp.call("x_ingest", {"query": query, "max_posts": max_posts,
+                                "start_time": start})
     dataset = ing.get("dataset") if isinstance(ing, dict) else None
     if not dataset:
         raise RuntimeError(f"x_ingest から dataset を特定できない: {ing}")
@@ -176,9 +190,15 @@ def harvest_seeds(mcp, ledger, rh):
     harvested = []
     for pid, s in active:
         try:
+            # 初回収穫のみシード投稿日まで遡る (シード化は投稿処理の翌日以降のため、
+            # 25h窓だと投稿直後〜シード化前の reply を取りこぼす)。以降は既定の25h窓。
+            since = None
+            if not s.get("harvested"):
+                since = datetime.fromisoformat(s["date"]).replace(tzinfo=timezone.utc)
             harvested += fetch_posts(
                 mcp, ledger, f"(conversation_id:{pid} OR url:{pid}) -is:retweet",
-                max_posts=50, include_refs=True)
+                max_posts=50, include_refs=True, since=since)
+            s["harvested"] = True
         except Exception as e:
             log("harvest skip:", pid, repr(e))
     ledger["seeds"] = {pid: s for pid, s in ledger["seeds"].items()
