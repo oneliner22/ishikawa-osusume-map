@@ -64,7 +64,7 @@ Cloud Scheduler → Cloud Run Job (GCP: salmon-chan)
 
 誤入稿時は `sources` に由来が残っているため `git revert` で戻せる。
 
-### 週次 pending 整理（毎週金曜 6:05 JST）
+### 日次 pending 整理（毎日 7:40 JST、日次ジョブ完了後）
 
 日次ジョブのワンショット判定で保留になった候補（表記揺れ・同名多店舗など）を、
 Gemini のツールループ（Places再検索・Webページ確認・出典ポスト再読）で精査して回収する:
@@ -80,7 +80,7 @@ Gemini のツールループ（Places再検索・Webページ確認・出典ポ�
 実装は `pipeline/` 配下:
 
 - `daily_job.py` — 日次ジョブ本体（上記フローを1プロセスで実行）
-- `pending_resolver.py` — 週次 pending 整理ジョブ（daily_job のヘルパーを流用）
+- `pending_resolver.py` — 日次 pending 整理ジョブ（daily_job のヘルパーを流用）
 - `mcp_client.py` — xdev MCP (streamable HTTP) の最小クライアント
 - `deploy.sh` — salmon-chan への初回デプロイ一式（API有効化/Secret/ビルド/ジョブ/スケジューラ）。
   `GITHUB_TOKEN_VALUE` と `XDEV_MCP_URL_VALUE` を環境変数で渡して実行

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""週次 pending 整理ジョブ (Cloud Run Jobs)。
+"""日次 pending 整理ジョブ (Cloud Run Jobs)。日次ジョブの完了後に走る。
 
 data/pending.json の保留候補(受入ゲート不合格分)を、Gemini のツールループ
 (Places再検索・Webページ確認)で1件ずつ精査し、

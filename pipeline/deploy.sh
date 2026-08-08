@@ -66,7 +66,8 @@ else
     --http-method POST --oauth-service-account-email "$SA"
 fi
 
-# ---- 週次 pending 整理ジョブ (毎週金曜 6:05 JST、日次ジョブの前に走る) ----
+# ---- 日次 pending 整理ジョブ (毎日 7:40 JST、日次ジョブ完了後に走る。
+# 日次ジョブは 7:00 開始 + task-timeout 30m なので 7:30 までに必ず終了している) ----
 PJOB=ishikawa-spots-pending
 gcloud run jobs deploy "$PJOB" --image "$IMAGE" --region "$REGION" \
   --service-account "$SA" --max-retries 0 --task-timeout 30m \
@@ -78,11 +79,11 @@ PSCHED=ishikawa-spots-pending-trigger
 PSCHED_URI="https://run.googleapis.com/v2/projects/${PROJECT}/locations/${REGION}/jobs/${PJOB}:run"
 if gcloud scheduler jobs describe "$PSCHED" --location "$REGION" >/dev/null 2>&1; then
   gcloud scheduler jobs update http "$PSCHED" --location "$REGION" \
-    --schedule "5 6 * * 5" --time-zone "Asia/Tokyo" --uri "$PSCHED_URI" \
+    --schedule "40 7 * * *" --time-zone "Asia/Tokyo" --uri "$PSCHED_URI" \
     --http-method POST --oauth-service-account-email "$SA"
 else
   gcloud scheduler jobs create http "$PSCHED" --location "$REGION" \
-    --schedule "5 6 * * 5" --time-zone "Asia/Tokyo" --uri "$PSCHED_URI" \
+    --schedule "40 7 * * *" --time-zone "Asia/Tokyo" --uri "$PSCHED_URI" \
     --http-method POST --oauth-service-account-email "$SA"
 fi
 
