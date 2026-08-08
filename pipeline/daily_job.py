@@ -462,7 +462,9 @@ def main():
     # 廃止済み (シードごとに x_ingest が走るため、収穫対象は呼びかけ投稿に限定して
     # API 課金を抑える)
     official = watch_official(mcp, ledger, rh)
-    main_posts = fetch_posts(mcp, ledger, pipeline_cfg["x_query"], max_posts=200)
+    # キーワード入りならリプ・引用も処理対象 (ingest は元々ヒットしており追加課金なし)
+    main_posts = fetch_posts(mcp, ledger, pipeline_cfg["x_query"], max_posts=200,
+                             include_refs=True)
     harvested, n_seeds = harvest_seeds(mcp, ledger, rh)
     seen_ids, posts = set(), []
     for p in official + main_posts + harvested:
