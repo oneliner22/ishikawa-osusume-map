@@ -475,6 +475,55 @@
   "2086026779534487728": {
    "date": "2026-08-08",
    "result": "not_recommendation"
+  },
+  "2086446851906265442": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
+  },
+  "2086420025737666800": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
+  },
+  "2086267323732902056": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
+  },
+  "2086266687079547277": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
+  },
+  "2086463964125573530": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
+  },
+  "2086457703992566175": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
+  },
+  "2086431371741012142": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
+  },
+  "2086430551331033402": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
+  },
+  "2086422180888514863": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
+  },
+  "2086407721834995998": {
+   "date": "2026-08-09",
+   "result": "processed",
+   "author": "benishogaPP"
+  },
+  "2086273684311097553": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
+  },
+  "2086267187829035441": {
+   "date": "2026-08-09",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -522,6 +571,11 @@
    "verdict": "fan",
    "name": "_y_n_p_p_",
    "date": "2026-08-07"
+  },
+  "1852313820817182720": {
+   "verdict": "fan",
+   "name": "benishogaPP",
+   "date": "2026-08-09"
   }
  },
  "seeds": {}
