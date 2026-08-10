@@ -524,6 +524,65 @@
   "2086267187829035441": {
    "date": "2026-08-09",
    "result": "not_recommendation"
+  },
+  "2086837350228013387": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086741934115368967": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086613535136842149": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086613199785500826": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086612115998269529": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086611942337339725": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086778651526520865": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086741927769334081": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086723410466656326": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086707571902357796": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086611640783683950": {
+   "date": "2026-08-10",
+   "result": "processed",
+   "author": "otanipei0729"
+  },
+  "2086608765605101769": {
+   "date": "2026-08-10",
+   "result": "processed",
+   "author": "otanipei0729"
+  },
+  "2086601976717189255": {
+   "date": "2026-08-10",
+   "result": "not_recommendation"
+  },
+  "2086601639671329137": {
+   "date": "2026-08-10",
+   "result": "processed",
+   "author": "otanipei0729"
   }
  },
  "authors": {
@@ -576,6 +635,11 @@
    "verdict": "fan",
    "name": "benishogaPP",
    "date": "2026-08-09"
+  },
+  "1481944493310251009": {
+   "verdict": "fan",
+   "name": "otanipei0729",
+   "date": "2026-08-10"
   }
  },
  "seeds": {}

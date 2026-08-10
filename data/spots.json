@@ -39,6 +39,11 @@
    "id": "matsuno-area",
    "name": "かほく",
    "color": "#c2543f"
+  },
+  {
+   "id": "hyoitsu-area",
+   "name": "にし茶屋街周辺",
+   "color": "#3f6fa8"
   }
  ],
  "spots": [
@@ -78,6 +83,13 @@
      "author": "YD8uZ9ZzRY66388",
      "date": "2026-07-30",
      "quote": "金沢らしい町並みを楽しめる。昼も夜も雰囲気たっぷり"
+    },
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2086611640783683950",
+     "author": "otanipei0729",
+     "date": "2026-08-10",
+     "quote": "東茶屋街"
     }
    ],
    "place_id": "ChIJsfC6oXQz-F8RdA1qXiF6jLs",
@@ -872,6 +884,102 @@
     }
    ],
    "hours": "月曜日: 11時00分～14時40分, 17時00分～20時40分 / 火曜日: 定休日 ほか"
+  },
+  {
+   "slug": "issho",
+   "name": "一笑（丸八製茶場）",
+   "area": "higashiyama",
+   "cat": "カフェ・喫茶",
+   "lat": 36.57237,
+   "lng": 136.66779,
+   "approx": false,
+   "desc": "ひがし茶屋街にある丸八製茶場が手がける日本茶カフェ。香り高い加賀棒茶とこだわりのスイーツが味わえる。散策の合間の休憩にぴったりな、落ち着いた和の空間。",
+   "address": "日本、〒920-0831 石川県金沢市東山１丁目２６−１３",
+   "place_id": "ChIJdWlpt3Qz-F8R9TC-wjE2fGg",
+   "added": "2026-08-10",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2086611640783683950",
+     "author": "otanipei0729",
+     "date": "2026-08-10",
+     "quote": "一笑\n加賀棒茶とスイーツ。"
+    }
+   ],
+   "hours": "月曜日: 定休日 / 火曜日: 定休日 ほか",
+   "url": "https://issho.kagaboucha.com/"
+  },
+  {
+   "slug": "gelateria-ritorta",
+   "name": "ジェラテリア リトルタ",
+   "area": "katamachi",
+   "cat": "カフェ・喫茶",
+   "lat": 36.56414,
+   "lng": 136.6526,
+   "approx": false,
+   "desc": "香林坊にあるジェラート専門店。こだわりのスイーツが楽しめる。ショッピングの合間の休憩や、食後のデザートにぴったり。季節ごとのフレーバーを味わいながら、金沢の街歩きを満喫できる。",
+   "address": "日本、〒920-0961 石川県金沢市香林坊２丁目１２−１５",
+   "place_id": "ChIJs40KDAAz-F8R2XUj1I_7Rkw",
+   "added": "2026-08-10",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2086611640783683950",
+     "author": "otanipei0729",
+     "date": "2026-08-10",
+     "quote": "リトルタ"
+    }
+   ],
+   "hours": "月曜日: 12時00分～19時00分 / 火曜日: 定休日 ほか",
+   "url": "https://instagram.com/gelateriaritorta"
+  },
+  {
+   "slug": "hogarakaya",
+   "name": "ほがらかや 本店",
+   "area": "omicho",
+   "cat": "グルメ",
+   "lat": 36.57616,
+   "lng": 136.65107,
+   "approx": false,
+   "desc": "金沢駅からほど近い場所にある、雰囲気抜群の煙モクモク系町焼肉。昔ながらのレトロな空間で、美味しいお肉を堪能できる。地元民にも愛される名店。",
+   "address": "日本、〒920-0853 石川県金沢市本町２丁目２０−１１",
+   "place_id": "ChIJ1cyKaGkz-F8Ri_LosmGBKXA",
+   "added": "2026-08-10",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2086608765605101769",
+     "author": "otanipei0729",
+     "date": "2026-08-10",
+     "quote": "金沢駅からほど近い雰囲気抜群煙モクモク町焼肉"
+    }
+   ],
+   "hours": "月曜日: 定休日 / 火曜日: 17時00分～22時00分 ほか",
+   "url": "https://hogarakaya-kanazawa.jimdofree.com/"
+  },
+  {
+   "slug": "hyoitsu",
+   "name": "ロイヤルミルクティーと、飄逸",
+   "area": "hyoitsu-area",
+   "cat": "カフェ・喫茶",
+   "lat": 36.56202,
+   "lng": 136.64242,
+   "approx": false,
+   "desc": "スパイスの効いた本格的なチャイやロイヤルミルクティーが楽しめるカフェ。こだわりのスパイス系ドリンクを味わいながら、ゆったりとした時間を過ごせる一軒。",
+   "address": "日本、〒921-8022 石川県金沢市中村町２４−１５",
+   "place_id": "ChIJY80ERjs1-F8RrDJhMbHIPQY",
+   "added": "2026-08-10",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2086601639671329137",
+     "author": "otanipei0729",
+     "date": "2026-08-09",
+     "quote": "スパイス系だと飄逸も捨て難い"
+    }
+   ],
+   "hours": "月曜日: 定休日 / 火曜日: 定休日 ほか",
+   "url": "https://www.instagram.com/hyouitsu"
   }
  ]
 }
