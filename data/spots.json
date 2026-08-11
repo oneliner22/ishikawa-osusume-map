@@ -89,8 +89,7 @@
      "url": "https://x.com/otanipei0729/status/2086611640783683950",
      "author": "otanipei0729",
      "date": "2026-08-10",
-     "quote": "東茶屋街",
-     "embed": false
+     "quote": "東茶屋街"
     }
    ],
    "place_id": "ChIJsfC6oXQz-F8RdA1qXiF6jLs",
@@ -904,8 +903,7 @@
      "url": "https://x.com/otanipei0729/status/2086611640783683950",
      "author": "otanipei0729",
      "date": "2026-08-10",
-     "quote": "一笑\n加賀棒茶とスイーツ。",
-     "embed": false
+     "quote": "一笑\n加賀棒茶とスイーツ。"
     }
    ],
    "hours": "月曜日: 定休日 / 火曜日: 定休日 ほか",
@@ -929,8 +927,7 @@
      "url": "https://x.com/otanipei0729/status/2086611640783683950",
      "author": "otanipei0729",
      "date": "2026-08-10",
-     "quote": "リトルタ",
-     "embed": false
+     "quote": "リトルタ"
     }
    ],
    "hours": "月曜日: 12時00分～19時00分 / 火曜日: 定休日 ほか",
@@ -954,8 +951,7 @@
      "url": "https://x.com/otanipei0729/status/2086608765605101769",
      "author": "otanipei0729",
      "date": "2026-08-10",
-     "quote": "金沢駅からほど近い雰囲気抜群煙モクモク町焼肉",
-     "embed": false
+     "quote": "金沢駅からほど近い雰囲気抜群煙モクモク町焼肉"
     }
    ],
    "hours": "月曜日: 定休日 / 火曜日: 17時00分～22時00分 ほか",
@@ -1052,8 +1048,7 @@
      "url": "https://x.com/otanipei0729/status/2086611640783683950",
      "author": "otanipei0729",
      "date": "2026-08-10",
-     "quote": "スイーツはその他マルガージェラート、リトルタ、サンニコラあたりが好きです",
-     "embed": false
+     "quote": "スイーツはその他マルガージェラート、リトルタ、サンニコラあたりが好きです"
     }
    ],
    "hours": "月曜日: 11時00分～17時00分 / 火曜日: 11時00分～17時00分 ほか",
@@ -1077,8 +1072,7 @@
      "url": "https://x.com/otanipei0729/status/2086611640783683950",
      "author": "otanipei0729",
      "date": "2026-08-10",
-     "quote": "スイーツはその他マルガージェラート、リトルタ、サンニコラあたりが好きです",
-     "embed": false
+     "quote": "スイーツはその他マルガージェラート、リトルタ、サンニコラあたりが好きです"
     }
    ],
    "hours": "月曜日: 11時00分～19時00分 / 火曜日: 定休日 ほか",
@@ -1108,6 +1102,30 @@
    ],
    "hours": "月曜日: 11時00分～14時00分 / 火曜日: 11時00分～14時00分 ほか",
    "url": "https://j-biryani.com/"
+  },
+  {
+   "slug": "amanatto-kawamura",
+   "name": "甘納豆かわむら",
+   "area": "hyoitsu-area",
+   "cat": "雑貨・土産",
+   "lat": 36.55665,
+   "lng": 136.64715,
+   "approx": false,
+   "desc": "にし茶屋街にある人気の甘納豆専門店。ひがし茶屋街とは別の場所にあるので訪れる際は注意が必要。素材の味を活かした上品な甘納豆は、金沢土産としてもおすすめ。",
+   "address": "日本、〒921-8031 石川県金沢市野町２丁目２４−７",
+   "place_id": "ChIJuRfW53w0-F8Rc6QfflUk-YY",
+   "added": "2026-08-11",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/_y_n_p_p_/status/2087196175263031629",
+     "author": "_y_n_p_p_",
+     "date": "2026-08-11",
+     "quote": "《甘納豆かわむら》 にし茶屋街というところにあります。東茶屋街とは別の場所なので注意！"
+    }
+   ],
+   "hours": "月曜日: 9時30分～18時00分 / 火曜日: 9時30分～18時00分 ほか",
+   "url": "https://mame-kawamura.com/"
   }
  ]
 }
