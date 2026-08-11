@@ -26,8 +26,18 @@
 
 ```json
 {"type": "youtube", "id": "IQEjL6koxoU"}
-{"type": "x", "url": "https://x.com/.../status/...", "author": "@...", "date": "2026-07-31", "quote": "..."}
+{"type": "x", "url": "https://x.com/<handle>/status/<id>", "author": "<handle>", "date": "2026-07-31", "quote": "..."}
 ```
+
+X出典のURLは必ず **正規形**（`https://x.com/<handle>/status/<id>`）で持つ。
+`https://x.com/i/web/status/<id>` は X 側のリダイレクト頼みで、投稿者が年齢制限付き
+アカウントだと未ログイン閲覧者にリダイレクトが解決されず X の404が出る
+（著者ハンドルが取れなかった場合のみこの形式にフォールバックする。validate.py が警告する）。
+
+`"embed": false` が付いた出典は、投稿者のアカウント設定（年齢制限）により
+埋め込みも未ログイン閲覧もできないポスト。X の oEmbed が 403 を返すかどうかで
+日次ジョブが毎日判定し直す（可否は投稿者の設定変更で変わるため）。
+地図側は埋め込みを試みず、引用カードに注記を出す。
 
 自動追加スポットは任意で `address` / `hours` / `url` / `place_id` / `added` / `out_of_pref` を持つ。
 

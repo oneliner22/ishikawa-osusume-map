@@ -237,6 +237,75 @@ def as_url_list(v):
     return []
 
 
+# ---------------- X 出典URL ----------------
+
+HANDLE_RE = re.compile(r"[A-Za-z0-9_]{1,15}\Z")
+
+
+def post_id_of(url):
+    m = re.search(r"/status(?:es)?/(\d+)", url or "")
+    return m.group(1) if m else None
+
+
+def x_post_url(pid, author):
+    """X出典のURL。/i/web/status/<id> は X 側のリダイレクト頼みで、投稿者が
+    年齢制限付きアカウントだと未ログイン閲覧者にはリダイレクトが解決されず
+    X の404が出る。著者ハンドルが分かる限り正規形で持つこと。"""
+    author = (author or "").lstrip("@")
+    if HANDLE_RE.match(author):
+        return f"https://x.com/{author}/status/{pid}"
+    return f"https://x.com/i/web/status/{pid}"
+
+
+def has_source(sources, url):
+    """出典の重複判定。URL文字列ではなくポストIDで比較する
+    (同じポストを指す別形式のURLを二重登録しないため)。"""
+    pid = post_id_of(url)
+    if not pid:
+        return any(src.get("url") == url for src in sources)
+    return any(post_id_of(src.get("url")) == pid for src in sources)
+
+
+def check_embeddable(url):
+    """X の oEmbed で埋め込み可否を判定する。年齢制限付きアカウントのポストは
+    403 を返し、埋め込みも未ログイン閲覧もできない。可=True / 不可=False /
+    判定できなかった場合 (通信エラー・想定外ステータス) は None。"""
+    try:
+        r = requests.get("https://publish.twitter.com/oembed",
+                         params={"url": url, "omit_script": 1, "dnt": "true"},
+                         timeout=20)
+    except requests.RequestException as e:
+        log("oembed check skip:", repr(e))
+        return None
+    if r.status_code == 200:
+        return True
+    if r.status_code in (403, 404):
+        return False
+    log(f"oembed check: 想定外のステータス {r.status_code} ({url})")
+    return None
+
+
+def set_embed_flag(src):
+    """出典に embed フラグを立てる。既定は埋め込み可なので、不可のときだけ
+    embed:false を持たせる。判定できなかったときは既存の値を維持する。"""
+    ok = check_embeddable(src["url"])
+    if ok is True:
+        src.pop("embed", None)
+    elif ok is False:
+        src["embed"] = False
+
+
+def refresh_embed_flags(spots):
+    """全X出典の埋め込み可否を洗い直す。投稿者がアカウント設定を変えれば可否も
+    変わるため、新規分だけでなく毎日引き直す。"""
+    srcs = [src for s in spots for src in s.get("sources", [])
+            if src.get("type") == "x" and src.get("url")]
+    with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+        list(pool.map(set_embed_flag, srcs))
+    n = sum(1 for src in srcs if src.get("embed") is False)
+    log(f"embed check: {len(srcs)} sources ({n} 件は未ログイン閲覧不可)")
+
+
 IMAGE_MAX_BYTES = 10_000_000
 
 
@@ -503,6 +572,8 @@ def main():
     log(f"new posts: {len(posts)} (official {len(official)} / main {len(main_posts)} "
         f"/ harvested {len(harvested)} from {n_seeds} seeds)")
     if not posts:
+        refresh_embed_flags(spots)  # 新規ポストがない日も埋め込み可否は変わり得る
+        save(workdir, "spots.json", spots_doc)
         save(workdir, "ledger.json", ledger)  # シード整理だけでも保存対象
         commit_if_changed(workdir, f"auto-ingest {TODAY}: no new posts (seeds {n_seeds})")
         return
@@ -532,7 +603,7 @@ def main():
 
     for post, cands in zip(posts, prepped):
         pid = str(post["id"])
-        post_url = f"https://x.com/i/web/status/{pid}"
+        post_url = x_post_url(pid, post.get("author_name"))
         if not cands:
             ledger["processed_posts"][pid] = {"date": TODAY, "result": "not_recommendation"}
             stats["skipped_offtopic"] += 1
@@ -549,7 +620,7 @@ def main():
                              "author_uncertain": verdict == "uncertain"}
             existing = match_existing(cand["name"], aliases, spots)
             if existing:
-                if not any(src.get("url") == post_url for src in existing["sources"]):
+                if not has_source(existing["sources"], post_url):
                     existing["sources"].append({
                         "type": "x", "url": post_url, "author": cand["_post"]["author"],
                         "date": post_date, "quote": cand.get("quote", "")})
@@ -614,7 +685,7 @@ def main():
         place_id = place["id"]
         if place_id in known_place_ids:  # 名寄せ漏れ: 同一施設に出典追記
             ex_spot = known_place_ids[place_id]
-            if not any(src.get("url") == meta["url"] for src in ex_spot["sources"]):
+            if not has_source(ex_spot["sources"], meta["url"]):
                 ex_spot["sources"].append({"type": "x", "url": meta["url"],
                                            "author": meta["author"], "date": meta["date"],
                                            "quote": cand.get("quote", "")})
@@ -665,6 +736,7 @@ def main():
             log("desc refresh skip:", spot["slug"], repr(e))
     with ThreadPoolExecutor(max_workers=WORKERS) as pool:
         list(pool.map(_refresh, desc_refresh.values()))
+    refresh_embed_flags(spots)
 
     save(workdir, "spots.json", spots_doc)
     save(workdir, "ledger.json", ledger)

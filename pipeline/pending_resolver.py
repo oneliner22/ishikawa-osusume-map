@@ -199,13 +199,22 @@ def register_aliases(decision, aliases, spot_name, item_name, stats):
             stats["aliases"] += 1
 
 
+def build_source(item, post, decision):
+    """pending item から X 出典を組み立てる。pending.json に入っている URL は
+    /i/web/ 形式のことがあるため、著者が分かればここで正規形に直す。"""
+    author = (post or {}).get("author_name", "")
+    url = dj.x_post_url(dj.post_id_of(item["post"]), author) \
+        if dj.post_id_of(item["post"]) else item["post"]
+    src = {"type": "x", "url": url, "author": author,
+           "date": item.get("date", dj.TODAY),
+           "quote": decision.get("quote", "")}
+    dj.set_embed_flag(src)
+    return src
+
+
 def append_source(spot, item, post, decision, aliases, stats):
-    if not any(src.get("url") == item["post"] for src in spot["sources"]):
-        spot["sources"].append({
-            "type": "x", "url": item["post"],
-            "author": (post or {}).get("author_name", ""),
-            "date": item.get("date", dj.TODAY),
-            "quote": decision.get("quote", "")})
+    if not dj.has_source(spot["sources"], item["post"]):
+        spot["sources"].append(build_source(item, post, decision))
         stats["appended"].append(spot["name"])
     register_aliases(decision, aliases, spot["name"], item["name"], stats)
 
@@ -279,10 +288,7 @@ def apply_decision(decision, item, post, doc, aliases, pending_items, collected,
         "lat": round(lat, 5), "lng": round(lng, 5), "approx": False,
         "desc": desc, "address": place.get("formattedAddress", ""),
         "place_id": place["id"], "added": dj.TODAY,
-        "sources": [{"type": "x", "url": item["post"],
-                     "author": (post or {}).get("author_name", ""),
-                     "date": item.get("date", dj.TODAY),
-                     "quote": decision.get("quote", "")}]}
+        "sources": [build_source(item, post, decision)]}
     hours = place.get("regularOpeningHours", {}).get("weekdayDescriptions")
     if hours:
         spot["hours"] = " / ".join(hours[:2]) + (" ほか" if len(hours) > 2 else "")

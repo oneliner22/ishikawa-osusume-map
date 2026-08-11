@@ -100,6 +100,7 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
 .x-card .x-date{color:#8a7350;font-size:11px;margin-left:6px}
 .x-card .x-quote{font-size:12.5px;line-height:1.6;margin-top:4px;color:#5b4631}
 .x-card .x-link{font-size:11.5px}
+.x-card .x-gated{font-size:11px;line-height:1.5;color:#b07d2a;margin-top:6px}
 .loading{font-size:12px;color:#8a7350;padding:6px 2px}
 .load-error{border:2px solid var(--accent);border-radius:14px;background:var(--paper);padding:16px;margin-top:22px;font-size:13.5px;line-height:1.7}
 @media(max-width:600px){ #map{height:52vh} .hero h1{text-shadow:1px 1px 0 #fff,2px 2px 0 var(--line)} }
@@ -281,13 +282,17 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
     if(xs.length){
       html+=`<div class="reply-label">Xでのおすすめ言及（${xs.length}件）</div>`;
       xs.forEach(x=>{
-        const idm=(x.url||'').match(/status(?:es)?\/(\d+)/); const tid=idm?idm[1]:null;
+        // embed:false は投稿者のアカウント設定(年齢制限)で埋め込み・未ログイン閲覧が
+        // できない出典。埋め込みを試みても失敗するので最初から引用カードで見せる
+        const gated=x.embed===false;
+        const idm=(x.url||'').match(/status(?:es)?\/(\d+)/); const tid=gated?null:(idm?idm[1]:null);
         html+=`<div class="embed-wrap">`+
           `<div class="x-card fallback">`+
             `<span class="x-author">${esc(x.author||'')}</span>`+
             (x.date?`<span class="x-date">${esc(x.date)}</span>`:'')+
             (x.quote?`<div class="x-quote">${esc(x.quote)}</div>`:'')+
             `<div><a class="x-link" href="${esc(x.url)}" target="_blank" rel="noopener">𝕏 ポストを開く ↗</a></div>`+
+            (gated?`<div class="x-gated">※ 投稿者のアカウント設定により、X にログインしていないとこのポストは表示できません。</div>`:'')+
           `</div>`+
           (tid?`<div class="tweet-slot" id="tw-${tid}"></div>`:'')+
           `</div>`;
@@ -311,6 +316,7 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
     if(xs.length && window.twttr && window.twttr.ready){
       window.twttr.ready(tw=>{
         xs.forEach(x=>{
+          if(x.embed===false) return;  // 埋め込み不可と分かっている出典は試さない
           const idm=(x.url||'').match(/status(?:es)?\/(\d+)/); if(!idm) return;
           const slot=document.getElementById('tw-'+idm[1]); if(!slot||slot.childNodes.length) return;
           tw.widgets.createTweet(idm[1], slot, {conversation:'none', theme:'light', align:'center', dnt:true})

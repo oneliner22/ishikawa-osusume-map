@@ -59,6 +59,12 @@ if spots_doc and videos and pipeline:
             elif t == "x":
                 if not x_url_re.match(src.get("url", "")):
                     err(f"{tag}: 不正なX URL '{src.get('url')}'")
+                # /i/web/status/<id> は X のリダイレクト頼みで、年齢制限付きアカウントの
+                # ポストだと未ログイン閲覧者に404が出る。著者不明で正規化できない場合の
+                # フォールバックなので入稿は止めず、警告だけ出す
+                elif "/i/web/status/" in src["url"]:
+                    print(f"note: {tag}: X URL が /i/web/ 形式 (著者ハンドル不明) "
+                          f"'{src['url']}'")
                 if not src.get("date"):
                     err(f"{tag}: x source に date がない")
             else:
