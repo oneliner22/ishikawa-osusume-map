@@ -980,6 +980,126 @@
    ],
    "hours": "月曜日: 定休日 / 火曜日: 定休日 ほか",
    "url": "https://www.instagram.com/hyouitsu"
+  },
+  {
+   "slug": "gokurakuyu-nonoichi",
+   "name": "極楽湯 金沢野々市店",
+   "area": "hyoitsu-area",
+   "cat": "温泉",
+   "lat": 36.53496,
+   "lng": 136.61242,
+   "approx": false,
+   "desc": "全国展開するスーパー銭湯の金沢野々市店。多彩な種類のお風呂やサウナ、食事処を備え、旅の疲れを癒やすのに最適。地元民にも愛される憩いの場。",
+   "address": "日本、〒921-8816 石川県野々市市若松町１８−１",
+   "place_id": "ChIJI5ZiUqU1-F8RiKJuwRD8fHE",
+   "added": "2026-08-11",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085840966079115412",
+     "author": "",
+     "date": "2026-08-07",
+     "quote": ""
+    }
+   ],
+   "hours": "月曜日: 9時00分～1時00分 / 火曜日: 9時00分～1時00分 ほか",
+   "url": "http://www.gokurakuyu.ne.jp/gokurakuyu/tempo/nonoichi/"
+  },
+  {
+   "slug": "sushikuine",
+   "name": "すし食いねぇ！金沢駅前店",
+   "area": "omicho",
+   "cat": "グルメ",
+   "lat": 36.57976,
+   "lng": 136.64831,
+   "approx": false,
+   "desc": "石川県を中心に展開する人気の回転寿司チェーン。金沢駅前のクロスゲート金沢内にあり、観光客もアクセスしやすい。新鮮な地物のネタが手軽に味わえる。",
+   "address": "日本、〒920-0031 石川県金沢市広岡１丁目５−３ クロスゲート金沢 ２F",
+   "place_id": "ChIJpYV7zEMz-F8Rf0s5_XUUxxE",
+   "added": "2026-08-11",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2085671658426380614",
+     "author": "",
+     "date": "2026-08-07",
+     "quote": ""
+    }
+   ],
+   "hours": "月曜日: 11時00分～21時30分 / 火曜日: 11時00分～21時30分 ほか",
+   "url": "https://www.sushikuine.co.jp/"
+  },
+  {
+   "slug": "malga-gelato",
+   "name": "マルガージェラート 能登本店",
+   "area": "notoairport-area",
+   "cat": "グルメ",
+   "lat": 37.28092,
+   "lng": 137.04239,
+   "approx": false,
+   "desc": "石川県を代表する世界的なジェラート店。能登の生乳や地元の素材を活かしたフレーバーが人気。ファンからはリトルタやサンニコラと並んでおすすめされている。",
+   "address": "日本、〒927-0311 石川県鳳珠郡能登町瑞穂１６３−１",
+   "place_id": "ChIJH6Faz1bR9l8R6c-kog37sTo",
+   "added": "2026-08-11",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2086611640783683950",
+     "author": "otanipei0729",
+     "date": "2026-08-10",
+     "quote": "スイーツはその他マルガージェラート、リトルタ、サンニコラあたりが好きです"
+    }
+   ],
+   "hours": "月曜日: 11時00分～17時00分 / 火曜日: 11時00分～17時00分 ほか",
+   "url": "http://www.malgagelato.com/"
+  },
+  {
+   "slug": "st-nicolas-korinbo",
+   "name": "サンニコラ 香林坊店",
+   "area": "katamachi",
+   "cat": "グルメ",
+   "lat": 36.56433,
+   "lng": 136.65259,
+   "approx": false,
+   "desc": "石川県内に複数店舗を構える人気の洋菓子・チョコレート専門店。香林坊店は観光の合間に立ち寄りやすい。ファンからもおすすめのスイーツ店として名前が挙がる。",
+   "address": "日本、〒920-0961 石川県金沢市香林坊２丁目１２−２４ 品川ビル",
+   "place_id": "ChIJy2Ts_34z-F8RXnN6duUO8es",
+   "added": "2026-08-11",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2086611640783683950",
+     "author": "otanipei0729",
+     "date": "2026-08-10",
+     "quote": "スイーツはその他マルガージェラート、リトルタ、サンニコラあたりが好きです"
+    }
+   ],
+   "hours": "月曜日: 11時00分～19時00分 / 火曜日: 定休日 ほか",
+   "url": "http://www.st-nicolas.co.jp/"
+  },
+  {
+   "slug": "johnnys-biryani",
+   "name": "ジョニーのビリヤ二",
+   "area": "hyoitsu-area",
+   "cat": "グルメ",
+   "lat": 36.52738,
+   "lng": 136.61382,
+   "approx": false,
+   "desc": "神田にも店舗を構えるビリヤニ専門店の本店。金沢の中心街からは少し離れた野々市市にあるが、バスでのアクセスも可能。本格的なスパイス系グルメを楽しみたい時におすすめ。",
+   "address": "日本、〒921-8821 石川県野々市市白山町４−１ イオンタウン野々市 内",
+   "place_id": "ChIJ3VB-fnQ1-F8RixM7mkydEZg",
+   "added": "2026-08-11",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/i/web/status/2086601639671329137",
+     "author": "otanipei0729",
+     "date": "2026-08-10",
+     "quote": "神田にあるお店の本店。街中からはちょっと離れてるけどバス乗れば"
+    }
+   ],
+   "hours": "月曜日: 11時00分～14時00分 / 火曜日: 11時00分～14時00分 ほか",
+   "url": "https://j-biryani.com/"
   }
  ]
 }
