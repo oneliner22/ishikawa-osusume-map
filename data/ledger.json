@@ -689,6 +689,37 @@
   "2087020326756765991": {
    "date": "2026-08-11",
    "result": "not_recommendation"
+  },
+  "2087517259132735663": {
+   "date": "2026-08-12",
+   "result": "not_recommendation"
+  },
+  "2087440933680025976": {
+   "date": "2026-08-12",
+   "result": "not_recommendation"
+  },
+  "2087489035170369637": {
+   "date": "2026-08-12",
+   "result": "not_recommendation"
+  },
+  "2087460511298535590": {
+   "date": "2026-08-12",
+   "result": "not_recommendation"
+  },
+  "2087405831046468004": {
+   "date": "2026-08-12",
+   "result": "processed",
+   "author": "Warrior09020902"
+  },
+  "2087392224137077193": {
+   "date": "2026-08-12",
+   "result": "processed",
+   "author": "otanipei0729"
+  },
+  "2087368647643967576": {
+   "date": "2026-08-12",
+   "result": "processed",
+   "author": "otanipei0729"
   }
  },
  "authors": {
@@ -746,6 +777,11 @@
    "verdict": "fan",
    "name": "otanipei0729",
    "date": "2026-08-10"
+  },
+  "1493227867307933696": {
+   "verdict": "fan",
+   "name": "Warrior09020902",
+   "date": "2026-08-12"
   }
  },
  "seeds": {}
