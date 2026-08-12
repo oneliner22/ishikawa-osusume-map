@@ -1227,6 +1227,30 @@
    ],
    "hours": "月曜日: 18時00分～23時00分 / 火曜日: 18時00分～23時00分 ほか",
    "url": "https://www.instagram.com/kuro_ya968"
+  },
+  {
+   "slug": "suginoyayosaku-kanazawa",
+   "name": "杉野屋与作 金沢百番街店",
+   "area": "omicho",
+   "cat": "雑貨・土産",
+   "lat": 36.57767,
+   "lng": 136.64781,
+   "approx": false,
+   "desc": "金沢駅百番街「あんと」内にある水産加工品店。おつまみ系のお土産として人気の「唐千寿」は、ジェネリックカラスミとして親しまれている。",
+   "address": "日本、〒920-0858 石川県金沢市木ノ新保町１−１−１ 金沢駅百番街「あんと」内",
+   "place_id": "ChIJY9OR42kz-F8RGqtQWqj0SqA",
+   "added": "2026-08-12",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/otanipei0729/status/2087392224137077193",
+     "author": "otanipei0729",
+     "date": "2026-08-12",
+     "quote": "おつまみ系なら唐千寿。ジェネリックカラスミ"
+    }
+   ],
+   "hours": "月曜日: 8時30分～20時00分 / 火曜日: 8時30分～20時00分 ほか",
+   "url": "https://www.suginoyayosaku.jp/"
   }
  ]
 }

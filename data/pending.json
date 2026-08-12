@@ -1,18 +1,3 @@
 {
- "items": [
-  {
-   "name": "唐千寿",
-   "reason": "places_no_match",
-   "hint": "おつまみ系・ジェネリックカラスミ",
-   "post": "https://x.com/otanipei0729/status/2087392224137077193",
-   "date": "2026-08-12"
-  },
-  {
-   "name": "柴舟",
-   "reason": "low_confidence",
-   "hint": "お菓子・和菓子",
-   "post": "https://x.com/otanipei0729/status/2087392224137077193",
-   "date": "2026-08-12"
-  }
- ]
+ "items": []
 }
