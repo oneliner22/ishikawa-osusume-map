@@ -291,7 +291,7 @@ def apply_decision(decision, item, post, doc, aliases, pending_items, collected,
         "sources": [build_source(item, post, decision)]}
     hours = place.get("regularOpeningHours", {}).get("weekdayDescriptions")
     if hours:
-        spot["hours"] = " / ".join(hours[:2]) + (" ほか" if len(hours) > 2 else "")
+        spot["hours"] = list(hours)   # 週7日ぶん (先頭2日だけだと月火の店に見える)
     if place.get("websiteUri"):
         spot["url"] = place["websiteUri"]
     if not (dj.ISHIKAWA_STRICT["lat_min"] <= lat <= dj.ISHIKAWA_STRICT["lat_max"]

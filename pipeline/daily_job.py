@@ -719,7 +719,9 @@ def main():
                          "date": meta["date"], "quote": cand.get("quote", "")}]}
         hours = place.get("regularOpeningHours", {}).get("weekdayDescriptions")
         if hours:
-            spot["hours"] = " / ".join(hours[:2]) + (" ほか" if len(hours) > 2 else "")
+            # 週7日ぶんをそのまま持つ。先頭2日だけ残すと Places の並び (月始まり) の
+            # せいで「月火だけの店」に見え、土日の予定を立てる用途で使えない
+            spot["hours"] = list(hours)
         if place.get("websiteUri"):
             spot["url"] = place["websiteUri"]
         if not (ISHIKAWA_STRICT["lat_min"] <= lat <= ISHIKAWA_STRICT["lat_max"]

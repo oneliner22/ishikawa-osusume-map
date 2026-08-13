@@ -106,6 +106,10 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
 .modal-note{font-size:11.5px;color:#b07d2a;margin:-6px 0 12px}
 .modal-info{font-size:12.5px;line-height:1.8;border:1px dashed var(--line);border-radius:10px;
   padding:8px 12px;margin-bottom:12px;background:#fff}
+.hours-week{display:grid;grid-template-columns:auto 1fr;gap:0 12px;margin:2px 0 2px 1.5em;
+  font-size:12px;line-height:1.65}
+.hours-week .d{color:#8a7350}
+.hours-week .closed{color:var(--accent);font-weight:700}
 .reply-label{font-size:12px;color:#8a7350;font-weight:700;margin:10px 0 6px}
 .embed-wrap{margin:6px 0 14px}
 .yt-frame{width:100%;aspect-ratio:16/9;border:2px solid var(--line);border-radius:10px;background:#000;display:block}
@@ -168,6 +172,16 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
 <script>window.twttr=(function(d,s,id){var t,js,fjs=d.getElementsByTagName(s)[0];if(d.getElementById(id)){return window.twttr;}js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);t=window.twttr||{};t._e=[];t.ready=function(f){t._e.push(f);};return t;}(document,"script","twitter-wjs"));</script>
 <script>
 function esc(s){return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+// Places の weekdayDescriptions（月曜始まりの7行）を曜日と時間の2列に割る
+function hoursWeek(list){
+  return '<div class="hours-week">'+list.map(line=>{
+    const m=String(line).match(/^\s*([^:：]{1,4})[:：]\s*(.*)$/);
+    const day=m?m[1]:'', val=m?m[2]:String(line);
+    const closed=/定休日|休業/.test(val);
+    return `<span class="d">${esc(day)}</span>`+
+           `<span class="${closed?'closed':''}">${esc(val)}</span>`;
+  }).join('')+'</div>';
+}
 function ytOf(s){return s.sources.filter(x=>x.type==='youtube').map(x=>x.id);}
 function xOf(s){return s.sources.filter(x=>x.type==='x');}
 
@@ -351,7 +365,8 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
     if(s.approx) html+=`<div class="modal-note">※ 番地が確定できなかったため、エリア内のおよその位置に配置しています。</div>`;
     const info=[];
     if(s.address) info.push('📮 '+esc(s.address));
-    if(s.hours)   info.push('🕐 '+esc(s.hours));
+    if(s.hours)   info.push(Array.isArray(s.hours) ? '🕐 営業時間'+hoursWeek(s.hours)
+                                                  : '🕐 '+esc(s.hours));
     if(s.url)     info.push(`🔗 <a href="${esc(s.url)}" target="_blank" rel="noopener">公式サイト ↗</a>`);
     if(info.length) html+=`<div class="modal-info">${info.join('<br>')}</div>`;
     const yts=ytOf(s), xs=xOf(s);

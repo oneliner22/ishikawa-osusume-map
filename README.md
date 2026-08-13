@@ -92,6 +92,9 @@ Gemini のツールループ（Places再検索・出典ポスト再読）で精�
 - `daily_job.py` — 日次ジョブ本体（上記フローを1プロセスで実行）
 - `pending_resolver.py` — 日次 pending 整理ジョブ（daily_job のヘルパーを流用）
 - `mcp_client.py` — xdev MCP (streamable HTTP) の最小クライアント
+- `refresh_hours.py` — 営業時間を週7日ぶんに入れ直す一回きりのジョブ（place_id から
+  Place Details を引き直す）。以前は先頭2日だけ保存しており、Places が月曜始まりで
+  返すため全店が「月火だけ営業」に見えていた
 - `deploy.sh` — salmon-chan への初回デプロイ一式（API有効化/Secret/ビルド/ジョブ/スケジューラ）。
   `GITHUB_TOKEN_VALUE` と `XDEV_MCP_URL_VALUE` を環境変数で渡して実行
 
@@ -102,6 +105,11 @@ Gemini のツールループ（Places再検索・出典ポスト再読）で精�
 gcloud run jobs execute ishikawa-spots-daily --region asia-northeast1 --project central-bulwark-427114-j7 --wait
 # ログ確認
 gcloud logging read 'resource.type=cloud_run_job AND resource.labels.job_name=ishikawa-spots-daily' --project central-bulwark-427114-j7 --limit 50 --format 'value(textPayload)'
+
+# 単発スクリプトを既存ジョブのイメージで走らせる (pending ジョブは --command python なので args だけ差し替わる)
+gcloud builds submit pipeline --tag asia-northeast1-docker.pkg.dev/central-bulwark-427114-j7/ishikawa-spots/daily:latest --project central-bulwark-427114-j7
+gcloud run jobs update ishikawa-spots-pending --region asia-northeast1 --project central-bulwark-427114-j7 --image asia-northeast1-docker.pkg.dev/central-bulwark-427114-j7/ishikawa-spots/daily:latest
+gcloud run jobs execute ishikawa-spots-pending --region asia-northeast1 --project central-bulwark-427114-j7 --args refresh_hours.py --wait
 ```
 
 失敗・サーキットブレーカー・validate 不合格時は GitHub Issue が自動起票される。

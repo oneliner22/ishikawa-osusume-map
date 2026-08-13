@@ -75,7 +75,7 @@ for s in doc["spots"]:
             s["url"] = p["websiteUri"]
         hours = p.get("regularOpeningHours", {}).get("weekdayDescriptions")
         if hours and not s.get("hours"):
-            s["hours"] = " / ".join(hours[:2]) + (" ほか" if len(hours) > 2 else "")
+            s["hours"] = list(hours)   # 週7日ぶん (先頭2日だけだと月火の店に見える)
 
 if APPLY:
     json.dump(doc, io.open("data/spots.json", "w", encoding="utf-8"),
