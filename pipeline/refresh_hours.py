@@ -58,9 +58,12 @@ def main():
         if not hours:
             # 24時間営業でも weekdayDescriptions は返るので、
             # 空なら Places 側に営業時間の登録自体がない
-            log(f"{s['name']}: 営業時間の登録なし -> hours を落とす")
-            s.pop("hours", None)
-            dropped += 1
+            if s.pop("hours", None) is not None:
+                log(f"{s['name']}: 営業時間の登録なし -> hours を落とす")
+                dropped += 1
+            else:
+                log(f"{s['name']}: 営業時間の登録なし (元から hours なし)")
+                skipped += 1
             continue
         log(f"{s['name']}: {len(hours)}日ぶん ({hours[0]} … {hours[-1]})")
         s["hours"] = list(hours)
