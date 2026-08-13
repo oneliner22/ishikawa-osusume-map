@@ -55,11 +55,6 @@ header.hero{ text-align:center; padding:26px 16px 10px; position:relative; }
 .clearall[data-idle="1"]:hover{ background:#fff; color:var(--accent) }
 #map{height:60vh; min-height:380px; border:3px solid var(--ink); border-radius:16px;
   box-shadow:5px 5px 0 var(--shadow); background:#cfe3d8}
-.leaflet-popup-content{margin:10px 12px; font-size:13px}
-.pop-name{font-weight:800; font-size:14px; margin-bottom:3px}
-.pop-area{font-size:11px; color:#8a7350}
-.pop-btn{display:inline-block;margin-top:8px;background:var(--accent);color:#fff;border:none;
-  border-radius:14px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:700}
 /* ズームすると自動表示されるスポット名ラベル（タップ判定も兼ねる） */
 .leaflet-tooltip.spot-label{ background:var(--paper); color:var(--ink); border:1.5px solid var(--ink);
   border-radius:9px; padding:2px 8px; font-family:inherit; font-size:11.5px; font-weight:700; line-height:1.4;
@@ -151,7 +146,7 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
     <button class="clearall" data-clearall data-idle="0" title="ジャンル・エリア・検索の選択をすべて解除する"><span class="ic">↺</span>すべてクリア</button>
   </div>
   <div id="map"></div>
-  <p class="legend-note">📍 マーカーの色＝エリア。密集地はまとめて表示され、拡大すると分かれます。マーカーをタップすると詳細が開き、さらに拡大するとスポット名が自動で表示されます。</p>
+  <p class="legend-note">📍 マーカーの色＝エリア。密集地はまとめて表示され、拡大すると分かれます。拡大するとスポット名が自動で表示され、マーカーか名前をタップすると詳細が開きます。</p>
   <div class="chipfilter" id="areafilter" style="margin-top:14px"></div>
   <div id="list"></div>
 </div>
@@ -226,18 +221,13 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
   // さらに半透明の白いハロー（太いストローク）で当たり判定そのものを広げる。
   const COARSE=window.matchMedia&&window.matchMedia('(pointer:coarse)').matches;
   const R=COARSE?9:7, RV=COARSE?12:10, HALO=COARSE?13:7;
-  function popupHTML(s){
-    const isVenue=s.cat==='会場';
-    return `<div class="pop-name">${isVenue?'🎤 ':''}${esc(s.name)}</div>`+
-      `<div class="pop-area">${esc(areaById[s.area].name)} ・ ${esc(s.cat)}${s.approx?' ・ およその位置':''}</div>`+
-      (s.sources.length?`<button class="pop-btn" onclick="openModal('${s.slug}')">出典を見る (${s.sources.length})</button>`:'');
-  }
   SPOTS.forEach(s=>{
     const col=areaById[s.area]?areaById[s.area].color:'#888';
     const isVenue=s.cat==='会場';
     const m=L.circleMarker([s.lat,s.lng],{ radius:isVenue?RV:R, color:'#fff', opacity:.5, weight:HALO,
       fillColor:isVenue?'#111':col, fillOpacity:.95 });
-    m.bindPopup(popupHTML(s));
+    // 中間のフキダシは挟まず、タップで直接詳細モーダルを開く
+    m.on('click',()=>openModal(s.slug));
     m.spotSlug=s.slug; m.spot=s; markerBySlug[s.slug]=m; cluster.addLayer(m);
   });
   map.addLayer(cluster);
@@ -254,7 +244,7 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
     m.bindTooltip(`<span class="ldot" style="background:${col}"></span>${s.cat==='会場'?'🎤 ':''}${esc(s.name)}`,
       {permanent:true, direction:'top', offset:[0,-((s.cat==='会場'?RV:R)+3)],
        className:'spot-label', opacity:1, interactive:true});
-    m.getTooltip().on('click',()=>m.openPopup());  // ラベル自体もタップ判定に使う
+    m.getTooltip().on('click',()=>openModal(s.slug));  // ラベル自体もタップ判定に使う
   }
   function syncLabels(){
     const on=map.getZoom()>=LABEL_ZOOM;
@@ -415,28 +405,29 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
   }
   function closeModal(){ backdrop.classList.remove('on'); lastSlug=null; document.getElementById('m-body').innerHTML=''; }
 
-  // モーダル → 地図。閉じてから地図までスクロールし、その地点を拡大してフキダシを開く。
+  // モーダル → 地図。閉じてから地図までスクロールし、その地点をラベルが出るまで拡大する。
+  // 地図に載った時点でラベル（小さめのフキダシ）は自動で開くので、ここでは開く操作をしない。
   function gotoMap(slug){
     const s=SPOTS.find(x=>x.slug===slug); if(!s) return;
     closeModal();
-    const mapEl=document.getElementById('map');
-    mapEl.scrollIntoView({behavior:'smooth', block:'center'});
+    document.getElementById('map').scrollIntoView({behavior:'smooth', block:'center'});
     const m=markerBySlug[slug];
-    // クラスタに埋もれている間は1段ずつ寄る（対象を常に画面中央に保ったまま解けさせる）。
-    // 解けなければ（フィルタで非表示など）その座標に単体のフキダシを出す。
+    // クラスタに埋もれている間は1段ずつ寄る（対象を常に画面中央に保ったまま解けさせる）
     function reveal(tries){
-      if(m && map.hasLayer(m)){ m.openPopup(); return; }
-      if(tries>0 && m && cluster.hasLayer(m) && map.getZoom()<18){
+      if(!m || map.hasLayer(m)) return;
+      if(tries>0 && cluster.hasLayer(m) && map.getZoom()<18){
         zoomTo(Math.min(map.getZoom()+1,18), tries-1); return;
       }
-      L.popup({autoPan:true}).setLatLng([s.lat,s.lng]).setContent(popupHTML(s)).openOn(map);
+      // 最大ズームでもほぼ同じ座標に重なっている場合だけ、クラスタを展開して見せる
+      const parent=m.__parent;
+      if(parent && typeof parent.spiderfy==='function') parent.spiderfy();
     }
     function zoomTo(z, tries){
       // クラスタの分裂アニメーション（約200ms）が終わってから判定する
       map.once('moveend',()=>setTimeout(()=>reveal(tries),260));
       map.setView([s.lat,s.lng], z, {animate:true});
     }
-    zoomTo(Math.max(map.getZoom(), 16), 2);
+    zoomTo(Math.max(map.getZoom(), 16), 2);   // ラベル表示のしきい値(14)より必ず上
   }
   document.getElementById('m-close').onclick=closeModal;
   backdrop.addEventListener('click',e=>{ if(e.target===backdrop) closeModal(); });
