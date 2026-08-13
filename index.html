@@ -45,6 +45,14 @@ header.hero{ text-align:center; padding:26px 16px 10px; position:relative; }
   font-size:12.5px; cursor:pointer; user-select:none; transition:.12s; white-space:nowrap }
 .cfilter[data-on="1"]{background:var(--ink); color:#fff; border-color:var(--ink)}
 .cfilter .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+/* すべてクリア：チップとは別物であることが一目で分かるよう、破線＋アクセント色にする */
+.clearall{ border:2px dashed var(--accent); background:#fff; color:var(--accent); border-radius:16px;
+  padding:4px 13px; font-size:12.5px; font-weight:800; cursor:pointer; user-select:none; white-space:nowrap;
+  transition:.12s; box-shadow:2px 2px 0 rgba(232,84,63,.22); font-family:inherit; line-height:1.45 }
+.clearall .ic{margin-right:4px; font-weight:900}
+.clearall:hover{ background:var(--accent); color:#fff; box-shadow:1px 1px 0 rgba(232,84,63,.4) }
+.clearall[data-idle="1"]{ opacity:.4; cursor:default; box-shadow:none }
+.clearall[data-idle="1"]:hover{ background:#fff; color:var(--accent) }
 #map{height:60vh; min-height:380px; border:3px solid var(--ink); border-radius:16px;
   box-shadow:5px 5px 0 var(--shadow); background:#cfe3d8}
 .leaflet-popup-content{margin:10px 12px; font-size:13px}
@@ -52,7 +60,17 @@ header.hero{ text-align:center; padding:26px 16px 10px; position:relative; }
 .pop-area{font-size:11px; color:#8a7350}
 .pop-btn{display:inline-block;margin-top:8px;background:var(--accent);color:#fff;border:none;
   border-radius:14px;padding:5px 12px;font-size:12px;cursor:pointer;font-weight:700}
+/* ズームすると自動表示されるスポット名ラベル（タップ判定も兼ねる） */
+.leaflet-tooltip.spot-label{ background:var(--paper); color:var(--ink); border:1.5px solid var(--ink);
+  border-radius:9px; padding:2px 8px; font-family:inherit; font-size:11.5px; font-weight:700; line-height:1.4;
+  white-space:nowrap; box-shadow:1.5px 1.5px 0 var(--shadow) }
+.leaflet-tooltip.spot-label.leaflet-tooltip-top:before{border-top-color:var(--ink)}
+.leaflet-tooltip.spot-label.leaflet-interactive{cursor:pointer}
+.leaflet-tooltip.spot-label .ldot{display:inline-block;width:7px;height:7px;border-radius:50%;
+  margin-right:5px;vertical-align:middle}
 .legend-note{font-size:12px;color:#8a7350;text-align:center;margin:12px 0 4px}
+.empty-note{margin-top:22px;border:2px dashed var(--line);border-radius:14px;background:var(--paper);
+  padding:22px 16px;text-align:center;font-size:13px;line-height:1.8;color:#8a7350}
 .area-block{margin-top:22px; border:2px solid var(--line); border-radius:14px; background:var(--paper);
   box-shadow:3px 3px 0 var(--line); overflow:hidden}
 .area-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;
@@ -83,6 +101,11 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
 .modal-head .sub{font-size:12px;color:#8a7350;margin-top:3px}
 .modal-head .x{background:none;border:none;font-size:24px;cursor:pointer;color:var(--ink);line-height:1}
 .modal-body{padding:12px 16px 16px;max-height:70vh;overflow:auto}
+.modal-actions{display:flex;justify-content:flex-end;margin:0 0 11px}
+.mapjump{display:inline-flex;align-items:center;gap:5px;background:var(--paper);color:var(--ink);
+  border:2px solid var(--ink);border-radius:15px;padding:6px 14px;font-size:12.5px;font-weight:800;
+  cursor:pointer;box-shadow:2px 2px 0 var(--shadow);font-family:inherit;transition:.12s}
+.mapjump:hover{background:var(--ink);color:#fff}
 .modal-desc{font-size:13.5px;line-height:1.7;background:var(--cream);border:1px solid var(--line);
   border-radius:10px;padding:10px 12px;margin-bottom:12px}
 .modal-note{font-size:11.5px;color:#b07d2a;margin:-6px 0 12px}
@@ -103,7 +126,9 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
 .x-card .x-gated{font-size:11px;line-height:1.5;color:#b07d2a;margin-top:6px}
 .loading{font-size:12px;color:#8a7350;padding:6px 2px}
 .load-error{border:2px solid var(--accent);border-radius:14px;background:var(--paper);padding:16px;margin-top:22px;font-size:13.5px;line-height:1.7}
-@media(max-width:600px){ #map{height:52vh} .hero h1{text-shadow:1px 1px 0 #fff,2px 2px 0 var(--line)} }
+@media(max-width:600px){ #map{height:52vh} .hero h1{text-shadow:1px 1px 0 #fff,2px 2px 0 var(--line)}
+  .cfilter,.clearall{padding:7px 12px; font-size:13px}
+  .leaflet-tooltip.spot-label{font-size:11px; padding:2px 6px} }
 </style>
 </head>
 <body>
@@ -123,9 +148,10 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
   <div class="controls">
     <input type="search" id="search" placeholder="🔍 スポット名・説明で検索">
     <div class="chipfilter" id="catfilter"></div>
+    <button class="clearall" data-clearall data-idle="0" title="ジャンル・エリア・検索の選択をすべて解除する"><span class="ic">↺</span>すべてクリア</button>
   </div>
   <div id="map"></div>
-  <p class="legend-note">📍 マーカーの色＝エリア。密集地はまとめて表示され、拡大すると分かれます。マーカーをクリックすると詳細が開きます。</p>
+  <p class="legend-note">📍 マーカーの色＝エリア。密集地はまとめて表示され、拡大すると分かれます。マーカーをタップすると詳細が開き、さらに拡大するとスポット名が自動で表示されます。</p>
   <div class="chipfilter" id="areafilter" style="margin-top:14px"></div>
   <div id="list"></div>
 </div>
@@ -196,17 +222,47 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18, attribution:'© OpenStreetMap contributors'}).addTo(map);
   const cluster=L.markerClusterGroup({maxClusterRadius:38, spiderfyOnMaxZoom:true});
   const markerBySlug={};
+  // 指でのタップは狙いがずれやすいので、粗いポインタ（タッチ）では点を大きくし、
+  // さらに半透明の白いハロー（太いストローク）で当たり判定そのものを広げる。
+  const COARSE=window.matchMedia&&window.matchMedia('(pointer:coarse)').matches;
+  const R=COARSE?9:7, RV=COARSE?12:10, HALO=COARSE?13:7;
+  function popupHTML(s){
+    const isVenue=s.cat==='会場';
+    return `<div class="pop-name">${isVenue?'🎤 ':''}${esc(s.name)}</div>`+
+      `<div class="pop-area">${esc(areaById[s.area].name)} ・ ${esc(s.cat)}${s.approx?' ・ およその位置':''}</div>`+
+      (s.sources.length?`<button class="pop-btn" onclick="openModal('${s.slug}')">出典を見る (${s.sources.length})</button>`:'');
+  }
   SPOTS.forEach(s=>{
     const col=areaById[s.area]?areaById[s.area].color:'#888';
     const isVenue=s.cat==='会場';
-    const m=L.circleMarker([s.lat,s.lng],{ radius:isVenue?9:6, color:'#00000055', weight:isVenue?3:1.5,
-      fillColor:isVenue?'#111':col, fillOpacity:.92 });
-    m.bindPopup(`<div class="pop-name">${isVenue?'🎤 ':''}${esc(s.name)}</div>`+
-      `<div class="pop-area">${esc(areaById[s.area].name)} ・ ${esc(s.cat)}${s.approx?' ・ およその位置':''}</div>`+
-      (s.sources.length?`<button class="pop-btn" onclick="openModal('${s.slug}')">出典を見る (${s.sources.length})</button>`:''));
-    m.spotSlug=s.slug; markerBySlug[s.slug]=m; cluster.addLayer(m);
+    const m=L.circleMarker([s.lat,s.lng],{ radius:isVenue?RV:R, color:'#fff', opacity:.5, weight:HALO,
+      fillColor:isVenue?'#111':col, fillOpacity:.95 });
+    m.bindPopup(popupHTML(s));
+    m.spotSlug=s.slug; m.spot=s; markerBySlug[s.slug]=m; cluster.addLayer(m);
   });
   map.addLayer(cluster);
+
+  // ある程度ズームしたら、クリックしなくてもスポット名のフキダシを出す。
+  // permanent ツールチップは「地図に載った瞬間」に自動で開くので、
+  // クラスタから解けたマーカーにもそのまま追随する。
+  const LABEL_ZOOM=14;
+  let labelsOn=false;
+  function bindLabel(m){
+    if(m.getTooltip()) return;
+    const s=m.spot;
+    const col=s.cat==='会場'?'#111':(areaById[s.area]?areaById[s.area].color:'#888');
+    m.bindTooltip(`<span class="ldot" style="background:${col}"></span>${s.cat==='会場'?'🎤 ':''}${esc(s.name)}`,
+      {permanent:true, direction:'top', offset:[0,-((s.cat==='会場'?RV:R)+3)],
+       className:'spot-label', opacity:1, interactive:true});
+    m.getTooltip().on('click',()=>m.openPopup());  // ラベル自体もタップ判定に使う
+  }
+  function syncLabels(){
+    const on=map.getZoom()>=LABEL_ZOOM;
+    if(on===labelsOn) return;
+    labelsOn=on;
+    Object.values(markerBySlug).forEach(m=>{ on?bindLabel(m):m.unbindTooltip(); });
+  }
+  map.on('zoomend', syncLabels);
 
   let activeCats=new Set(CATS), activeAreas=new Set(AREAS.map(a=>a.id)), q='';
   const catWrap=document.getElementById('catfilter');
@@ -223,7 +279,28 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
     el.onclick=()=>{ if(activeAreas.has(a.id)){activeAreas.delete(a.id);el.dataset.on='0';}else{activeAreas.add(a.id);el.dataset.on='1';} render(); };
     areaWrap.appendChild(el);
   });
-  document.getElementById('search').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase(); render();});
+  const searchEl=document.getElementById('search');
+  searchEl.addEventListener('input',e=>{q=e.target.value.trim().toLowerCase(); render();});
+
+  // ジャンル・エリア・検索の選択をすべて解除する（＝どれも選ばれていない状態にする）。
+  // エリアのチップ列は地図の下にあるので、そちらにも同じボタンを置く。
+  const areaClear=document.createElement('button');
+  areaClear.className='clearall'; areaClear.dataset.clearall=''; areaClear.dataset.idle='0';
+  areaClear.title='ジャンル・エリア・検索の選択をすべて解除する';
+  areaClear.innerHTML='<span class="ic">↺</span>すべてクリア';
+  areaWrap.appendChild(areaClear);
+  const clearBtns=[...document.querySelectorAll('[data-clearall]')];
+  function clearAll(){
+    activeCats=new Set(); activeAreas=new Set(); q=''; searchEl.value='';
+    document.querySelectorAll('.cfilter').forEach(el=>el.dataset.on='0');
+    render();
+  }
+  clearBtns.forEach(b=>b.addEventListener('click',clearAll));
+  function updateClearState(){
+    // 解除するものが何も無いとき（＝全部未選択・検索も空）だけ非アクティブ表示
+    const idle = !activeCats.size && !activeAreas.size && !q;
+    clearBtns.forEach(b=>{ b.dataset.idle = idle?'1':'0'; });
+  }
 
   function visible(s){
     if(s.cat!=='会場' && !activeCats.has(s.cat)) return false;
@@ -235,8 +312,9 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
   function render(){
     Object.entries(markerBySlug).forEach(([slug,m])=>{
       const s=SPOTS.find(x=>x.slug===slug);
-      if(visible(s)){ if(!cluster.hasLayer(m)) cluster.addLayer(m);} else { if(cluster.hasLayer(m)) cluster.removeLayer(m);}
+      if(visible(s)){ if(labelsOn) bindLabel(m); if(!cluster.hasLayer(m)) cluster.addLayer(m);} else { if(cluster.hasLayer(m)) cluster.removeLayer(m);}
     });
+    updateClearState();
     listEl.innerHTML='';
     AREAS.forEach(a=>{
       const items=SPOTS.filter(s=>s.area===a.id && visible(s));
@@ -259,6 +337,13 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
       });
       block.appendChild(head); block.appendChild(grid); listEl.appendChild(block);
     });
+    // 全解除は1タップで到達できるので、空のままだと壊れて見える。何をすればいいか出す
+    if(!listEl.children.length){
+      listEl.innerHTML = `<div class="empty-note">${
+        (!activeCats.size && !activeAreas.size)
+          ? '表示するジャンル・エリアが選ばれていません。<br>上のチップをタップして選んでください。'
+          : '条件に合うスポットがありません。'}</div>`;
+    }
   }
   render();
 
@@ -271,7 +356,8 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
     document.getElementById('m-title').textContent=(s.cat==='会場'?'🎤 ':'')+s.name;
     document.getElementById('m-sub').textContent=`${areaById[s.area].name} ・ ${s.cat}`;
     const body=document.getElementById('m-body');
-    let html=`<div class="modal-desc">${esc(s.desc)}</div>`;
+    let html=`<div class="modal-actions"><button class="mapjump" type="button">🗺️ 地図でこの場所を見る</button></div>`+
+      `<div class="modal-desc">${esc(s.desc)}</div>`;
     if(s.approx) html+=`<div class="modal-note">※ 番地が確定できなかったため、エリア内のおよその位置に配置しています。</div>`;
     const info=[];
     if(s.address) info.push('📮 '+esc(s.address));
@@ -313,6 +399,7 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
     }
     if(!yts.length && !xs.length) html+=`<div class="loading">このスポットに紐づく出典はありません。</div>`;
     body.innerHTML=html; body.scrollTop=0; backdrop.classList.add('on');
+    body.querySelector('.mapjump').addEventListener('click',()=>gotoMap(s.slug));
     if(xs.length && window.twttr && window.twttr.ready){
       window.twttr.ready(tw=>{
         xs.forEach(x=>{
@@ -327,6 +414,30 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
     }
   }
   function closeModal(){ backdrop.classList.remove('on'); lastSlug=null; document.getElementById('m-body').innerHTML=''; }
+
+  // モーダル → 地図。閉じてから地図までスクロールし、その地点を拡大してフキダシを開く。
+  function gotoMap(slug){
+    const s=SPOTS.find(x=>x.slug===slug); if(!s) return;
+    closeModal();
+    const mapEl=document.getElementById('map');
+    mapEl.scrollIntoView({behavior:'smooth', block:'center'});
+    const m=markerBySlug[slug];
+    // クラスタに埋もれている間は1段ずつ寄る（対象を常に画面中央に保ったまま解けさせる）。
+    // 解けなければ（フィルタで非表示など）その座標に単体のフキダシを出す。
+    function reveal(tries){
+      if(m && map.hasLayer(m)){ m.openPopup(); return; }
+      if(tries>0 && m && cluster.hasLayer(m) && map.getZoom()<18){
+        zoomTo(Math.min(map.getZoom()+1,18), tries-1); return;
+      }
+      L.popup({autoPan:true}).setLatLng([s.lat,s.lng]).setContent(popupHTML(s)).openOn(map);
+    }
+    function zoomTo(z, tries){
+      // クラスタの分裂アニメーション（約200ms）が終わってから判定する
+      map.once('moveend',()=>setTimeout(()=>reveal(tries),260));
+      map.setView([s.lat,s.lng], z, {animate:true});
+    }
+    zoomTo(Math.max(map.getZoom(), 16), 2);
+  }
   document.getElementById('m-close').onclick=closeModal;
   backdrop.addEventListener('click',e=>{ if(e.target===backdrop) closeModal(); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
