@@ -147,7 +147,7 @@ footer{text-align:center;font-size:11.5px;color:#8a7350;padding:24px 14px}
   <div class="controls">
     <input type="search" id="search" placeholder="🔍 スポット名・説明で検索">
     <div class="chipfilter" id="catfilter"></div>
-    <button class="clearall" data-clearall data-idle="0" title="ジャンル・エリア・検索の選択をすべて解除する"><span class="ic">↺</span>すべてクリア</button>
+    <button class="clearall" id="clear-cat" data-idle="0" title="ジャンルの選択をすべて解除する"><span class="ic">↺</span>ジャンルをすべてクリア</button>
   </div>
   <div id="map"></div>
   <p class="legend-note">📍 マーカーの色＝エリア。密集地はまとめて表示され、拡大すると分かれます。拡大するとスポット名が自動で表示され、マーカーか名前をタップすると詳細が開きます。</p>
@@ -286,24 +286,25 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
   const searchEl=document.getElementById('search');
   searchEl.addEventListener('input',e=>{q=e.target.value.trim().toLowerCase(); render();});
 
-  // ジャンル・エリア・検索の選択をすべて解除する（＝どれも選ばれていない状態にする）。
-  // エリアのチップ列は地図の下にあるので、そちらにも同じボタンを置く。
+  // 各クリアボタンは自分の列だけを解除する（ジャンル側はエリアに触らない、逆も同じ）。
+  // エリアのチップ列は地図の下にあるので、そちらにもボタンを置く。
   const areaClear=document.createElement('button');
-  areaClear.className='clearall'; areaClear.dataset.clearall=''; areaClear.dataset.idle='0';
-  areaClear.title='ジャンル・エリア・検索の選択をすべて解除する';
-  areaClear.innerHTML='<span class="ic">↺</span>すべてクリア';
+  areaClear.className='clearall'; areaClear.id='clear-area'; areaClear.dataset.idle='0';
+  areaClear.title='エリアの選択をすべて解除する';
+  areaClear.innerHTML='<span class="ic">↺</span>エリアをすべてクリア';
   areaWrap.appendChild(areaClear);
-  const clearBtns=[...document.querySelectorAll('[data-clearall]')];
-  function clearAll(){
-    activeCats=new Set(); activeAreas=new Set(); q=''; searchEl.value='';
-    document.querySelectorAll('.cfilter').forEach(el=>el.dataset.on='0');
+  const catClear=document.getElementById('clear-cat');
+  function clearGroup(wrap, reset){
+    reset();
+    wrap.querySelectorAll('.cfilter').forEach(el=>el.dataset.on='0');
     render();
   }
-  clearBtns.forEach(b=>b.addEventListener('click',clearAll));
+  catClear.addEventListener('click',()=>clearGroup(catWrap,()=>{activeCats=new Set();}));
+  areaClear.addEventListener('click',()=>clearGroup(areaWrap,()=>{activeAreas=new Set();}));
   function updateClearState(){
-    // 解除するものが何も無いとき（＝全部未選択・検索も空）だけ非アクティブ表示
-    const idle = !activeCats.size && !activeAreas.size && !q;
-    clearBtns.forEach(b=>{ b.dataset.idle = idle?'1':'0'; });
+    // 自分の列に解除するものが無いときだけ非アクティブ表示
+    catClear.dataset.idle  = activeCats.size  ? '0' : '1';
+    areaClear.dataset.idle = activeAreas.size ? '0' : '1';
   }
 
   function visible(s){
@@ -343,9 +344,12 @@ function boot(CFG, AREAS, SPOTS, VIDEOS){
     });
     // 全解除は1タップで到達できるので、空のままだと壊れて見える。何をすればいいか出す
     if(!listEl.children.length){
+      const empty=[];
+      if(!activeCats.size)  empty.push('ジャンル');
+      if(!activeAreas.size) empty.push('エリア');
       listEl.innerHTML = `<div class="empty-note">${
-        (!activeCats.size && !activeAreas.size)
-          ? '表示するジャンル・エリアが選ばれていません。<br>上のチップをタップして選んでください。'
+        empty.length
+          ? `表示する${empty.join('・')}が選ばれていません。<br>チップをタップして選んでください。`
           : '条件に合うスポットがありません。'}</div>`;
     }
   }
