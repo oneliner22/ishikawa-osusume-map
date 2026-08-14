@@ -756,6 +756,59 @@
   "2087886805438013475": {
    "date": "2026-08-13",
    "result": "not_recommendation"
+  },
+  "2088226816586826092": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088226769421877371": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088226752296546562": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088189068773577105": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088188046726606884": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088031689482338365": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088241456364535939": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088228299281744031": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088183712920031281": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088177142131757137": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088128439232667778": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088100433520971964": {
+   "date": "2026-08-14",
+   "result": "not_recommendation"
+  },
+  "2088068374362558494": {
+   "date": "2026-08-14",
+   "result": "processed",
+   "author": "suttoco_dokkoi"
   }
  },
  "authors": {
@@ -818,6 +871,11 @@
    "verdict": "fan",
    "name": "Warrior09020902",
    "date": "2026-08-12"
+  },
+  "1270393409279111169": {
+   "verdict": "fan",
+   "name": "suttoco_dokkoi",
+   "date": "2026-08-14"
   }
  },
  "seeds": {}
