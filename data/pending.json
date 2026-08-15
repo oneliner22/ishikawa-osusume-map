@@ -1,36 +1,8 @@
 {
  "items": [
   {
-   "name": "福光屋",
-   "reason": "low_confidence",
-   "hint": "日本酒・加賀鳶",
-   "post": "https://x.com/hugashibow/status/2088661301073723480",
-   "date": "2026-08-15"
-  },
-  {
-   "name": "まいもん寿司",
-   "reason": "low_confidence",
-   "hint": "寿司",
-   "post": "https://x.com/hugashibow/status/2088661301073723480",
-   "date": "2026-08-15"
-  },
-  {
-   "name": "すし食いねえ",
-   "reason": "low_confidence",
-   "hint": "寿司",
-   "post": "https://x.com/hugashibow/status/2088661301073723480",
-   "date": "2026-08-15"
-  },
-  {
    "name": "能登島",
-   "reason": "places_no_match",
-   "hint": "観光地",
-   "post": "https://x.com/hugashibow/status/2088661301073723480",
-   "date": "2026-08-15"
-  },
-  {
-   "name": "輪島朝市",
-   "reason": "business_status=CLOSED_PERMANENTLY",
+   "reason": "places_no_match / needs_human: business_status=None",
    "hint": "観光地",
    "post": "https://x.com/hugashibow/status/2088661301073723480",
    "date": "2026-08-15"

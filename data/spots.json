@@ -1335,6 +1335,13 @@
      "author": "yuupon7",
      "date": "2026-08-07",
      "quote": ""
+    },
+    {
+     "type": "x",
+     "url": "https://x.com/hugashibow/status/2088661301073723480",
+     "author": "hugashibow",
+     "date": "2026-08-15",
+     "quote": "すし食いねえ"
     }
    ],
    "hours": [
@@ -1763,6 +1770,93 @@
     "日曜日: 定休日"
    ],
    "url": "http://www.komatsunomori.jp/"
+  },
+  {
+   "slug": "fukumitsuya",
+   "name": "福光屋 金沢店",
+   "area": "kenrokuen",
+   "cat": "雑貨・土産",
+   "lat": 36.55371,
+   "lng": 136.67234,
+   "approx": false,
+   "desc": "「加賀鳶」などの銘酒で知られる金沢の老舗酒蔵「福光屋」の直営店。日本酒好きにはたまらないスポット。お土産選びに最適。",
+   "address": "日本、〒920-0935 石川県金沢市石引２丁目８−３",
+   "place_id": "ChIJp8mGw4oz-F8RG6DuHOB1z6Y",
+   "added": "2026-08-15",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/hugashibow/status/2088661301073723480",
+     "author": "hugashibow",
+     "date": "2026-08-15",
+     "quote": "福光屋（加賀鳶"
+    }
+   ],
+   "hours": [
+    "月曜日: 10時00分～18時00分",
+    "火曜日: 10時00分～18時00分",
+    "水曜日: 10時00分～18時00分",
+    "木曜日: 10時00分～18時00分",
+    "金曜日: 10時00分～18時00分",
+    "土曜日: 10時00分～18時00分",
+    "日曜日: 10時00分～18時00分"
+   ],
+   "url": "http://www.fukumitsuya.co.jp/"
+  },
+  {
+   "slug": "maimon-sushi",
+   "name": "金沢まいもん寿司 本店",
+   "area": "omicho",
+   "cat": "グルメ",
+   "lat": 36.59374,
+   "lng": 136.63573,
+   "approx": false,
+   "desc": "金沢発祥の有名回転寿司チェーンの本店。日本海で獲れた新鮮な魚介を職人が握る本格的な寿司が味わえる。のどぐろなどの地物も人気。",
+   "address": "日本、〒920-0027 石川県金沢市駅西新町３丁目２０−７",
+   "place_id": "ChIJodnti8vM-V8RVsLa8q-bYRs",
+   "added": "2026-08-15",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/hugashibow/status/2088661301073723480",
+     "author": "hugashibow",
+     "date": "2026-08-15",
+     "quote": "まいもん寿司"
+    }
+   ],
+   "hours": [
+    "月曜日: 11時00分～21時30分",
+    "火曜日: 11時00分～21時30分",
+    "水曜日: 11時00分～21時30分",
+    "木曜日: 11時00分～21時30分",
+    "金曜日: 11時00分～21時30分",
+    "土曜日: 11時00分～21時30分",
+    "日曜日: 11時00分～21時30分"
+   ],
+   "url": "https://www.maimon-susi.com/shop/ekinishi-2/"
+  },
+  {
+   "slug": "wajima-asaichi",
+   "name": "出張輪島朝市",
+   "area": "notoairport-area",
+   "cat": "観光",
+   "lat": 37.38626,
+   "lng": 136.90438,
+   "approx": false,
+   "desc": "日本三大朝市の一つとして知られる輪島朝市。震災の影響により、現在は場所を移して「出張輪島朝市」として営業を再開している。",
+   "address": "日本、〒928-0022 石川県輪島市宅田町45−１",
+   "place_id": "ChIJcc0aEgAv8V8R2FHH7hoFwFc",
+   "added": "2026-08-15",
+   "sources": [
+    {
+     "type": "x",
+     "url": "https://x.com/hugashibow/status/2088661301073723480",
+     "author": "hugashibow",
+     "date": "2026-08-15",
+     "quote": "輪島朝市"
+    }
+   ],
+   "url": "https://s-wajima-asaichi.com/"
   }
  ]
 }
