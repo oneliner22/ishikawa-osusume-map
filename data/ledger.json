@@ -809,6 +809,43 @@
    "date": "2026-08-14",
    "result": "processed",
    "author": "suttoco_dokkoi"
+  },
+  "2088594518014931234": {
+   "date": "2026-08-15",
+   "result": "not_recommendation"
+  },
+  "2088580810974826613": {
+   "date": "2026-08-15",
+   "result": "not_recommendation"
+  },
+  "2088746570464522509": {
+   "date": "2026-08-15",
+   "result": "not_recommendation"
+  },
+  "2088661301073723480": {
+   "date": "2026-08-15",
+   "result": "processed",
+   "author": "hugashibow"
+  },
+  "2088614164650704911": {
+   "date": "2026-08-15",
+   "result": "not_recommendation"
+  },
+  "2088584684834017670": {
+   "date": "2026-08-15",
+   "result": "not_recommendation"
+  },
+  "2088582402990129198": {
+   "date": "2026-08-15",
+   "result": "not_recommendation"
+  },
+  "2088553214107165025": {
+   "date": "2026-08-15",
+   "result": "not_recommendation"
+  },
+  "2088524026423673327": {
+   "date": "2026-08-15",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -876,6 +913,11 @@
    "verdict": "fan",
    "name": "suttoco_dokkoi",
    "date": "2026-08-14"
+  },
+  "117428793": {
+   "verdict": "fan",
+   "name": "hugashibow",
+   "date": "2026-08-15"
   }
  },
  "seeds": {}
