@@ -846,6 +846,31 @@
   "2088524026423673327": {
    "date": "2026-08-15",
    "result": "not_recommendation"
+  },
+  "2089022574110163071": {
+   "date": "2026-08-16",
+   "result": "not_recommendation"
+  },
+  "2088966376329498642": {
+   "date": "2026-08-16",
+   "result": "not_recommendation"
+  },
+  "2088964969312510232": {
+   "date": "2026-08-16",
+   "result": "author_bot"
+  },
+  "2088951377120969190": {
+   "date": "2026-08-16",
+   "result": "not_recommendation"
+  },
+  "2088947827422757372": {
+   "date": "2026-08-16",
+   "result": "processed",
+   "author": "kaki919ra"
+  },
+  "2088926452570009803": {
+   "date": "2026-08-16",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -918,6 +943,16 @@
    "verdict": "fan",
    "name": "hugashibow",
    "date": "2026-08-15"
+  },
+  "795315864203456512": {
+   "verdict": "bot",
+   "name": "d_m_0701",
+   "date": "2026-08-16"
+  },
+  "720516880050487296": {
+   "verdict": "fan",
+   "name": "kaki919ra",
+   "date": "2026-08-16"
   }
  },
  "seeds": {}
