@@ -971,6 +971,40 @@
   "2089846149293424808": {
    "date": "2026-08-19",
    "result": "not_recommendation"
+  },
+  "2090393444334313811": {
+   "date": "2026-08-20",
+   "result": "not_recommendation"
+  },
+  "2090390863985991983": {
+   "date": "2026-08-20",
+   "result": "not_recommendation"
+  },
+  "2090336999672889627": {
+   "date": "2026-08-20",
+   "result": "not_recommendation"
+  },
+  "2090226169706901747": {
+   "date": "2026-08-20",
+   "result": "not_recommendation"
+  },
+  "2090431109914128545": {
+   "date": "2026-08-20",
+   "result": "not_recommendation"
+  },
+  "2090385114182381590": {
+   "date": "2026-08-20",
+   "result": "not_recommendation"
+  },
+  "2090342022066651378": {
+   "date": "2026-08-20",
+   "result": "processed",
+   "author": "IS_saito"
+  },
+  "2090284774929965219": {
+   "date": "2026-08-20",
+   "result": "processed",
+   "author": "otanipei0729"
   }
  },
  "authors": {
@@ -1053,6 +1087,11 @@
    "verdict": "fan",
    "name": "kaki919ra",
    "date": "2026-08-16"
+  },
+  "2855157967": {
+   "verdict": "fan",
+   "name": "IS_saito",
+   "date": "2026-08-20"
   }
  },
  "seeds": {}
