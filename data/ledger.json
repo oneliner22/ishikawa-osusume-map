@@ -1005,6 +1005,107 @@
    "date": "2026-08-20",
    "result": "processed",
    "author": "otanipei0729"
+  },
+  "2090915222295068905": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090767541778239734": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090752084555784537": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090735094139113670": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090823065613619409": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090822614856171665": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090792490853158965": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090788370113089774": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090787851759960225": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090779619142340629": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090779093805744169": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090778592028598412": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090773573602517452": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090753147702845450": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090752890537435414": {
+   "date": "2026-08-21",
+   "result": "processed",
+   "author": "capital_kn"
+  },
+  "2090744776715129322": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090743759902552425": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090742196865786015": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090732246970065029": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090730611136946258": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090717866345840739": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090710498321076314": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090657703261847793": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090617968363544816": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
+  },
+  "2090609859159089445": {
+   "date": "2026-08-21",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -1092,6 +1193,11 @@
    "verdict": "fan",
    "name": "IS_saito",
    "date": "2026-08-20"
+  },
+  "1497538255276756993": {
+   "verdict": "fan",
+   "name": "capital_kn",
+   "date": "2026-08-21"
   }
  },
  "seeds": {}
