@@ -1106,6 +1106,112 @@
   "2090609859159089445": {
    "date": "2026-08-21",
    "result": "not_recommendation"
+  },
+  "2091135809156223163": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091068842122600731": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091280993416249623": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091175801186296235": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091156479860756589": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091152748024930616": {
+   "date": "2026-08-22",
+   "result": "processed",
+   "author": "kansoupkp"
+  },
+  "2091134621534859373": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091131280356483363": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091129092720803988": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091118721821802989": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091107779062939778": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091097728197722189": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091096114506383733": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091094393654809046": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091085024515051882": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091082484855587111": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091080631614947743": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091059077308985398": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091057392230560142": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091052811207475507": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091050322357854683": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2091041015415419251": {
+   "date": "2026-08-22",
+   "result": "processed",
+   "author": "mocahan_pp"
+  },
+  "2090982522150850829": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2090972554815213847": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2090967403538624995": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
+  },
+  "2090966056752050622": {
+   "date": "2026-08-22",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -1198,6 +1304,11 @@
    "verdict": "fan",
    "name": "capital_kn",
    "date": "2026-08-21"
+  },
+  "1639851914681786370": {
+   "verdict": "fan",
+   "name": "mocahan_pp",
+   "date": "2026-08-22"
   }
  },
  "seeds": {}
