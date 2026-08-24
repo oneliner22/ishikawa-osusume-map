@@ -150,7 +150,7 @@ def fetch_posts(mcp, ledger, query, max_posts=200, include_refs=False, since=Non
     ref_cond = "" if include_refs else "AND t.ref_type IS NULL "
     # media_urls は ingest 時期によって NULL の区画があるため、同一IDの別区画から補完する
     rows = mcp.call("run_sql", {"max_rows": 500, "query":
-        "SELECT t.id, t.created_at, t.author_id, t.author_name, t.author_followers, "
+        "SELECT t.id, t.created_at, t.conversation_id, t.author_id, t.author_name, t.author_followers, "
         "t.text, COALESCE(t.media_urls, mm.mu) media_urls, t.like_count, t.reply_count "
         "FROM tweets t LEFT JOIN (SELECT id, arg_max(media_urls, ingested_at) mu "
         "FROM tweets WHERE media_urls IS NOT NULL GROUP BY id) mm ON mm.id = t.id "
@@ -220,6 +220,13 @@ def harvest_seeds(mcp, ledger, rh):
     ledger["seeds"] = {pid: s for pid, s in ledger["seeds"].items()
                        if s["until"] >= TODAY}
     return harvested, len(active)
+
+
+# 続き投稿 (本人リプ・自己引用RT) の抽出に添える取得文脈。スポット名を含まない注記
+# なので ground_candidates の実記載チェック (捏造防止) には影響しない
+CONTINUATION_NOTE = ("(注: この投稿は、#ぽこピーの回覧板 向け石川おすすめ紹介"
+                     "スレッドに投稿者本人がぶら下げた続きの投稿"
+                     " (リプライまたは自己引用RT))\n")
 
 
 def as_url_list(v):
@@ -578,28 +585,97 @@ def main():
         commit_if_changed(workdir, f"auto-ingest {TODAY}: no new posts (seeds {n_seeds})")
         return
 
-    stats = {"posts": len(posts), "added": [], "source_added": [], "pending": 0,
-             "skipped_bot": 0, "skipped_offtopic": 0}
-    new_candidates = []  # (cand, post)
-    desc_refresh = {}    # slug -> spot: 今回X言及が増え紹介文を更新すべきスポット
-
     # 前処理 (画像DL→抽出→実記載チェック) と著者判定はポスト間で独立なので並列に流し、
     # ledger・spots への反映は順序を保って逐次で行う
     def prep(post):
         images = download_images(post.get("media_urls"))
-        ex = extract_spots(post, images)
-        return ground_candidates(post, images, ex["candidates"]) \
+        p = post
+        if post.get("_continuation"):  # 二段階目: 取得文脈を1行添えて抽出する
+            p = dict(post)
+            p["text"] = CONTINUATION_NOTE + (post.get("text") or "")
+        ex = extract_spots(p, images)
+        return ground_candidates(p, images, ex["candidates"]) \
             if ex["is_recommendation"] else []
 
-    with ThreadPoolExecutor(max_workers=WORKERS) as pool:
-        prepped = list(pool.map(prep, posts))
-        # 著者判定は候補ありポストの著者だけを著者単位で1回ずつ
-        # (結果は ledger["authors"] にキャッシュされ、下のループはキャッシュを引くだけ)
-        gate_posts = {}
-        for post, cands in zip(posts, prepped):
-            if cands:
-                gate_posts.setdefault(str(post["author_id"]), post)
-        list(pool.map(lambda p: author_gate(mcp, ledger, p), gate_posts.values()))
+    def prep_batch(batch):
+        with ThreadPoolExecutor(max_workers=WORKERS) as pool:
+            prepped = list(pool.map(prep, batch))
+            # 著者判定は候補ありポストの著者だけを著者単位で1回ずつ
+            # (結果は ledger["authors"] にキャッシュされ、後段ループはキャッシュを引くだけ)
+            gate_posts = {}
+            for post, cands in zip(batch, prepped):
+                if cands:
+                    gate_posts.setdefault(str(post["author_id"]), post)
+            list(pool.map(lambda p: author_gate(mcp, ledger, p), gate_posts.values()))
+        return prepped
+
+    prepped = prep_batch(posts)
+
+    # ---- 二段階目: 適格投稿の「本人の続き投稿」を同run内で収穫する ----
+    # おすすめを自分のリプや自己引用RTで連ねる投稿者が多く、続き投稿は単体では
+    # 検索キーワードに合致しないことが多い。一段階目で適格 (候補あり・著者fan) と
+    # なった投稿を起点に、本人リプは conversation_id 検索で一括、自己引用RTは
+    # url: 検索で1ホップずつ拾う (引用の引用は見つかった続き投稿を新起点に反復)。
+    # シードのような日をまたぐ監視はしない。このrunで適格になった投稿の連鎖のみ。
+    def cont_roots(pairs):
+        roots = []
+        for post, cands in pairs:
+            if not cands:
+                continue
+            verdict = ledger["authors"].get(str(post["author_id"]), {}).get("verdict")
+            if verdict == "fan":  # uncertain は pending 直行のため連鎖も追わない
+                roots.append(post)
+        return roots
+
+    sc = pipeline_cfg.get("self_continuation", {})
+    continuations, queried = [], set()
+    frontier = cont_roots(zip(posts, prepped))
+    for _ in range(sc.get("max_rounds", 3)):
+        if not frontier:
+            break
+        found = []
+        for root in frontier[:sc.get("max_roots_per_run", 15)]:
+            author = (root.get("author_name") or "").lstrip("@")
+            rid = str(root["id"])
+            conv = str(root.get("conversation_id") or "") or rid
+            q = f"(conversation_id:{conv} OR url:{rid}) from:{author} -is:retweet"
+            if not HANDLE_RE.match(author) or q in queried:
+                continue
+            queried.add(q)
+            try:
+                since = datetime.fromisoformat(
+                    str(root.get("created_at")).replace("Z", "").replace("T", " ")
+                    .split(".")[0]).replace(tzinfo=timezone.utc)
+            except ValueError:
+                since = None
+            try:
+                found += fetch_posts(mcp, ledger, q, max_posts=50,
+                                     include_refs=True, since=since)
+            except Exception as e:
+                log("continuation skip:", rid, repr(e))
+        fresh = []
+        for p in found:
+            pid = str(p["id"])
+            if pid not in seen_ids:
+                seen_ids.add(pid)
+                p["_continuation"] = True
+                fresh.append(p)
+        if not fresh:
+            break
+        fresh_prepped = prep_batch(fresh)
+        continuations += fresh
+        posts += fresh
+        prepped += fresh_prepped
+        frontier = cont_roots(zip(fresh, fresh_prepped))
+    if continuations:
+        log(f"continuations harvested: {len(continuations)} posts "
+            f"({len(queried)} queries)")
+
+    stats = {"posts": len(posts), "continuations": len(continuations),
+             "added": [], "source_added": [], "pending": 0,
+             "skipped_bot": 0, "skipped_offtopic": 0}
+    new_candidates = []  # (cand, post)
+    desc_refresh = {}    # slug -> spot: 今回X言及が増え紹介文を更新すべきスポット
 
     for post, cands in zip(posts, prepped):
         pid = str(post["id"])
@@ -755,7 +831,7 @@ def main():
            f"{' (' + ', '.join(stats['added'][:5]) + ')' if stats['added'] else ''}, "
            f"src+{len(stats['source_added'])}, pending {stats['pending']}, "
            f"posts {stats['posts']} (bot {stats['skipped_bot']} / offtopic {stats['skipped_offtopic']}, "
-           f"seeds {n_seeds})")
+           f"cont {stats['continuations']}, seeds {n_seeds})")
     log("summary:", msg)
     commit_if_changed(workdir, msg)
 

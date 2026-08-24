@@ -22,6 +22,11 @@
     "cap_behavior": "超過日は入稿を全停止し GitHub Issue を起票（部分反映しない）"
   },
   "geocode_fallback": "Nominatim (Places で引けない場合のみ。approx: true を付与)",
+  "self_continuation": {
+    "max_roots_per_run": 15,
+    "max_rounds": 3,
+    "note": "二段階目: 一段階目で適格(候補あり・著者fan)となった投稿について、本人の続き投稿(リプ・自己引用RT)を同run内で収穫し通常の分類・判定に合流させる。本人リプは conversation_id 検索で一括、引用の引用は続き投稿を新起点に最大 max_rounds 回反復。日をまたぐ監視はしない(後日の続きは 2026-08-25 の selfreply_backfill.py のようなワンショットで回収)"
+  },
   "reply_harvest": {
     "official_accounts": ["ponpokoka"],
     "seed_ttl_days": 35,
