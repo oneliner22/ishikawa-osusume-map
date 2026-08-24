@@ -1360,6 +1360,125 @@
    "date": "2026-08-25",
    "result": "processed",
    "author": "kansoupkp"
+  },
+  "2091659720583213269": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091904762711285786": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091895890642600080": {
+   "date": "2026-08-24",
+   "result": "processed",
+   "author": "sax0_x"
+  },
+  "2091895109239579021": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091891485973381185": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091886425059061787": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091882172672262577": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091878685183975473": {
+   "date": "2026-08-24",
+   "result": "processed",
+   "author": "e_ala_e_"
+  },
+  "2091877319728390278": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091873547606200470": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091865804258390041": {
+   "date": "2026-08-24",
+   "result": "processed",
+   "author": "hirovtak5437"
+  },
+  "2091863552990814439": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091832747019125047": {
+   "date": "2026-08-24",
+   "result": "processed",
+   "author": "ykkk146"
+  },
+  "2091827806640726233": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091815445112168610": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091801590273597467": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091788690712646009": {
+   "date": "2026-08-24",
+   "result": "processed",
+   "author": "hirovtak5437"
+  },
+  "2091751642161107202": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091743111861207405": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091731679430037845": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091719004520120624": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091706707382821297": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091694517451919837": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091686471078138148": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091656914979655925": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091877564172390815": {
+   "date": "2026-08-24",
+   "result": "not_recommendation"
+  },
+  "2091858677775130832": {
+   "date": "2026-08-24",
+   "result": "processed",
+   "author": "hirovtak5437"
+  },
+  "2091857810300743933": {
+   "date": "2026-08-24",
+   "result": "processed",
+   "author": "hirovtak5437"
   }
  },
  "authors": {
@@ -1457,6 +1576,26 @@
    "verdict": "fan",
    "name": "mocahan_pp",
    "date": "2026-08-22"
+  },
+  "1503629369264447488": {
+   "verdict": "fan",
+   "name": "e_ala_e_",
+   "date": "2026-08-24"
+  },
+  "2036525981935214592": {
+   "verdict": "fan",
+   "name": "hirovtak5437",
+   "date": "2026-08-24"
+  },
+  "2912596014": {
+   "verdict": "fan",
+   "name": "ykkk146",
+   "date": "2026-08-24"
+  },
+  "267548604": {
+   "verdict": "fan",
+   "name": "sax0_x",
+   "date": "2026-08-24"
   }
  },
  "seeds": {}
