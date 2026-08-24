@@ -6,6 +6,76 @@
    "hint": "観光地",
    "post": "https://x.com/hugashibow/status/2088661301073723480",
    "date": "2026-08-15"
+  },
+  {
+   "name": "８番らーめん",
+   "reason": "low_confidence",
+   "hint": "石川発祥ラーメンローカルチェーン店",
+   "post": "https://x.com/_y_n_p_p_/status/2087200484868431879",
+   "date": "2026-08-25"
+  },
+  {
+   "name": "謎屋珈琲店",
+   "reason": "low_confidence",
+   "hint": "謎解きができるカフェ",
+   "post": "https://x.com/_y_n_p_p_/status/2087204722889654310",
+   "date": "2026-08-25"
+  },
+  {
+   "name": "みそまんじゅう本舗 竹内",
+   "reason": "low_confidence",
+   "hint": "和菓子、お土産",
+   "post": "https://x.com/hugashibow/status/2088862489526317342",
+   "date": "2026-08-25"
+  },
+  {
+   "name": "圓八のあんころ餅",
+   "reason": "low_confidence",
+   "hint": "和菓子、お土産、当日中",
+   "post": "https://x.com/hugashibow/status/2088862489526317342",
+   "date": "2026-08-25"
+  },
+  {
+   "name": "不室屋 宝の麩",
+   "reason": "low_confidence",
+   "hint": "和菓子、お土産",
+   "post": "https://x.com/hugashibow/status/2088862489526317342",
+   "date": "2026-08-25"
+  },
+  {
+   "name": "森八 長生殿",
+   "reason": "low_confidence",
+   "hint": "和菓子、お土産",
+   "post": "https://x.com/hugashibow/status/2088862489526317342",
+   "date": "2026-08-25"
+  },
+  {
+   "name": "YUKIZURI",
+   "reason": "places_no_match",
+   "hint": "和菓子、お土産",
+   "post": "https://x.com/hugashibow/status/2088862489526317342",
+   "date": "2026-08-25"
+  },
+  {
+   "name": "福うさぎ",
+   "reason": "low_confidence",
+   "hint": "和菓子、お土産",
+   "post": "https://x.com/hugashibow/status/2088862489526317342",
+   "date": "2026-08-25"
+  },
+  {
+   "name": "梅梅",
+   "reason": "places_no_match",
+   "hint": "東茶屋近く・中国料理",
+   "post": "https://x.com/kansoupkp/status/2091155190846243074",
+   "date": "2026-08-25"
+  },
+  {
+   "name": "四知堂 kanazawa",
+   "reason": "places_no_match",
+   "hint": "東茶屋近く・台湾料理",
+   "post": "https://x.com/kansoupkp/status/2091155190846243074",
+   "date": "2026-08-25"
   }
  ]
 }
