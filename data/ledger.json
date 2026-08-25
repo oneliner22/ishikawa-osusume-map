@@ -1479,6 +1479,164 @@
    "date": "2026-08-24",
    "result": "processed",
    "author": "hirovtak5437"
+  },
+  "2092212926216360382": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092209163749453934": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092077621437964763": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092049806172795358": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092361037089837395": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092302784452571626": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092283513315967281": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092274273960480915": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092267466630295897": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092265995998278117": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092260796885803275": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092258566464000107": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092257417627414821": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092252616822755818": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092241206554300845": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092240731801031102": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092232681346216330": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092228782635855989": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092227006549373288": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092225934275531067": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092224984223826238": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092221348588531882": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092219860550095354": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092219190912663588": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092212561982992762": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092211252747715044": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092203353447203255": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092203208936697994": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092202210927182053": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092195840878329937": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092194103291429137": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092188839507021923": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092183852714475849": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092167671764881669": {
+   "date": "2026-08-25",
+   "result": "processed",
+   "author": "fruiche_densetu"
+  },
+  "2092155492948963828": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092126619024658598": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092092430552273363": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
+  },
+  "2092078923232543126": {
+   "date": "2026-08-25",
+   "result": "processed",
+   "author": "da_i_ki_chi"
+  },
+  "2092039754577764709": {
+   "date": "2026-08-25",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -1596,6 +1754,16 @@
    "verdict": "fan",
    "name": "sax0_x",
    "date": "2026-08-24"
+  },
+  "142636114": {
+   "verdict": "fan",
+   "name": "fruiche_densetu",
+   "date": "2026-08-25"
+  },
+  "117765516": {
+   "verdict": "fan",
+   "name": "da_i_ki_chi",
+   "date": "2026-08-25"
   }
  },
  "seeds": {}
