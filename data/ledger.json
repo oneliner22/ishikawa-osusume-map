@@ -1971,6 +1971,135 @@
   "2092746695629287759": {
    "date": "2026-08-27",
    "result": "not_recommendation"
+  },
+  "2094790223737815172": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094788169065726376": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094788132642439591": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094788024618144064": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094787746112172283": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094835641330835610": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094799005037535711": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094790686793179479": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094784907252027667": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094769520313614455": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094766884080284049": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094762308031656136": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094760378844766237": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094754701665620227": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094752685274886575": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094747459025309892": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094741988579180872": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094738016128635247": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094738002836877398": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094723013614969168": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094719289635024981": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094684796509471184": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094669001456800180": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094648250548752628": {
+   "date": "2026-09-01",
+   "result": "processed",
+   "author": "30_pokari"
+  },
+  "2094632655975587961": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094619845547675649": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094610322586063345": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094594024644686130": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094575355495698845": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094548401123971277": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094657465443053779": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
+  },
+  "2094650493859696887": {
+   "date": "2026-09-01",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -2098,6 +2227,11 @@
    "verdict": "fan",
    "name": "da_i_ki_chi",
    "date": "2026-08-25"
+  },
+  "1839607423545565184": {
+   "verdict": "fan",
+   "name": "30_pokari",
+   "date": "2026-09-01"
   }
  },
  "seeds": {}
