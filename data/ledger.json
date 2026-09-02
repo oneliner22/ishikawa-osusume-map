@@ -2100,6 +2100,68 @@
   "2094650493859696887": {
    "date": "2026-09-01",
    "result": "not_recommendation"
+  },
+  "2095156266696049111": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2095138926042505647": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2095127632744697881": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2095123922849321304": {
+   "date": "2026-09-02",
+   "result": "processed",
+   "author": "ikko_mashroom"
+  },
+  "2095119529596899537": {
+   "date": "2026-09-02",
+   "result": "processed",
+   "author": "D5NB1G2"
+  },
+  "2095108836667621703": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2095102034857042060": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2095091362425410040": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2095066387052200306": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2095051919526178947": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2095046435192639898": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2095044668581138663": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2094993721343553613": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2094918678118817989": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
+  },
+  "2095137402507456712": {
+   "date": "2026-09-02",
+   "result": "not_recommendation"
   }
  },
  "authors": {
@@ -2232,6 +2294,16 @@
    "verdict": "fan",
    "name": "30_pokari",
    "date": "2026-09-01"
+  },
+  "1799796498974289920": {
+   "verdict": "fan",
+   "name": "D5NB1G2",
+   "date": "2026-09-02"
+  },
+  "1878814284152807424": {
+   "verdict": "fan",
+   "name": "ikko_mashroom",
+   "date": "2026-09-02"
   }
  },
  "seeds": {}
