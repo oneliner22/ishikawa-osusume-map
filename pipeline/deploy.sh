@@ -35,8 +35,10 @@ upsert_secret() {  # upsert_secret NAME VALUE
     printf '%s' "$2" | gcloud secrets create "$1" --data-file=-
   fi
 }
-upsert_secret github-token "$GITHUB_TOKEN_VALUE"
-upsert_secret xdev-mcp-url "$XDEV_MCP_URL_VALUE"
+if [ "${SKIP_SECRETS:-0}" != "1" ]; then  # 他地域と Secret 共用なら SKIP_SECRETS=1
+  upsert_secret github-token "$GITHUB_TOKEN_VALUE"
+  upsert_secret xdev-mcp-url "$XDEV_MCP_URL_VALUE"
+fi
 
 if ! gcloud secrets describe places-api-key >/dev/null 2>&1; then
   KEY=$(gcloud services api-keys create --display-name="ishikawa-spots-places" \

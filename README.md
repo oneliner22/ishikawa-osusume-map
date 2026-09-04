@@ -54,6 +54,8 @@ python -m http.server
 
 ## 自動収集パイプライン（Cloud Run Jobs）
 
+**2026-09-05: 石川公演 (8/29) 終了に伴い Cloud Scheduler (ishikawa-spots-daily-trigger / ishikawa-spots-pending-trigger) を PAUSED にした。** `pipeline.json` に `until: 2026-08-29` を持たせてあり、再開しても（イメージを再ビルドすれば）ジョブは即終了する。愛媛版 (oneliner22/ehime-osusume-map) で足した `until` / `INGEST_SINCE`（初回バックフィル、フルアーカイブ窓分割）/ `DAILY_CAP` / deploy.sh の `SKIP_SECRETS` をこのリポにも取り込んである（Cloud Run のイメージは未再ビルド）。
+
 日次で以下を実行し、合格スポットを `spots.json` に直接コミットする（人手レビューなし）:
 
 ```

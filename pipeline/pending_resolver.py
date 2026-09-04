@@ -310,6 +310,10 @@ def main():
     doc = dj.load(workdir, "spots.json")
     aliases = dj.load(workdir, "aliases.json")
     pending = dj.load(workdir, "pending.json")
+    until = dj.load(workdir, "pipeline.json").get("until")
+    if until and dj.TODAY > until and os.environ.get("FORCE_RUN") != "1":
+        log(f"更新期間終了 (until {until}): 何もしない")
+        return
 
     items = pending["items"]
     override = os.environ.get("PENDING_OVERRIDE")

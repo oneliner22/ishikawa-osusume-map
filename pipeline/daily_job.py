@@ -14,6 +14,10 @@ X検索(xdev) → 画像取得 → Gemini抽出 → bot判定 → Places裏取�
   GCP_PROJECT / VERTEX_LOCATION (既定 global)
   MODEL_EXTRACT / MODEL_JUDGE (既定は pipeline.json 参照)
   INGEST_WINDOW_HOURS  x_ingest の取得窓 (既定 25。日次実行の再取得課金を抑える)
+  INGEST_SINCE  RFC3339。初回バックフィル用: この時刻までフルアーカイブ検索で遡る
+                (BACKFILL_WINDOW_DAYS 刻み・各500件上限。日次運用では未設定にする)
+  DAILY_CAP     サーキットブレーカー閾値の上書き (初回バックフィル用)
+  FORCE_RUN=1   pipeline.json の until (更新終了日) を過ぎていても実行する
   DRY_RUN=1 で push しない (差分はログに出す)
 """
 import difflib
@@ -35,6 +39,7 @@ REPO = os.environ["GITHUB_REPO"]
 TOKEN = os.environ["GITHUB_TOKEN"]
 DRY_RUN = os.environ.get("DRY_RUN", "0") == "1"
 TODAY = date.today().isoformat()
+INGEST_SINCE = os.environ.get("INGEST_SINCE")  # 初回バックフィル専用
 
 CATS = ["グルメ", "温泉", "カフェ・喫茶", "観光", "レトロ", "雑貨・土産",
         "自然", "動物", "体験", "宿"]
@@ -130,36 +135,77 @@ INGEST_WINDOW_HOURS = float(os.environ.get("INGEST_WINDOW_HOURS", "25"))
 WORKERS = int(os.environ.get("WORKERS", "8"))  # 画像DL/Gemini/Places の並列度
 
 
+BACKFILL_WINDOW_DAYS = int(os.environ.get("BACKFILL_WINDOW_DAYS", "10"))
+
+
+def _ts(dt):
+    return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _ingest(mcp, args):
+    ing = mcp.call("x_ingest", args)
+    dataset = ing.get("dataset") if isinstance(ing, dict) else None
+    if not dataset:
+        raise RuntimeError(f"x_ingest から dataset を特定できない: {ing}")
+    n = ing.get("fetched_posts") if isinstance(ing, dict) else None
+    if n is not None and n >= args.get("max_posts", 0):
+        log(f"warn: x_ingest が上限 {n} 件に達した (取りこぼしの可能性): "
+            f"{args.get('start_time')}〜{args.get('end_time', 'now')}")
+    return dataset
+
+
 def fetch_posts(mcp, ledger, query, max_posts=200, include_refs=False, since=None):
     """query を ingest し、台帳未処理の投稿を返す。include_refs=True で reply/引用も含む。
 
     日次実行のため、既定では直近 INGEST_WINDOW_HOURS (25h) に絞って取得する
     (X API の post read 課金の抑制。無指定だと recent 検索が7日分を毎日引き直す)。
     since (aware datetime) 指定でさらに遡れるが、recent 検索の7日上限にクランプする。
+
+    INGEST_SINCE (初回バックフィル) が設定されているときはフルアーカイブ検索に切り替える:
+      - since 無指定 (メイン検索・公式監視) は INGEST_SINCE〜現在を BACKFILL_WINDOW_DAYS
+        刻みの窓に分けて取得する (x_ingest は1回500件上限のため)
+      - since 指定 (シード収穫・続き投稿) は since〜現在を1回で取得する (件数が少ないため)
     """
-    now = datetime.now(timezone.utc)
-    if since is None:
-        since = now - timedelta(hours=INGEST_WINDOW_HOURS)
-    oldest = now - timedelta(days=7) + timedelta(minutes=10)
-    start = max(since, oldest).strftime("%Y-%m-%dT%H:%M:%SZ")
-    ing = mcp.call("x_ingest", {"query": query, "max_posts": max_posts,
-                                "start_time": start})
-    dataset = ing.get("dataset") if isinstance(ing, dict) else None
-    if not dataset:
-        raise RuntimeError(f"x_ingest から dataset を特定できない: {ing}")
+    now = datetime.now(timezone.utc) - timedelta(minutes=1)
+    datasets = []
+    if INGEST_SINCE:
+        if since is None:
+            cur = datetime.fromisoformat(INGEST_SINCE.replace("Z", "+00:00"))
+            while cur < now:
+                end = min(cur + timedelta(days=BACKFILL_WINDOW_DAYS), now)
+                datasets.append(_ingest(mcp, {
+                    "query": query, "max_posts": 500, "archive": True,
+                    "start_time": _ts(cur), "end_time": _ts(end)}))
+                cur = end
+        else:
+            datasets.append(_ingest(mcp, {
+                "query": query, "max_posts": 500, "archive": True,
+                "start_time": _ts(min(since, now - timedelta(minutes=1)))}))
+    else:
+        if since is None:
+            since = now - timedelta(hours=INGEST_WINDOW_HOURS)
+        oldest = now - timedelta(days=7) + timedelta(minutes=10)
+        datasets.append(_ingest(mcp, {"query": query, "max_posts": max_posts,
+                                      "start_time": _ts(max(since, oldest))}))
     ref_cond = "" if include_refs else "AND t.ref_type IS NULL "
-    # media_urls は ingest 時期によって NULL の区画があるため、同一IDの別区画から補完する
-    rows = mcp.call("run_sql", {"max_rows": 500, "query":
-        "SELECT t.id, t.created_at, t.conversation_id, t.author_id, t.author_name, t.author_followers, "
-        "t.text, COALESCE(t.media_urls, mm.mu) media_urls, t.like_count, t.reply_count "
-        "FROM tweets t LEFT JOIN (SELECT id, arg_max(media_urls, ingested_at) mu "
-        "FROM tweets WHERE media_urls IS NOT NULL GROUP BY id) mm ON mm.id = t.id "
-        f"WHERE t.dataset='{dataset}' {ref_cond}"
-        "ORDER BY t.created_at DESC"})
-    posts = rows.get("rows", rows) if isinstance(rows, dict) else rows
-    if posts and isinstance(posts[0], list):  # 列配列形式への保険
-        cols = rows.get("columns", [])
-        posts = [dict(zip(cols, r)) for r in posts]
+    posts, seen = [], set()
+    for dataset in datasets:
+        # media_urls は ingest 時期によって NULL の区画があるため、同一IDの別区画から補完する
+        rows = mcp.call("run_sql", {"max_rows": 500, "query":
+            "SELECT t.id, t.created_at, t.conversation_id, t.author_id, t.author_name, t.author_followers, "
+            "t.text, COALESCE(t.media_urls, mm.mu) media_urls, t.like_count, t.reply_count "
+            "FROM tweets t LEFT JOIN (SELECT id, arg_max(media_urls, ingested_at) mu "
+            "FROM tweets WHERE media_urls IS NOT NULL GROUP BY id) mm ON mm.id = t.id "
+            f"WHERE t.dataset='{dataset}' {ref_cond}"
+            "ORDER BY t.created_at DESC"})
+        got = rows.get("rows", rows) if isinstance(rows, dict) else rows
+        if got and isinstance(got[0], list):  # 列配列形式への保険
+            cols = rows.get("columns", [])
+            got = [dict(zip(cols, r)) for r in got]
+        for p in got or []:
+            if str(p["id"]) not in seen:
+                seen.add(str(p["id"]))
+                posts.append(p)
     return [p for p in posts if str(p["id"]) not in ledger["processed_posts"]]
 
 
@@ -200,7 +246,9 @@ def watch_official(mcp, ledger, rh):
 
 def harvest_seeds(mcp, ledger, rh):
     """有効なシードの reply・引用RTを収穫する。"""
-    active = [(pid, s) for pid, s in ledger["seeds"].items() if s["until"] >= TODAY]
+    # バックフィル時は期限切れシード (告知から35日超) も今回だけ収穫対象にする
+    active = [(pid, s) for pid, s in ledger["seeds"].items()
+              if s["until"] >= TODAY or INGEST_SINCE]
     active.sort(key=lambda kv: kv[1]["date"], reverse=True)
     active = active[:rh.get("max_active_seeds", 25)]
     harvested = []
@@ -218,7 +266,7 @@ def harvest_seeds(mcp, ledger, rh):
         except Exception as e:
             log("harvest skip:", pid, repr(e))
     ledger["seeds"] = {pid: s for pid, s in ledger["seeds"].items()
-                       if s["until"] >= TODAY}
+                       if s["until"] >= TODAY or INGEST_SINCE}
     return harvested, len(active)
 
 
@@ -554,6 +602,10 @@ def main():
     ledger = load(workdir, "ledger.json")
     aliases = load(workdir, "aliases.json")
     pending = load(workdir, "pending.json")
+    until = pipeline_cfg.get("until")
+    if until and TODAY > until and os.environ.get("FORCE_RUN") != "1":
+        log(f"更新期間終了 (until {until}): 何もしない。Cloud Scheduler を削除してよい")
+        return
     bbox = pipeline_cfg["bbox"]
     spots = spots_doc["spots"]
     areas = spots_doc["areas"]
@@ -707,7 +759,7 @@ def main():
         ledger["processed_posts"][pid] = {"date": TODAY, "result": "processed",
                                           "author": post.get("author_name", "")}
 
-    cap = pipeline_cfg["gates"]["daily_new_spot_cap"]
+    cap = int(os.environ.get("DAILY_CAP") or pipeline_cfg["gates"]["daily_new_spot_cap"])
     if len(new_candidates) > cap:
         github_issue(
             f"[auto-ingest] サーキットブレーカー発動: 新規候補 {len(new_candidates)} 件 > {cap}",

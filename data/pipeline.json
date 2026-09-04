@@ -1,6 +1,15 @@
 {
-  "gcp_project": {"display_name": "salmon-chan", "project_id": "central-bulwark-427114-j7"},
-  "cloud_run": {"region": "asia-northeast1", "job": "ishikawa-spots-daily", "schedule": "毎朝7時 JST (Cloud Scheduler: ishikawa-spots-daily-trigger)"},
+  "gcp_project": {
+    "display_name": "salmon-chan",
+    "project_id": "central-bulwark-427114-j7"
+  },
+  "cloud_run": {
+    "region": "asia-northeast1",
+    "job": "ishikawa-spots-daily",
+    "schedule": "毎朝7時 JST (Cloud Scheduler: ishikawa-spots-daily-trigger)"
+  },
+  "until": "2026-08-29",
+  "until_note": "更新終了日 (石川公演当日)。これを過ぎると日次ジョブ・pending整理ジョブは何もせず終了する (FORCE_RUN=1 で無視)。2026-09-05 に Cloud Scheduler の ishikawa-spots-*-trigger は PAUSED 済み",
   "x_query": "回覧板 (金沢 OR 石川) -is:retweet",
   "xdev_dataset": "pocopea-ishikawa",
   "schedule": "daily",
@@ -10,8 +19,10 @@
     "note": "デプロイ時に Vertex AI の正式モデルIDへ差し替えること"
   },
   "bbox": {
-    "lat_min": 35.8, "lat_max": 38.1,
-    "lng_min": 135.9, "lng_max": 137.7,
+    "lat_min": 35.8,
+    "lat_max": 38.1,
+    "lng_min": 135.9,
+    "lng_max": 137.7,
     "note": "石川県 + 約20-30kmマージン。県外通過分は spot に out_of_pref: true を付与"
   },
   "gates": {
@@ -28,7 +39,9 @@
     "note": "二段階目: 一段階目で適格(候補あり・著者fan)となった投稿について、本人の続き投稿(リプ・自己引用RT)を同run内で収穫し通常の分類・判定に合流させる。本人リプは conversation_id 検索で一括、引用の引用は続き投稿を新起点に最大 max_rounds 回反復。日をまたぐ監視はしない(後日の続きは 2026-08-25 の selfreply_backfill.py のようなワンショットで回収)"
   },
   "reply_harvest": {
-    "official_accounts": ["ponpokoka"],
+    "official_accounts": [
+      "ponpokoka"
+    ],
     "seed_ttl_days": 35,
     "max_active_seeds": 25,
     "note": "公式の「おすすめ教えて」投稿のみをシードとして、conversation_id/url 検索で reply・引用RTを収穫し通常パイプラインに合流させる (処理済みおすすめ投稿の自動シード昇格は 2026-08-08 に廃止。シードごとに x_ingest が走るため)"
