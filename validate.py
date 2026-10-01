@@ -28,6 +28,9 @@ if spots_doc and videos and pipeline:
     area_ids = [a["id"] for a in areas]
     if len(area_ids) != len(set(area_ids)):
         err("area id が重複")
+    for a in areas:
+        if re.search(r"[<>&\"'`]", str(a.get("name", ""))):
+            err(f"area '{a.get('id')}': name に HTML 特殊文字 '{a.get('name')}'")
 
     bbox = pipeline["bbox"]
     slugs = set()
@@ -48,6 +51,8 @@ if spots_doc and videos and pipeline:
             err(f"{tag}: lat/lng が数値でない")
         elif not (bbox["lat_min"] <= lat <= bbox["lat_max"] and bbox["lng_min"] <= lng <= bbox["lng_max"]):
             err(f"{tag}: 座標 ({lat},{lng}) がマージン付きbbox外")
+        if s.get("url") is not None and not re.match(r"^https?://\S+$", str(s["url"])):
+            err(f"{tag}: url が http(s) でない '{s['url']}'")
         if not isinstance(s.get("sources"), list) or not s["sources"]:
             err(f"{tag}: sources が空")
             continue
